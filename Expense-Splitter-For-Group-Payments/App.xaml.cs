@@ -66,14 +66,12 @@ public partial class App : Application
             services.AddSingleton<INavigationService, NavigationService>();
 
             // Core Services
-            services.AddSingleton<ISampleDataService, SampleDataService>();
+            services.AddSingleton<IDataService, DataService>();
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels
             services.AddTransient<ContactsViewModel>();
             services.AddTransient<ContactsPage>();
-            services.AddTransient<ExpenseGroupViewModel>();
-            services.AddTransient<ExpenseGroupPage>();
             services.AddTransient<DashboardDetailViewModel>();
             services.AddTransient<DashboardDetailPage>();
             services.AddTransient<DashboardViewModel>();

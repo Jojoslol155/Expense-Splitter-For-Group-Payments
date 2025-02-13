@@ -16,7 +16,6 @@ public class PageService : IPageService
     {
         Configure<DashboardViewModel, DashboardPage>();
         Configure<DashboardDetailViewModel, DashboardDetailPage>();
-        Configure<ExpenseGroupViewModel, ExpenseGroupPage>();
         Configure<ContactsViewModel, ContactsPage>();
     }
 

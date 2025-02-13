@@ -8,26 +8,39 @@ namespace Expense_Splitter_For_Group_Payments.ViewModels;
 
 public partial class DashboardDetailViewModel : ObservableRecipient, INavigationAware
 {
-    private readonly ISampleDataService _sampleDataService;
+    private readonly IDataService _dataService;
 
     [ObservableProperty]
-    private SampleOrder? item;
+    private ExpenseGroup? item;
 
-    public DashboardDetailViewModel(ISampleDataService sampleDataService)
+    [ObservableProperty]
+    private ICollection<Expense>? expenses;
+
+    [ObservableProperty]
+    private Expense? selected;
+
+    public DashboardDetailViewModel(IDataService dataService)
     {
-        _sampleDataService = sampleDataService;
+        _dataService = dataService;
     }
 
     public async void OnNavigatedTo(object parameter)
     {
-        if (parameter is long orderID)
+        if (parameter is string expenseGroupID)
         {
-            var data = await _sampleDataService.GetContentGridDataAsync();
-            Item = data.First(i => i.OrderID == orderID);
+            var data = await _dataService.GetExpenseGroupsAsync();
+            Item = data.First(i => i.ID == expenseGroupID);
+
+            Expenses = Item.Expenses;
         }
     }
 
     public void OnNavigatedFrom()
     {
+    }
+
+    public void EnsureItemSelected()
+    {
+        Selected ??= Expenses.First();
     }
 }

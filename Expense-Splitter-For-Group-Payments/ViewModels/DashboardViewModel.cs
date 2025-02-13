@@ -14,14 +14,14 @@ namespace Expense_Splitter_For_Group_Payments.ViewModels;
 public partial class DashboardViewModel : ObservableRecipient, INavigationAware
 {
     private readonly INavigationService _navigationService;
-    private readonly ISampleDataService _sampleDataService;
+    private readonly IDataService _DataService;
 
-    public ObservableCollection<SampleOrder> Source { get; } = new ObservableCollection<SampleOrder>();
+    public ObservableCollection<ExpenseGroup> Source { get; } = new ObservableCollection<ExpenseGroup>();
 
-    public DashboardViewModel(INavigationService navigationService, ISampleDataService sampleDataService)
+    public DashboardViewModel(INavigationService navigationService, IDataService dataService)
     {
         _navigationService = navigationService;
-        _sampleDataService = sampleDataService;
+        _DataService = dataService;
     }
 
     public async void OnNavigatedTo(object parameter)
@@ -29,7 +29,7 @@ public partial class DashboardViewModel : ObservableRecipient, INavigationAware
         Source.Clear();
 
         // TODO: Replace with real data.
-        var data = await _sampleDataService.GetContentGridDataAsync();
+        var data = await _DataService.GetExpenseGroupsAsync();
         foreach (var item in data)
         {
             Source.Add(item);
@@ -41,12 +41,12 @@ public partial class DashboardViewModel : ObservableRecipient, INavigationAware
     }
 
     [RelayCommand]
-    private void OnItemClick(SampleOrder? clickedItem)
+    private void OnItemClick(ExpenseGroup? clickedItem)
     {
         if (clickedItem != null)
         {
             _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem);
-            _navigationService.NavigateTo(typeof(DashboardDetailViewModel).FullName!, clickedItem.OrderID);
+            _navigationService.NavigateTo(typeof(DashboardDetailViewModel).FullName!, clickedItem.ID);
         }
     }
 }

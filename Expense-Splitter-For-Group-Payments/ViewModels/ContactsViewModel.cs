@@ -10,16 +10,16 @@ namespace Expense_Splitter_For_Group_Payments.ViewModels;
 
 public partial class ContactsViewModel : ObservableRecipient, INavigationAware
 {
-    private readonly ISampleDataService _sampleDataService;
+    private readonly IDataService _DataService;
 
     [ObservableProperty]
-    private SampleOrder? selected;
+    private User? selected;
 
-    public ObservableCollection<SampleOrder> SampleItems { get; private set; } = new ObservableCollection<SampleOrder>();
+    public ObservableCollection<User> SampleItems { get; private set; } = new ObservableCollection<User>();
 
-    public ContactsViewModel(ISampleDataService sampleDataService)
+    public ContactsViewModel(IDataService DataService)
     {
-        _sampleDataService = sampleDataService;
+        _DataService = DataService;
     }
 
     public async void OnNavigatedTo(object parameter)
@@ -27,7 +27,7 @@ public partial class ContactsViewModel : ObservableRecipient, INavigationAware
         SampleItems.Clear();
 
         // TODO: Replace with real data.
-        var data = await _sampleDataService.GetListDetailsDataAsync();
+        var data = await _DataService.GetUsersAsync();
 
         foreach (var item in data)
         {

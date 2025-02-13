@@ -3,9 +3,11 @@
 namespace Expense_Splitter_For_Group_Payments.Core.Contracts.Services;
 
 // Remove this class once your pages/features are using your data.
-public interface ISampleDataService
+public interface IDataService
 {
-    Task<IEnumerable<SampleOrder>> GetListDetailsDataAsync();
+    Task<IEnumerable<Expense>> GetExpensesAsync();
 
-    Task<IEnumerable<SampleOrder>> GetContentGridDataAsync();
+    Task<IEnumerable<ExpenseGroup>> GetExpenseGroupsAsync();
+
+    Task<IEnumerable<User>> GetUsersAsync();
 }

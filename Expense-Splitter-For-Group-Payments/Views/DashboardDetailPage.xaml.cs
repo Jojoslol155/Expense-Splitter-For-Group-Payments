@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.WinUI.UI.Animations;
+using CommunityToolkit.WinUI.UI.Controls;
 
 using Expense_Splitter_For_Group_Payments.Contracts.Services;
 using Expense_Splitter_For_Group_Payments.ViewModels;
@@ -38,6 +39,14 @@ public sealed partial class DashboardDetailPage : Page
             {
                 navigationService.SetListDataItemForNextConnectedAnimation(ViewModel.Item);
             }
+        }
+    }
+
+    private void OnViewStateChanged(object sender, ListDetailsViewState e)
+    {
+        if (e == ListDetailsViewState.Both)
+        {
+            ViewModel.EnsureItemSelected();
         }
     }
 }
