@@ -35,8 +35,6 @@ public class Expense
         get; set;
     }
 
-    public string ShortDescription => $"Order ID: {ID}";
-
     public string FormattedAmount()
     {
         return string.Format("{0:c}", Amount);
