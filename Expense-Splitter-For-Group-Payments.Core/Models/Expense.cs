@@ -1,4 +1,6 @@
-﻿namespace Expense_Splitter_For_Group_Payments.Core.Models;
+﻿using Newtonsoft.Json.Linq;
+
+namespace Expense_Splitter_For_Group_Payments.Core.Models;
 
 public class Expense
 {
@@ -27,17 +29,18 @@ public class Expense
 
     public char Symbol => (char)SymbolCode;
 
-    public ICollection<ExpenseDetail> Details
-    {
-        get; set;
-    }
-
-    public ICollection<User> Members
+    // MemberID : Percentage of Expense
+    public Dictionary<string, double> MemberPercentageMap
     {
         get; set;
     }
 
     public string ShortDescription => $"Order ID: {ID}";
+
+    public string FormattedAmount()
+    {
+        return string.Format("{0:c}", Amount);
+    }
 
     public override string ToString() => $"{Name} {Amount}";
 }

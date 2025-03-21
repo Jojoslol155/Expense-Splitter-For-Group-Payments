@@ -35,6 +35,30 @@ public class DataService : IDataService
                 UserID = "H7283",
                 FirstName = "Minnie",
                 LastName = "Mouse",
+            },
+            new ()
+            {
+                UserID = "7PWL4",
+                FirstName = "Daisy",
+                LastName = "Duck",
+            },
+            new ()
+            {
+                UserID = "J8923",
+                FirstName = "Betty",
+                LastName = "Boop",
+            },
+            new ()
+            {
+                UserID = "5T48L",
+                FirstName = "Prince",
+                LastName = "Bambi",
+            },
+            new ()
+            {
+                UserID = "99OP3",
+                FirstName = "Mister",
+                LastName = "Rogers",
             }
         };
     }
@@ -55,20 +79,12 @@ public class DataService : IDataService
                         Name = "Coffee",
                         SymbolCode = 57643,
                         SymbolName = "Globe",
-                        Details = new List<ExpenseDetail>()
-                        {
-                            new ExpenseDetail()
-                            {
-                                Total = 513.00
-                            },
-                            new ExpenseDetail()
-                            {
-                                Total = 283.50
-                            },
-                            new ExpenseDetail()
-                            {
-                                Total = 18.00
-                            }
+                        Amount = 15.43,
+                        MemberPercentageMap = new Dictionary<string, double>(){
+                            {"H7283", .25 },
+                            {"7PWL4", .25 },
+                            {"J8923", .25 },
+                            {"5T48L", .25 },
                         }
                     },
                     new Expense()
@@ -77,16 +93,10 @@ public class DataService : IDataService
                         Name = "Pencil Sharpeners",
                         SymbolCode = 57737,
                         SymbolName = "Audio",
-                        Details = new List<ExpenseDetail>()
-                        {
-                            new ExpenseDetail()
-                            {
-                                Total = 825.00
-                            },
-                            new ExpenseDetail()
-                            {
-                                Total = 20.80
-                            }
+                        Amount = 5.90,
+                        MemberPercentageMap = new Dictionary<string, double>(){
+                            {"7PWL4", .5 },
+                            {"J8923", .5 },
                         }
                     },
                     new Expense()
@@ -95,16 +105,11 @@ public class DataService : IDataService
                         Name = "College-ruled paper",
                         SymbolCode = 57699,
                         SymbolName = "Calendar",
-                        Details = new List<ExpenseDetail>()
-                        {
-                            new ExpenseDetail()
-                            {
-                                Total = 380.00
-                            },
-                            new ExpenseDetail()
-                            {
-                                Total = 91.20
-                            }
+                        Amount = 10.99,
+                        MemberPercentageMap = new Dictionary<string, double>(){
+                            {"7PWL4", .33 },
+                            {"J8923", .33 },
+                            {"5T48L", .34 },
                         }
                     }
                 }
@@ -121,20 +126,10 @@ public class DataService : IDataService
                         Name = "Mountain Dew",
                         SymbolCode = 57620,
                         SymbolName = "Camera",
-                        Details = new List<ExpenseDetail>()
-                        {
-                            new ExpenseDetail()
-                            {
-                                Total = 69.75
-                            },
-                            new ExpenseDetail()
-                            {
-                                Total = 70.00
-                            },
-                            new ExpenseDetail()
-                            {
-                                Total = 340.00
-                            }
+                        Amount = 12.50,
+                        MemberPercentageMap = new Dictionary<string, double>(){
+                            {"5T48L", .5 },
+                            {"99OP3", .5 },
                         }
                     },
                     new Expense()
@@ -143,24 +138,10 @@ public class DataService : IDataService
                         Name = "Doritos",
                         SymbolCode = 57633,
                         SymbolName = "Clock",
-                        Details = new List<ExpenseDetail>()
-                        {
-                            new ExpenseDetail()
-                            {
-                                Total = 42.00
-                            },
-                            new ExpenseDetail()
-                            {
-                                Total = 60.00
-                            },
-                            new ExpenseDetail()
-                            {
-                                Total = 64.40
-                            },
-                            new ExpenseDetail()
-                            {
-                                Total = 340.80
-                            }
+                        Amount = 10.00,
+                        MemberPercentageMap = new Dictionary<string, double>(){
+                            {"5T48L", .5 },
+                            {"99OP3", .5 },
                         }
                     }
                 }

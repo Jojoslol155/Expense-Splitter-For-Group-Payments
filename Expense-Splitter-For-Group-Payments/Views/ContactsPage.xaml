@@ -27,7 +27,7 @@
                     Grid.Column="1"
                     Margin="{StaticResource SmallLeftMargin}"
                     VerticalAlignment="Center">
-                    <TextBlock Text="{x:Bind FirstName}" Style="{StaticResource ListTitleStyle}" />
+                    <TextBlock Text="{x:Bind FullName}" Style="{StaticResource ListTitleStyle}" />
                 </StackPanel>
             </Grid>
         </DataTemplate>

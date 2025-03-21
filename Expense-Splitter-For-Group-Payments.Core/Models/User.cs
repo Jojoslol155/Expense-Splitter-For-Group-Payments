@@ -34,7 +34,7 @@ public class User
 
     public char Symbol => (char)SymbolCode;
 
-    public string ShortDescription => $"Name: {FirstName} {LastName}";
+    public string FullName => $"{FirstName} {LastName}";
 
     public override string ToString() => $"{FirstName} {FirstName} {AmountOwed}";
 }

@@ -25,16 +25,13 @@
                     Style="{ThemeResource TitleTextBlockStyle}" />
             </StackPanel>
             <StackPanel Padding="0,15,0,0">
-                <TextBlock Text="Status" Style="{StaticResource DetailSubTitleStyle}" />
-
-               
                 <TextBlock
                     Margin="{StaticResource MediumTopMargin}"
-                    Text="Note 1"
+                    Text="Total Amount"
                     Style="{StaticResource DetailSubTitleStyle}" />
                 <TextBlock
                     Style="{StaticResource DetailBodyStyle}"
-                    Text= "WHERE DOES THIS APPEAR" />
+                    Text= "{x:Bind ListDetailsMenuItem.FormattedAmount(), Mode=OneWay}" />
 
                 <TextBlock
                     Margin="{StaticResource SmallTopMargin}"
