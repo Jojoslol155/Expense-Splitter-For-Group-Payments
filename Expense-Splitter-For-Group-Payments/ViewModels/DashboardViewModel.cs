@@ -46,7 +46,7 @@ public partial class DashboardViewModel : ObservableRecipient, INavigationAware
         if (clickedItem != null)
         {
             _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem);
-            _navigationService.NavigateTo(typeof(DashboardDetailViewModel).FullName!, clickedItem.ID);
+            _navigationService.NavigateTo(typeof(ExpenseDetailViewModel).FullName!, clickedItem.ID);
         }
     }
 }

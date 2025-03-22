@@ -72,8 +72,8 @@ public partial class App : Application
             // Views and ViewModels
             services.AddTransient<ContactsViewModel>();
             services.AddTransient<ContactsPage>();
-            services.AddTransient<DashboardDetailViewModel>();
-            services.AddTransient<DashboardDetailPage>();
+            services.AddTransient<ExpenseDetailViewModel>();
+            services.AddTransient<ExpenseDetailPage>();
             services.AddTransient<DashboardViewModel>();
             services.AddTransient<DashboardPage>();
             services.AddTransient<ShellPage>();

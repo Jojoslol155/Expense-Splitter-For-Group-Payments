@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="Expense_Splitter_For_Group_Payments.Views.DashboardDetailPage"
+    x:Class="Expense_Splitter_For_Group_Payments.Views.ExpenseDetailPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,7 +10,7 @@
     mc:Ignorable="d">
 
     <Page.Resources>
-        <DataTemplate x:Key="ExpensesTemplate" x:DataType="models:Expense">
+        <DataTemplate x:Key="ExpensesTemplate" x:DataType="models:ExpenseWithUsers">
             <Grid>
                 <TextBlock
                     Margin="{StaticResource SmallTopMargin}"
@@ -19,9 +19,9 @@
             </Grid>
         </DataTemplate>
 
-        <DataTemplate x:Key="ExpenseGroupDetailsTemplate">
+        <DataTemplate x:Key="ExpenseDetailsTemplate">
             <Grid>
-                <views:DashboardDetailControl ListDetailsMenuItem="{Binding}" />
+                <views:ExpenseDetailControl ListDetailsMenuItem="{Binding}" />
             </Grid>
         </DataTemplate>
 
@@ -111,7 +111,7 @@
                             BackButtonBehavior="Manual"
                             Background="Transparent"
                             BorderBrush="Transparent"
-                            DetailsTemplate="{StaticResource ExpenseGroupDetailsTemplate}"
+                            DetailsTemplate="{StaticResource ExpenseDetailsTemplate}"
                             ItemsSource="{x:Bind ViewModel.Expenses}"
                             ItemTemplate="{StaticResource ExpensesTemplate}"
                             ListHeaderTemplate="{StaticResource MinimalListHeaderTemplate}"

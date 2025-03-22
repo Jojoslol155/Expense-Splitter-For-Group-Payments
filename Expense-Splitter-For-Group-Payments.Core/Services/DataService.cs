@@ -80,7 +80,7 @@ public class DataService : IDataService
                         SymbolCode = 57643,
                         SymbolName = "Globe",
                         Amount = 15.43,
-                        MemberPercentageMap = new Dictionary<string, double>(){
+                        MemberIDPercentageMap = new Dictionary<string, double>(){
                             {"H7283", .25 },
                             {"7PWL4", .25 },
                             {"J8923", .25 },
@@ -94,7 +94,7 @@ public class DataService : IDataService
                         SymbolCode = 57737,
                         SymbolName = "Audio",
                         Amount = 5.90,
-                        MemberPercentageMap = new Dictionary<string, double>(){
+                        MemberIDPercentageMap = new Dictionary<string, double>(){
                             {"7PWL4", .5 },
                             {"J8923", .5 },
                         }
@@ -106,7 +106,7 @@ public class DataService : IDataService
                         SymbolCode = 57699,
                         SymbolName = "Calendar",
                         Amount = 10.99,
-                        MemberPercentageMap = new Dictionary<string, double>(){
+                        MemberIDPercentageMap = new Dictionary<string, double>(){
                             {"7PWL4", .33 },
                             {"J8923", .33 },
                             {"5T48L", .34 },
@@ -127,7 +127,7 @@ public class DataService : IDataService
                         SymbolCode = 57620,
                         SymbolName = "Camera",
                         Amount = 12.50,
-                        MemberPercentageMap = new Dictionary<string, double>(){
+                        MemberIDPercentageMap = new Dictionary<string, double>(){
                             {"5T48L", .5 },
                             {"99OP3", .5 },
                         }
@@ -139,7 +139,7 @@ public class DataService : IDataService
                         SymbolCode = 57633,
                         SymbolName = "Clock",
                         Amount = 10.00,
-                        MemberPercentageMap = new Dictionary<string, double>(){
+                        MemberIDPercentageMap = new Dictionary<string, double>(){
                             {"5T48L", .5 },
                             {"99OP3", .5 },
                         }

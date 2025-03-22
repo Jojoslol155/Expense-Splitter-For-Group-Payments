@@ -9,16 +9,16 @@ using Microsoft.UI.Xaml.Navigation;
 
 namespace Expense_Splitter_For_Group_Payments.Views;
 
-public sealed partial class DashboardDetailPage : Page
+public sealed partial class ExpenseDetailPage : Page
 {
-    public DashboardDetailViewModel ViewModel
+    public ExpenseDetailViewModel ViewModel
     {
         get;
     }
 
-    public DashboardDetailPage()
+    public ExpenseDetailPage()
     {
-        ViewModel = App.GetService<DashboardDetailViewModel>();
+        ViewModel = App.GetService<ExpenseDetailViewModel>();
         InitializeComponent();
     }
 

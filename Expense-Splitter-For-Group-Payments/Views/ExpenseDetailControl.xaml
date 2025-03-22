@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="Expense_Splitter_For_Group_Payments.Views.DashboardDetailControl"
+    x:Class="Expense_Splitter_For_Group_Payments.Views.ExpenseDetailControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -35,23 +35,23 @@
 
                 <TextBlock
                     Margin="{StaticResource SmallTopMargin}"
-                    Text="Note 2"
+                    Text="Contacts Paying:"
                     Style="{StaticResource DetailSubTitleStyle}" />
 
                 <StackPanel Orientation="Horizontal" Padding="0,15,0,0">
-                    <ItemsControl ItemsSource="{x:Bind ListDetailsMenuItem.MemberPercentageMap.Keys}">
-
+                    <ItemsControl ItemsSource="{x:Bind ListDetailsMenuItem.MemberNameToPercentage.Keys, Mode=OneWay}">
                         <TextBlock
                             Text="{Binding}"
                             />
                     </ItemsControl>
 
-                    <ItemsControl ItemsSource="{x:Bind ListDetailsMenuItem.MemberPercentageMap.Values}">
+                    <ItemsControl ItemsSource="{x:Bind ListDetailsMenuItem.MemberNameToPercentage.Values, Mode=OneWay}">
 
                         <TextBlock
-                            Text="{Binding}"
+                            Text="{Binding Path=Values[0]}"
                             />
                     </ItemsControl>
+
                 </StackPanel>
             </StackPanel>
         </StackPanel>

@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace Expense_Splitter_For_Group_Payments.Views;
 
-public sealed partial class ContactsDetailControl : UserControl
+public sealed partial class ExpenseDetailControl : UserControl
 {
     public ExpenseWithUsers? ListDetailsMenuItem
     {
@@ -13,16 +13,16 @@ public sealed partial class ContactsDetailControl : UserControl
         set => SetValue(ListDetailsMenuItemProperty, value);
     }
 
-    public static readonly DependencyProperty ListDetailsMenuItemProperty = DependencyProperty.Register("ListDetailsMenuItem", typeof(ExpenseWithUsers), typeof(ContactsDetailControl), new PropertyMetadata(null, OnListDetailsMenuItemPropertyChanged));
+    public static readonly DependencyProperty ListDetailsMenuItemProperty = DependencyProperty.Register("ListDetailsMenuItem", typeof(ExpenseWithUsers), typeof(ExpenseDetailControl), new PropertyMetadata(null, OnListDetailsMenuItemPropertyChanged));
 
-    public ContactsDetailControl()
+    public ExpenseDetailControl()
     {
         InitializeComponent();
     }
 
     private static void OnListDetailsMenuItemPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is ContactsDetailControl control)
+        if (d is ExpenseDetailControl control)
         {
             control.ForegroundElement.ChangeView(0, 0, 1);
         }

@@ -29,8 +29,8 @@ public class Expense
 
     public char Symbol => (char)SymbolCode;
 
-    // MemberID : Percentage of Expense
-    public Dictionary<string, double> MemberPercentageMap
+    // MemberID : [Name, Percentage of Expense]
+    public Dictionary<string, double> MemberIDPercentageMap
     {
         get; set;
     }
