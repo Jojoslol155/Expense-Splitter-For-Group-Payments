@@ -47,8 +47,11 @@ public partial class ExpenseDetailViewModel : ObservableRecipient, INavigationAw
             foreach (var expense in getExpenses)
             {
                 ExpenseWithUsers expenseWithUsers = new();
-                expenseWithUsers.MemberNameToPercentage = new Dictionary<string, double>();
-                
+                expenseWithUsers.MemberNames = new List<string>();
+                expenseWithUsers.MemberPercentages = new List<double>();
+                expenseWithUsers.MemberAmountsFormatted = new List<string>();
+
+
                 foreach (var userID in expense.MemberIDPercentageMap.Keys) {
                     double percentage = expense.MemberIDPercentageMap[userID];
 
@@ -61,7 +64,11 @@ public partial class ExpenseDetailViewModel : ObservableRecipient, INavigationAw
                     expenseWithUsers.SymbolName = expense.SymbolName;
                     expenseWithUsers.SymbolCode = expense.SymbolCode;
                     expenseWithUsers.MemberIDPercentageMap = expense.MemberIDPercentageMap;
-                    expenseWithUsers.MemberNameToPercentage.Add(fullName, percentage);
+                    
+                    
+                    expenseWithUsers.MemberNames.Add(fullName);
+                    expenseWithUsers.MemberPercentages.Add(percentage);
+                    expenseWithUsers.MemberAmountsFormatted.Add(expenseWithUsers.AmountForMember(userID));
                 }
 
                 expensesWithUsers.Add(expenseWithUsers);

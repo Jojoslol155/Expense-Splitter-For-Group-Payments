@@ -35,10 +35,5 @@ public class Expense
         get; set;
     }
 
-    public string FormattedAmount()
-    {
-        return string.Format("{0:c}", Amount);
-    }
-
     public override string ToString() => $"{Name} {Amount}";
 }

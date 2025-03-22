@@ -31,7 +31,7 @@
                     Style="{StaticResource DetailSubTitleStyle}" />
                 <TextBlock
                     Style="{StaticResource DetailBodyStyle}"
-                    Text= "{x:Bind ListDetailsMenuItem.FormattedAmount(), Mode=OneWay}" />
+                    Text= "{x:Bind ListDetailsMenuItem.FormattedAmount(-1), Mode=OneWay}" />
 
                 <TextBlock
                     Margin="{StaticResource SmallTopMargin}"
@@ -39,16 +39,21 @@
                     Style="{StaticResource DetailSubTitleStyle}" />
 
                 <StackPanel Orientation="Horizontal" Padding="0,15,0,0">
-                    <ItemsControl ItemsSource="{x:Bind ListDetailsMenuItem.MemberNameToPercentage.Keys, Mode=OneWay}">
+                    <ItemsControl ItemsSource="{x:Bind ListDetailsMenuItem.MemberNames, Mode=OneWay}">
                         <TextBlock
                             Text="{Binding}"
                             />
                     </ItemsControl>
 
-                    <ItemsControl ItemsSource="{x:Bind ListDetailsMenuItem.MemberNameToPercentage.Values, Mode=OneWay}">
-
+                    <ItemsControl ItemsSource="{x:Bind ListDetailsMenuItem.MemberPercentages, Mode=OneWay}">
                         <TextBlock
-                            Text="{Binding Path=Values[0]}"
+                            Text="{Binding}"
+                            />
+                    </ItemsControl>
+
+                    <ItemsControl ItemsSource="{x:Bind ListDetailsMenuItem.MemberAmountsFormatted, Mode=OneWay}">
+                        <TextBlock
+                            Text="{Binding}"
                             />
                     </ItemsControl>
 
