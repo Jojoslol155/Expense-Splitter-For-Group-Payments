@@ -45,8 +45,10 @@
                             />
                     </ItemsControl>
 
-                    <ItemsControl ItemsSource="{x:Bind ListDetailsMenuItem.MemberPercentages, Mode=OneWay}">
-                        <TextBlock
+                    <ItemsControl ItemsSource="{x:Bind ListDetailsMenuItem.MemberPercentages, Mode=TwoWay}">
+                        <TextBox
+                            Name="Percentage"
+                            AcceptsReturn="True"
                             Text="{Binding}"
                             />
                     </ItemsControl>
