@@ -7,6 +7,6 @@ namespace api.DTOs.ExpenseGroup
 {
     public class UpdateExpenseGroupReqDTO
     {
-        
+        public string Name { get; set; } = string.Empty;
     }
 }

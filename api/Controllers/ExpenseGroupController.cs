@@ -48,5 +48,35 @@ namespace api.Controllers
 
             return CreatedAtAction(nameof(GetById), new { id = expenseGroupModel.Id }, expenseGroupModel.ToExpenseGroupDTO());
         }
+
+        [HttpPut]
+        [Route("{id}")]
+        public IActionResult Update([FromRoute] int id, [FromBody] UpdateExpenseGroupReqDTO expenseGroupDTO) {
+            var expenseGroupModel = _context.ExpenseGroups.FirstOrDefault(eg => eg.Id == id);
+
+            if (expenseGroupModel == null) {
+                return NotFound();
+            }
+
+            expenseGroupModel.Name = expenseGroupDTO.Name;
+
+            _context.SaveChanges();
+            return Ok(expenseGroupModel.ToExpenseGroupDTO());
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public IActionResult Delete([FromRoute] int id) {
+            var expenseGroup = _context.ExpenseGroups.FirstOrDefault(eg => eg.Id == id);
+            
+            if (expenseGroup == null) {
+                return NotFound();
+            }
+
+            _context.ExpenseGroups.Remove(expenseGroup);
+            _context.SaveChanges();
+
+            return NoContent();
+        }
     }
 }
