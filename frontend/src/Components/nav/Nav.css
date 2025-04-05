@@ -1,0 +1,21 @@
+.nav-wrapper {
+    background-color: var(--secondary);
+    padding: 70px 50px 70px 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+.navButton {
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 500;
+    font-size: 1.2rem !important;
+    text-align: center;
+    padding: 10px;
+}
+
+.navButton:hover {
+    color: var(--primary);
+    cursor: pointer;
+}
+

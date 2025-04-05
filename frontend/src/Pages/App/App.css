@@ -1,0 +1,14 @@
+html {
+  --background: #041010;
+  --primary: #9BE8E6;
+  --secondary: #29A3A3;
+  --text: #DEF7F7; 
+  --selected: #31C4C4;
+}
+
+.app-wrapper {
+  background-color: var(--background);
+  color: var(--text);
+  display: flex;
+  height: 100vh;
+}
