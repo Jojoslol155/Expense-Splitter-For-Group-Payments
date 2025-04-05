@@ -1,19 +1,19 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace api.DTOs.ExpenseGroup
+namespace api.DTOs.Expense
 {
-    public class ExpenseGroupDTO
+    public class ExpenseDTO
     {
         public int Id { get; set; }
 
         public int? ExpenseGroupID { get; set; }
-        
-        public string Name { get; set; } = string.Empty; 
 
+        public string Name { get; set; } = string.Empty; 
+        
         public decimal Amount { get; set; }
     }
 }
