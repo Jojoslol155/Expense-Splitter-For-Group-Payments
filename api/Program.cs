@@ -1,5 +1,7 @@
 using api.Data;
+using api.Interfaces;
 using api.Models;
+using api.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -15,6 +17,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDBContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddScoped<IExpenseGroupRepository, ExpenseGroupRepository>();
 
 var app = builder.Build();
 
