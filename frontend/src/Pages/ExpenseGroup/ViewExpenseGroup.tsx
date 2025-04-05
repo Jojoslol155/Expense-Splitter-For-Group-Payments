@@ -1,10 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import { useGetExpenseGroup } from '../../Hooks/ExpenseGroups'
 
-type Props = {}
+function ViewExpenseGroup() {
+  const { id } = useParams()
 
-const ViewExpenseGroup = (props: Props) => {
+  const [expenseGroup, getExpenseGroup] = useGetExpenseGroup(Number(id))
+
+  useEffect(() => {
+    getExpenseGroup()
+  }, [])
   return (
-    <div>View Expense Group!</div>
+    <div>Viewing: {expenseGroup.name}</div>
   )
 }
 

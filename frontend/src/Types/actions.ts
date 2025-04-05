@@ -1,3 +1,3 @@
 import { Expense } from './expenseTypes'
 
-type ExpenseFormActions = ''
+export type ExpenseFormAction = {type: 'SET_EXPENSE_GROUP_NAME', paylod: string}
