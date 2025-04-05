@@ -5,6 +5,8 @@ export const editExpenseGroupForm = (state: ExpenseGroup, action: ExpenseFormAct
  switch (action.type) {
     case 'SET_EXPENSE_GROUP_NAME':
         return {...state, name: action.paylod}
+    case 'SET_EXPENSE_GROUP':
+        return {...action.payload}
  }
 }
 

@@ -59,11 +59,13 @@ export function useGetExpenseGroup(expenseGroupID: number) {
     const getExpenseGroup = (): ExpenseGroup | null => {
         defaultExpenseGroups().forEach((g: ExpenseGroup) => {
             if (g.ID == expenseGroupID) {
-                return g;
+                dispatch({type: 'SET_EXPENSE_GROUP', payload: g})
             }
         }) 
         return null
+        
     }
+
 
     return [expenseGroup, getExpenseGroup, dispatch] as const
 }

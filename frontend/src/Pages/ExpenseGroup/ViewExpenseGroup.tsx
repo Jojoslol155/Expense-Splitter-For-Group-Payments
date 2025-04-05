@@ -4,7 +4,6 @@ import { useGetExpenseGroup } from '../../Hooks/ExpenseGroups'
 
 function ViewExpenseGroup() {
   const { id } = useParams()
-
   const [expenseGroup, getExpenseGroup] = useGetExpenseGroup(Number(id))
 
   useEffect(() => {
