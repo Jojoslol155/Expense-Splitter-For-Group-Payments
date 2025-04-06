@@ -26,11 +26,11 @@ namespace api.Repository
         }
 
         public async Task<List<ExpenseGroup>> GetAllAsync() {
-            return await _context.ExpenseGroups.ToListAsync();
+            return await _context.ExpenseGroups.Include(e => e.Expenses).ToListAsync();
         }
 
         public async Task<ExpenseGroup?> GetByIDAsync(int id) {
-            return await _context.ExpenseGroups.FindAsync(id);
+            return await _context.ExpenseGroups.Include(e => e.Expenses).FirstOrDefaultAsync(eg => eg.Id == id);
         }
 
 
@@ -58,6 +58,11 @@ namespace api.Repository
             
             await _context.SaveChangesAsync();
             return existingExpenseGroup;
+        }
+
+        public async Task<bool> ExpenseGroupExists(int id)
+        {
+            return await _context.ExpenseGroups.AnyAsync(eg => eg.Id == id);
         }
     }
 }

@@ -14,5 +14,6 @@ namespace api.Interfaces
         Task<ExpenseGroup> CreateAsync(ExpenseGroup expenseGroupModel);
         Task<ExpenseGroup?> UpdateAsync(int id, UpdateExpenseGroupReqDTO expenseGroupDTO);
         Task<ExpenseGroup?> DeleteAsync(int id);
+        Task<bool> ExpenseGroupExists(int id);
     }
 }
