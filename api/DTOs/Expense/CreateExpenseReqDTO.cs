@@ -7,8 +7,6 @@ namespace api.DTOs.Expense
 {
     public class CreateExpenseReqDTO
     {
-        public int? ExpenseGroupID { get; set; }
-
         public string Name { get; set; } = string.Empty; 
         
         public decimal Amount { get; set; }

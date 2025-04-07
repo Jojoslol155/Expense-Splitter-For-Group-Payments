@@ -18,8 +18,12 @@ namespace api.Mappers
             };
         }
 
-        // public static Expense ToExpenseFromCreateDTO(this CreateExpenseReqDTO expenseDTO) {
-
-        // }
+        public static Expense ToExpenseFromCreateDTO(this CreateExpenseReqDTO expenseDTO, int expenseGroupID) {
+            return new Expense {
+                Name = expenseDTO.Name,
+                Amount = expenseDTO.Amount,
+                ExpenseGroupID = expenseGroupID,
+            };
+        }
     }
 }

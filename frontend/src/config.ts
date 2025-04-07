@@ -1,0 +1,1 @@
+export const GET_EXPENSE_GROUPS_URL = "http://localhost:5289/api/expensegroup"

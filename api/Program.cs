@@ -14,12 +14,32 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddControllers().AddNewtonsoftJson(options => {
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+});
+
+// var config =
+//     new ConfigurationBuilder()
+//         .SetBasePath(Directory.GetCurrentDirectory())
+//         .AddJsonFile("appsettings.json", true)
+//         .AddEnvironmentVariables()
+//         .Build();
+
+
 builder.Services.AddDbContext<ApplicationDBContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 builder.Services.AddScoped<IExpenseGroupRepository, ExpenseGroupRepository>();
 builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
+
+// CORS
+builder.Services.AddCors(options => {
+    options.AddPolicy("localOrigin", policy => {
+        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    });
+});
+
 
 var app = builder.Build();
 
@@ -30,7 +50,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("localOrigin");
+
 app.UseHttpsRedirection();
+
 
 app.MapControllers();
 

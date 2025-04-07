@@ -21,5 +21,15 @@ namespace api.Repository
         public async Task<List<Expense>> GetAllAsync() {
             return await _context.Expenses.ToListAsync();
         }
+
+        public async Task<Expense?> GetByIDAsync(int id) {
+            return await _context.Expenses.FindAsync(id);
+        }
+
+        public async Task<Expense> CreateAsync(Expense expenseModel) {
+            await _context.Expenses.AddAsync(expenseModel);
+            await _context.SaveChangesAsync();
+            return expenseModel;
+        }
     }
 }
