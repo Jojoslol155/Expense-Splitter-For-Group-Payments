@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace api.Models
+namespace api.DTOs.User
 {
-    public class User
+    public class UserDTO
     {
         public int Id { get; set; }
         

@@ -28,7 +28,7 @@ namespace api.Controllers
 
             var expenseGroupDTO = expenseGroups.Select( s => s.ToExpenseGroupDTO());
 
-            return Ok(expenseGroups);
+            return Ok(expenseGroupDTO);
         }
 
         [HttpGet("{id}")]
