@@ -26,6 +26,9 @@ namespace api.Repository
         public async Task<List<User>> GetAllAsync() {
             return await _context.Users.ToListAsync();
         }
-        public Task<User?> GetByIDAsync(int id) => throw new NotImplementedException();
+        
+        public async Task<User?> GetByIDAsync(int id) {
+            return await _context.Users.FindAsync(id);
+        }
     }
 }

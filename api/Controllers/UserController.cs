@@ -10,6 +10,8 @@ using api.Repository;
 
 namespace api.Controllers
 {
+    [Route("api/user")]
+    [ApiController]
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _repo;
