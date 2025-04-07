@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace api.Models
+namespace api.DTOs.User
 {
-    public class User
+    public class UserDTO
     {
         public int Id { get; set; }
         
@@ -14,7 +14,5 @@ namespace api.Models
         public string LastName { get; set; } = string.Empty;
 
         public string Email { get; set; } = string.Empty;
-
-        public List<ExpenseGroup> ExpenseGroups { get; set; } = new();
     }
 }

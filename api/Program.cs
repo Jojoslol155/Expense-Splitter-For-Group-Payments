@@ -32,6 +32,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options => {
 
 builder.Services.AddScoped<IExpenseGroupRepository, ExpenseGroupRepository>();
 builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // CORS
 builder.Services.AddCors(options => {

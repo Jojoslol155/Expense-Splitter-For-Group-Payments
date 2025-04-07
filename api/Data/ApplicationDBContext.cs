@@ -18,6 +18,16 @@ namespace api.Data
 
         public DbSet<Expense> Expenses { get; set; }
         
-        
+        public DbSet<User> Users { get; set; }
+
+        // TODO: expense and percentage mapping
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            // Join table for many-to-many relationships
+            modelBuilder.Entity<User>().
+                HasMany(u => u.ExpenseGroups)
+                .WithMany(eg => eg.Members)
+                .UsingEntity(j => j.ToTable("GroupMembers"));
+        }
     }
 }

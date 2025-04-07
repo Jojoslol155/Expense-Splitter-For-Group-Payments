@@ -1,10 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { User } from '../../Types'
+import { useGetAllContacts } from '../../Hooks/Users'
+import './ViewContacts.css'
 
-type Props = {}
+const ViewContacts = () => {
+  const [contacts, getContacts] = useGetAllContacts()
 
-const ViewContacts = (props: Props) => {
+  useEffect(() => {
+    getContacts()
+  }, [])
+
   return (
-    <div>ViewContacts</div>
+    <div className='contacts-wrapper'>
+      {contacts && contacts.map(c => {
+        return (<div>
+          {c.firstName} {c.lastName}
+        </div>)
+      })}
+    </div>
   )
 }
 

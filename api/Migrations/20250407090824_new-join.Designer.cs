@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
@@ -11,9 +12,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250407090824_new-join")]
+    partial class newjoin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ExpenseGroupUser", b =>
-                {
-                    b.Property<int>("ExpenseGroupsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MembersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ExpenseGroupsId", "MembersId");
-
-                    b.HasIndex("MembersId");
-
-                    b.ToTable("GroupMembers", (string)null);
-                });
 
             modelBuilder.Entity("api.Models.Expense", b =>
                 {
@@ -79,6 +67,21 @@ namespace api.Migrations
                     b.ToTable("ExpenseGroups");
                 });
 
+            modelBuilder.Entity("api.Models.GroupMember", b =>
+                {
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ExpenseGroupId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserID", "ExpenseGroupId");
+
+                    b.HasIndex("ExpenseGroupId");
+
+                    b.ToTable("GroupMembers");
+                });
+
             modelBuilder.Entity("api.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -104,21 +107,6 @@ namespace api.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ExpenseGroupUser", b =>
-                {
-                    b.HasOne("api.Models.ExpenseGroup", null)
-                        .WithMany()
-                        .HasForeignKey("ExpenseGroupsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("api.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("MembersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("api.Models.Expense", b =>
                 {
                     b.HasOne("api.Models.ExpenseGroup", "ExpenseGroup")
@@ -128,9 +116,35 @@ namespace api.Migrations
                     b.Navigation("ExpenseGroup");
                 });
 
+            modelBuilder.Entity("api.Models.GroupMember", b =>
+                {
+                    b.HasOne("api.Models.ExpenseGroup", "ExpenseGroup")
+                        .WithMany("GroupMembers")
+                        .HasForeignKey("ExpenseGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("api.Models.User", "Member")
+                        .WithMany("GroupMembers")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ExpenseGroup");
+
+                    b.Navigation("Member");
+                });
+
             modelBuilder.Entity("api.Models.ExpenseGroup", b =>
                 {
                     b.Navigation("Expenses");
+
+                    b.Navigation("GroupMembers");
+                });
+
+            modelBuilder.Entity("api.Models.User", b =>
+                {
+                    b.Navigation("GroupMembers");
                 });
 #pragma warning restore 612, 618
         }
