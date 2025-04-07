@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
@@ -11,9 +12,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250407081822_members-on-group")]
+    partial class membersongroup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ExpenseGroupUser", b =>
-                {
-                    b.Property<int>("ExpenseGroupsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MembersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ExpenseGroupsId", "MembersId");
-
-                    b.HasIndex("MembersId");
-
-                    b.ToTable("GroupMembers", (string)null);
-                });
 
             modelBuilder.Entity("api.Models.Expense", b =>
                 {
@@ -91,6 +79,9 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ExpenseGroupId")
+                        .HasColumnType("int");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -101,22 +92,9 @@ namespace api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ExpenseGroupId");
+
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("ExpenseGroupUser", b =>
-                {
-                    b.HasOne("api.Models.ExpenseGroup", null)
-                        .WithMany()
-                        .HasForeignKey("ExpenseGroupsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("api.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("MembersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("api.Models.Expense", b =>
@@ -128,9 +106,18 @@ namespace api.Migrations
                     b.Navigation("ExpenseGroup");
                 });
 
+            modelBuilder.Entity("api.Models.User", b =>
+                {
+                    b.HasOne("api.Models.ExpenseGroup", null)
+                        .WithMany("Members")
+                        .HasForeignKey("ExpenseGroupId");
+                });
+
             modelBuilder.Entity("api.Models.ExpenseGroup", b =>
                 {
                     b.Navigation("Expenses");
+
+                    b.Navigation("Members");
                 });
 #pragma warning restore 612, 618
         }

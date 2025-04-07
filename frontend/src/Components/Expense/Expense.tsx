@@ -1,4 +1,4 @@
-import { ListItem, ListItemText } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, ListItem, ListItemText } from '@mui/material'
 import React from 'react'
 
 type Props = {
@@ -9,8 +9,14 @@ type Props = {
 const Expense = ({name, amount}: Props) => {
   return (
     <ListItem>
-        {name}
-        {amount}
+      <Accordion>
+        <AccordionSummary>
+          {name}
+          {amount}
+        </AccordionSummary>
+        <AccordionDetails>
+        </AccordionDetails>
+      </Accordion>
     </ListItem>
   )
 }

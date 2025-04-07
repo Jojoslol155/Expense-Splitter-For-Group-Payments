@@ -33,7 +33,6 @@ namespace api.Repository
             return await _context.ExpenseGroups.Include(e => e.Expenses).FirstOrDefaultAsync(eg => eg.Id == id);
         }
 
-
         public async Task<ExpenseGroup?> DeleteAsync(int id)  {
             var expenseGroupModel = await _context.ExpenseGroups.FirstOrDefaultAsync(eg => eg.Id == id);
 
