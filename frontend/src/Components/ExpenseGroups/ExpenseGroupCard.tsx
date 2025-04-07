@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { Grid, Card, CardContent, CardHeader, Link } from '@mui/material'
+import { Grid, Card, CardContent, CardHeader, Link, CardActionArea } from '@mui/material'
 
 type Props = {
     name: string
@@ -11,11 +11,11 @@ const ExpenseGroupCard = ({name, groupID}: Props) => {
   return (
       <Grid size={6}>
         <Card variant='outlined'>
-          <CardContent>
-            <Link component={RouterLink} to={`/group/${groupID}/view`}> 
-              {name}
-            </Link>
-          </CardContent>
+          <CardActionArea component={RouterLink} to={`/group/${groupID}/view`}>
+            <CardHeader title={name}/>
+            <CardContent>
+            </CardContent>
+          </CardActionArea>
         </Card>
       </Grid>
   )
