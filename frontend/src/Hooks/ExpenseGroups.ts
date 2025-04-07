@@ -7,25 +7,17 @@ import { defaultExpenseGroup, editExpenseGroupForm } from '../Reducers/editExpen
 export function useGetAllExpenseGroups() {
     const { expenseGroups, setExpenseGroups } = useContext(ExpenseGroupsContext) as ExpenseGroupsContextType
 
-    const testExpenseGroupOne : ExpenseGroup = {
-        name: "Birthday Birthday",
-        ID: 5,
-        expenses: [{
-            ID: 11, amount: 12.99, name: 'pizza', expenseGroupID: 5
-        }]
+    const options = {
+        method: 'GET'
     }
 
-    const testExpenseGroupTwo : ExpenseGroup = {
-        name: "Beach trip",
-        ID: 7,
-        expenses: [{
-            ID: 12, amount: 12.99, name: 'soda', expenseGroupID: 7
-        }]
-    }
+    const getExpenseGroups = async () => {
+        try {
 
-    const getExpenseGroups = () => {
-
-        const newGroups = [testExpenseGroupOne, testExpenseGroupTwo];
+        } catch(err) {
+            
+        }
+        
         setExpenseGroups(newGroups)
     }
 
