@@ -33,6 +33,14 @@ builder.Services.AddDbContext<ApplicationDBContext>(options => {
 builder.Services.AddScoped<IExpenseGroupRepository, ExpenseGroupRepository>();
 builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
 
+// CORS
+builder.Services.AddCors(options => {
+    options.AddPolicy("localOrigin", policy => {
+        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    });
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -42,7 +50,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("localOrigin");
+
 app.UseHttpsRedirection();
+
 
 app.MapControllers();
 
