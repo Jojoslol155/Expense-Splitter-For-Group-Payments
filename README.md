@@ -1,4 +1,4 @@
-# Expense-Splitter-For-Group-Payments
+# Expense Splitter For Group Payments
 ### How to run locally
 To set-up the database:
 
