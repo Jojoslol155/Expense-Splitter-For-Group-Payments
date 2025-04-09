@@ -26,11 +26,19 @@ namespace api.Repository
         }
 
         public async Task<List<ExpenseGroup>> GetAllAsync() {
-            return await _context.ExpenseGroups.Include(e => e.Expenses).ToListAsync();
+            return await _context.ExpenseGroups
+                .Include(e => e.Expenses)
+                .Include(e => e.GroupMembers)
+                .ThenInclude(gm => gm.Member)
+                .ToListAsync();
         }
 
         public async Task<ExpenseGroup?> GetByIDAsync(int id) {
-            return await _context.ExpenseGroups.Include(e => e.Expenses).FirstOrDefaultAsync(eg => eg.Id == id);
+            return await _context.ExpenseGroups
+                .Include(e => e.Expenses)
+                .Include(e => e.GroupMembers)
+                .ThenInclude(gm => gm.Member)
+                .FirstOrDefaultAsync(eg => eg.Id == id);
         }
 
         public async Task<ExpenseGroup?> DeleteAsync(int id)  {

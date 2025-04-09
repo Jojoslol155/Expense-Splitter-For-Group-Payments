@@ -13,8 +13,8 @@ namespace api.Models
         
         public string Name { get; set; } = string.Empty;
 
-        public List<Expense> Expenses { get; set; } = new();
+        public List<Expense> Expenses { get; set; }
 
-        public List<GroupMember> GroupMembers {get; set; } = new();
+        public List<GroupMember> GroupMembers {get; set; }
     }
 }

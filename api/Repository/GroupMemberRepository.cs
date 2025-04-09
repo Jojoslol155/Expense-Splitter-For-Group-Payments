@@ -21,14 +21,7 @@ namespace api.Repository
             _context = context;    
         }
 
-        public async Task<GroupMember> AddGroupMemberAsync(GroupMember groupMemberModel) {
-            ExpenseGroup group = await _context.ExpenseGroups
-                .Include(eg => eg.Expenses)
-                .Include(eg => eg.GroupMembers).ThenInclude(gm => gm.Member)
-                .FirstOrDefaultAsync(eg => eg.Id == groupMemberModel.ExpenseGroupID);
-
-            User member = await _context.Users.FirstOrDefaultAsync(u => u.Id == groupMemberModel.MemberID);
-
+        public async Task<GroupMember> AddGroupMemberAsync(GroupMember groupMemberModel, ExpenseGroup group, User member) {
             GroupMember groupMember = new GroupMember {
                 ExpenseGroup = group,
                 Member = member

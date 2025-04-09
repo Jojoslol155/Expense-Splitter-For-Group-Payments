@@ -14,6 +14,7 @@ namespace api.Mappers
                 Id = expenseGroupModel.Id,
                 Name = expenseGroupModel.Name,
                 Expenses = expenseGroupModel.Expenses.Select(e => e.ToExpenseDTO()).ToList(),
+                Members = expenseGroupModel.GroupMembers.Select(gm => gm.Member.ToUserDTO()).ToList()
             };
         }
 

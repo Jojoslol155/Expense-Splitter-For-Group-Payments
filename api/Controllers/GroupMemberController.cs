@@ -27,7 +27,7 @@ namespace api.Controllers
 
         [HttpPost]
         public async Task<IActionResult> AddGroupMember([FromBody] GroupMemberDTO groupMemberDTO) {
-            var groupMemberModel = groupMemberDTO.ToGroupMemberFromDTO(); // TODO don't need this??
+            var groupMemberModel = groupMemberDTO.ToGroupMemberFromDTO(); // TODO maybe don't need this??
 
             if (!await _expenseGroupRepo.ExpenseGroupExists(groupMemberDTO.ExpenseGroupID)) {
                 return BadRequest("Expense group does not exist");
@@ -36,9 +36,18 @@ namespace api.Controllers
                 return BadRequest("User does not exist");
             }
 
-            await _groupMemberRepo.AddGroupMemberAsync(groupMemberModel);
+            var group = await _expenseGroupRepo.GetByIDAsync(groupMemberModel.ExpenseGroupID);
 
-            return null; //TODO: return expense group data??
+            var member = await _userRepo.GetByIDAsync(groupMemberModel.MemberID);
+
+            if (group != null && member != null) {
+                await _groupMemberRepo.AddGroupMemberAsync(groupMemberModel, group, member);
+            } else {
+                return BadRequest("Bad request");
+            }
+
+
+            return Ok(groupMemberModel.ToGroupMemberDTO());
         }
 
     }
