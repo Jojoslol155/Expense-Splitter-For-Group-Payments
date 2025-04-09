@@ -9,6 +9,6 @@ namespace api.Interfaces
 {
     public interface IGroupMemberRepository
     {
-        Task<GroupMember> AddGroupMemberAsync(GroupMember groupMemberModel, ExpenseGroup group, User member);
+        Task<GroupMember> AddGroupMemberAsync(ExpenseGroup group, User member);
     }
 }

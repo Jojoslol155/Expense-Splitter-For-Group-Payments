@@ -11,7 +11,7 @@ Update the connection string in appsettings.json to match your connection string
 
 To test API endpoints:
 `run dotnet watch run`
-* Check the terminal output for the port number the server is running on, then go to http://localhost:[port number]/swagger/index.html substituting your port number
+* Check the terminal output for the port number the server is running on, then go to `http://localhost:[port number]/swagger/index.html` substituting your port number
 To run the frontend:
 
 Install node & npm

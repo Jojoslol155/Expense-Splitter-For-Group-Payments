@@ -41,7 +41,7 @@ namespace api.Controllers
             var member = await _userRepo.GetByIDAsync(groupMemberModel.MemberID);
 
             if (group != null && member != null) {
-                await _groupMemberRepo.AddGroupMemberAsync(groupMemberModel, group, member);
+                await _groupMemberRepo.AddGroupMemberAsync(group, member);
             } else {
                 return BadRequest("Bad request");
             }

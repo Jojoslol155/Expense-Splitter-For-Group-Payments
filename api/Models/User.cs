@@ -16,5 +16,7 @@ namespace api.Models
         public string Email { get; set; } = string.Empty;
 
         public List<GroupMember> GroupMembers { get; set; } = new();
+
+        public List<UserExpensePercentage> UserExpensePercentages { get; set; } = new();
     }
 }

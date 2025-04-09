@@ -22,6 +22,8 @@ namespace api.Data
 
         public DbSet<GroupMember> GroupMembers { get; set; }
 
+        public DbSet<UserExpensePercentage> UserExpensePercentages { get; set; }
+
         // TODO: expense and percentage mapping
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
@@ -40,6 +42,21 @@ namespace api.Data
                 .HasForeignKey(gm => gm.MemberID);
 
             modelBuilder.Entity<GroupMember>().ToTable("GroupMembers");
+
+            modelBuilder.Entity<UserExpensePercentage>()
+                .HasKey(p => new { p.ExpenseID, p.UserID });
+
+            modelBuilder.Entity<UserExpensePercentage>()
+                .HasOne(p => p.Expense)
+                .WithMany(e => e.UserExpensePercentages)
+                .HasForeignKey(p => p.ExpenseID);
+
+            modelBuilder.Entity<UserExpensePercentage>()
+                .HasOne(p => p.User)
+                .WithMany(u => u.UserExpensePercentages)
+                .HasForeignKey(p => p.UserID);
+
+            modelBuilder.Entity<UserExpensePercentage>().ToTable("UserExpensePercentages");
         }
     }
 }
