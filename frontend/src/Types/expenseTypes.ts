@@ -4,3 +4,10 @@ export interface Expense {
     amount: number
     expenseGroupID: number
 }
+
+export interface MemberPercentage {
+    expenseID: number
+    percentage: number
+    userName: string
+    userID: number
+}
