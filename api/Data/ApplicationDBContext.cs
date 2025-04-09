@@ -20,14 +20,26 @@ namespace api.Data
         
         public DbSet<User> Users { get; set; }
 
+        public DbSet<GroupMember> GroupMembers { get; set; }
+
         // TODO: expense and percentage mapping
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            // Join table for many-to-many relationships
-            modelBuilder.Entity<User>().
-                HasMany(u => u.ExpenseGroups)
-                .WithMany(eg => eg.Members)
-                .UsingEntity(j => j.ToTable("GroupMembers"));
+            // Join tables for many-to-many relationships
+            modelBuilder.Entity<GroupMember>()
+                .HasKey(gm => new { gm.ExpenseGroupID, gm.MemberID } );
+
+            modelBuilder.Entity<GroupMember>()
+                .HasOne(gm => gm.ExpenseGroup)
+                .WithMany(eg => eg.GroupMembers)
+                .HasForeignKey(gm => gm.ExpenseGroupID);
+
+            modelBuilder.Entity<GroupMember>()
+                .HasOne(gm => gm.Member)
+                .WithMany(eg => eg.GroupMembers)
+                .HasForeignKey(gm => gm.MemberID);
+
+            modelBuilder.Entity<GroupMember>().ToTable("GroupMembers");
         }
     }
 }

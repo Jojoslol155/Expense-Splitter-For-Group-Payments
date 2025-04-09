@@ -23,6 +23,17 @@ namespace api.Controllers
             _expenseGroupRepo = expenseGroupRepo;
         }
 
+        [HttpPost("{expenseGroupID}")]
+        public async Task<IActionResult> Create([FromRoute] int expenseGroupID, CreateExpenseReqDTO dto) {
+            if (!await _expenseGroupRepo.ExpenseGroupExists(expenseGroupID)) {
+                return BadRequest("Expense group does not exist");
+            }
+
+            var expenseModel = dto.ToExpenseFromCreateDTO(expenseGroupID);
+            await _expenseRepo.CreateAsync(expenseModel);
+            return CreatedAtAction(nameof(GetByID), new { id = expenseModel }, expenseModel.ToExpenseDTO());
+        }
+        
         [HttpGet]
         public async Task<IActionResult> GetAll() {
             var expenses = await _expenseRepo.GetAllAsync();
@@ -43,15 +54,5 @@ namespace api.Controllers
             return Ok(expense.ToExpenseDTO());
         }
 
-        [HttpPost("{expenseGroupID}")]
-        public async Task<IActionResult> Create([FromRoute] int expenseGroupID, CreateExpenseReqDTO dto) {
-            if (!await _expenseGroupRepo.ExpenseGroupExists(expenseGroupID)) {
-                return BadRequest("Expense group does not exist");
-            }
-
-            var expenseModel = dto.ToExpenseFromCreateDTO(expenseGroupID);
-            await _expenseRepo.CreateAsync(expenseModel);
-            return CreatedAtAction(nameof(GetByID), new { id = expenseModel }, expenseModel.ToExpenseDTO());
-        }
     }
 }

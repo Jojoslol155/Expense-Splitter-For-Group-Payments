@@ -30,5 +30,9 @@ namespace api.Repository
         public async Task<User?> GetByIDAsync(int id) {
             return await _context.Users.FindAsync(id);
         }
+
+        public async Task<bool> UserExists(int id) {
+            return await _context.Users.AnyAsync(u => u.Id == id);
+        }
     }
 }

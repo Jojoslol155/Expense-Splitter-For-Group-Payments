@@ -12,8 +12,8 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20250407073311_users-model")]
-    partial class usersmodel
+    [Migration("20250409063955_remove-duplicate-id")]
+    partial class removeduplicateid
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -67,6 +67,46 @@ namespace api.Migrations
                     b.ToTable("ExpenseGroups");
                 });
 
+            modelBuilder.Entity("api.Models.GroupMember", b =>
+                {
+                    b.Property<int>("ExpenseGroupID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MemberID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ExpenseGroupID", "MemberID");
+
+                    b.HasIndex("MemberID");
+
+                    b.ToTable("GroupMembers", (string)null);
+                });
+
+            modelBuilder.Entity("api.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("api.Models.Expense", b =>
                 {
                     b.HasOne("api.Models.ExpenseGroup", "ExpenseGroup")
@@ -76,9 +116,35 @@ namespace api.Migrations
                     b.Navigation("ExpenseGroup");
                 });
 
+            modelBuilder.Entity("api.Models.GroupMember", b =>
+                {
+                    b.HasOne("api.Models.ExpenseGroup", "ExpenseGroup")
+                        .WithMany("GroupMembers")
+                        .HasForeignKey("ExpenseGroupID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("api.Models.User", "Member")
+                        .WithMany("GroupMembers")
+                        .HasForeignKey("MemberID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ExpenseGroup");
+
+                    b.Navigation("Member");
+                });
+
             modelBuilder.Entity("api.Models.ExpenseGroup", b =>
                 {
                     b.Navigation("Expenses");
+
+                    b.Navigation("GroupMembers");
+                });
+
+            modelBuilder.Entity("api.Models.User", b =>
+                {
+                    b.Navigation("GroupMembers");
                 });
 #pragma warning restore 612, 618
         }

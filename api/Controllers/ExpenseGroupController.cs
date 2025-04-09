@@ -18,10 +18,19 @@ namespace api.Controllers
         private readonly IExpenseGroupRepository _expenseGroupRepo;
         private readonly IUserRepository _userRepo;
 
-        public ExpenseGroupController(ApplicationDBContext context, IExpenseGroupRepository expenseRepo, IUserRepository userRepo)
+        public ExpenseGroupController(IExpenseGroupRepository expenseRepo, IUserRepository userRepo)
         {
             _expenseGroupRepo = expenseRepo;
             _userRepo = userRepo;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateExpenseGroupReqDTO expenseGroupDTO) {
+            var expenseGroupModel = expenseGroupDTO.ToExpenseGroupFromCreateDTO();
+
+            await _expenseGroupRepo.CreateAsync(expenseGroupModel);
+
+            return CreatedAtAction(nameof(GetById), new { id = expenseGroupModel.Id }, expenseGroupModel.ToExpenseGroupDTO());
         }
 
         [HttpGet]
@@ -42,21 +51,6 @@ namespace api.Controllers
             }
 
             return Ok(expenseGroup.ToExpenseGroupDTO());
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateExpenseGroupReqDTO expenseGroupDTO) {
-            var expenseGroupModel = expenseGroupDTO.ToExpenseGroupFromCreateDTO();
-
-            await _expenseGroupRepo.CreateAsync(expenseGroupModel);
-
-            var user = await _userRepo.GetByIDAsync(expenseGroupDTO.UserID);
-
-            if (user == null) {
-                return BadRequest("User not found");
-            }
-
-            return CreatedAtAction(nameof(GetById), new { id = expenseGroupModel.Id }, expenseGroupModel.ToExpenseGroupDTO());
         }
 
         [HttpPut]
