@@ -7,17 +7,20 @@ type Props = {
     groupID: number
 }
 
-const ExpenseGroupCard = ({name, groupID}: Props) => {
+function ExpenseGroupCard({name, groupID}: Props) {
+
+  const truncateTitle = () => {
+    return name.length > 17 ? name.substring(0, 16).trim() + "..." : name
+  }
+
   return (
-      <Grid size={6}>
-        <Card variant='outlined'>
+        <Card variant='outlined' sx={{ minWidth: 250 }}>
           <CardActionArea component={RouterLink} to={`/group/${groupID}/view`}>
-            <CardHeader title={name}/>
+            <CardHeader title={truncateTitle()}/>
             <CardContent>
             </CardContent>
           </CardActionArea>
         </Card>
-      </Grid>
   )
 }
 

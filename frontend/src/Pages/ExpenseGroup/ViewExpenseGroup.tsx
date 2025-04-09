@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useGetExpenseGroup } from '../../Hooks/ExpenseGroups'
 import Expense from '../../Components/Expense/Expense'
 import { List, Stack } from '@mui/material'
+import UserCard from '../../Components/Contact/UserCard'
 
 function ViewExpenseGroup() {
   const { id } = useParams()
@@ -20,6 +21,15 @@ function ViewExpenseGroup() {
             return <div>
               <Expense name={ex.name} amount={ex.amount}/>
               </div>
+          })}
+        </List>
+      )}
+      {expenseGroup.members && (
+        <List>
+          {expenseGroup.members.map(member => {
+            return <div>
+              <UserCard user={member} />
+            </div>
           })}
         </List>
       )}
