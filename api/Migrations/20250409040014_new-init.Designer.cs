@@ -12,8 +12,8 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20250405030409_new-columns-expense")]
-    partial class newcolumnsexpense
+    [Migration("20250409040014_new-init")]
+    partial class newinit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,21 @@ namespace api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ExpenseGroupUser", b =>
+                {
+                    b.Property<int>("ExpenseGroupsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MembersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ExpenseGroupsId", "MembersId");
+
+                    b.HasIndex("MembersId");
+
+                    b.ToTable("ExpenseGroupMembers", (string)null);
+                });
 
             modelBuilder.Entity("api.Models.Expense", b =>
                 {
@@ -65,6 +80,46 @@ namespace api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ExpenseGroups");
+                });
+
+            modelBuilder.Entity("api.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ExpenseGroupUser", b =>
+                {
+                    b.HasOne("api.Models.ExpenseGroup", null)
+                        .WithMany()
+                        .HasForeignKey("ExpenseGroupsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("api.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("MembersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("api.Models.Expense", b =>

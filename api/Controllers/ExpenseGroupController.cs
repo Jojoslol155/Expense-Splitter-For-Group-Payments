@@ -18,7 +18,7 @@ namespace api.Controllers
         private readonly IExpenseGroupRepository _expenseGroupRepo;
         private readonly IUserRepository _userRepo;
 
-        public ExpenseGroupController(ApplicationDBContext context, IExpenseGroupRepository expenseRepo, IUserRepository userRepo)
+        public ExpenseGroupController(IExpenseGroupRepository expenseRepo, IUserRepository userRepo)
         {
             _expenseGroupRepo = expenseRepo;
             _userRepo = userRepo;

@@ -23,10 +23,10 @@ namespace api.Data
         // TODO: expense and percentage mapping
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            // Join table for many-to-many relationships
-            modelBuilder.Entity<User>().
-                HasMany(u => u.ExpenseGroups)
-                .WithMany(eg => eg.Members)
+            // Join tables for many-to-many relationships
+            modelBuilder.Entity<ExpenseGroup>()
+                .HasMany(g => g.Members)
+                .WithMany(u => u.ExpenseGroups)
                 .UsingEntity(j => j.ToTable("GroupMembers"));
         }
     }

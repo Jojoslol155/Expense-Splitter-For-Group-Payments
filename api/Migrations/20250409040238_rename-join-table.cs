@@ -5,33 +5,36 @@
 namespace api.Migrations
 {
     /// <inheritdoc />
-    public partial class updatejointable : Migration
+    public partial class renamejointable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_GroupMembers_ExpenseGroups_ExpenseGroupId",
-                table: "GroupMembers");
+                name: "FK_ExpenseGroupMembers_ExpenseGroups_ExpenseGroupsId",
+                table: "ExpenseGroupMembers");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_GroupMembers_Users_UserID",
-                table: "GroupMembers");
+                name: "FK_ExpenseGroupMembers_Users_MembersId",
+                table: "ExpenseGroupMembers");
 
-            migrationBuilder.RenameColumn(
-                name: "ExpenseGroupId",
-                table: "GroupMembers",
-                newName: "MembersId");
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_ExpenseGroupMembers",
+                table: "ExpenseGroupMembers");
 
-            migrationBuilder.RenameColumn(
-                name: "UserID",
-                table: "GroupMembers",
-                newName: "ExpenseGroupsId");
+            migrationBuilder.RenameTable(
+                name: "ExpenseGroupMembers",
+                newName: "GroupMembers");
 
             migrationBuilder.RenameIndex(
-                name: "IX_GroupMembers_ExpenseGroupId",
+                name: "IX_ExpenseGroupMembers_MembersId",
                 table: "GroupMembers",
                 newName: "IX_GroupMembers_MembersId");
+
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_GroupMembers",
+                table: "GroupMembers",
+                columns: new[] { "ExpenseGroupsId", "MembersId" });
 
             migrationBuilder.AddForeignKey(
                 name: "FK_GroupMembers_ExpenseGroups_ExpenseGroupsId",
@@ -61,33 +64,36 @@ namespace api.Migrations
                 name: "FK_GroupMembers_Users_MembersId",
                 table: "GroupMembers");
 
-            migrationBuilder.RenameColumn(
-                name: "MembersId",
-                table: "GroupMembers",
-                newName: "ExpenseGroupId");
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_GroupMembers",
+                table: "GroupMembers");
 
-            migrationBuilder.RenameColumn(
-                name: "ExpenseGroupsId",
-                table: "GroupMembers",
-                newName: "UserID");
+            migrationBuilder.RenameTable(
+                name: "GroupMembers",
+                newName: "ExpenseGroupMembers");
 
             migrationBuilder.RenameIndex(
                 name: "IX_GroupMembers_MembersId",
-                table: "GroupMembers",
-                newName: "IX_GroupMembers_ExpenseGroupId");
+                table: "ExpenseGroupMembers",
+                newName: "IX_ExpenseGroupMembers_MembersId");
+
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_ExpenseGroupMembers",
+                table: "ExpenseGroupMembers",
+                columns: new[] { "ExpenseGroupsId", "MembersId" });
 
             migrationBuilder.AddForeignKey(
-                name: "FK_GroupMembers_ExpenseGroups_ExpenseGroupId",
-                table: "GroupMembers",
-                column: "ExpenseGroupId",
+                name: "FK_ExpenseGroupMembers_ExpenseGroups_ExpenseGroupsId",
+                table: "ExpenseGroupMembers",
+                column: "ExpenseGroupsId",
                 principalTable: "ExpenseGroups",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_GroupMembers_Users_UserID",
-                table: "GroupMembers",
-                column: "UserID",
+                name: "FK_ExpenseGroupMembers_Users_MembersId",
+                table: "ExpenseGroupMembers",
+                column: "MembersId",
                 principalTable: "Users",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
