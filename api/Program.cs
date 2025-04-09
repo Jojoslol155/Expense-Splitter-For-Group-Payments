@@ -34,6 +34,7 @@ builder.Services.AddScoped<IExpenseGroupRepository, ExpenseGroupRepository>();
 builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IGroupMemberRepository, GroupMemberRepository>();
+builder.Services.AddScoped<IUserExpensePercentageRepository, UserExpensePercentageRepository>();
 
 // CORS
 builder.Services.AddCors(options => {

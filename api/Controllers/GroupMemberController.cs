@@ -40,6 +40,7 @@ namespace api.Controllers
 
             var member = await _userRepo.GetByIDAsync(groupMemberModel.MemberID);
 
+            // TODO: cleanup :(
             if (group != null && member != null) {
                 await _groupMemberRepo.AddGroupMemberAsync(group, member);
             } else {
@@ -47,7 +48,7 @@ namespace api.Controllers
             }
 
 
-            return Ok(groupMemberModel.ToGroupMemberDTO());
+            return Ok(groupMemberDTO);
         }
 
     }

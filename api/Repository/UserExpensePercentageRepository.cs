@@ -18,7 +18,7 @@ namespace api.Repository
             _context = context; 
         }
 
-        public async Task<UserExpensePercentage> AddUserExpensePercentageAsync(UserExpensePercentage userExpensePercentage, Expense expense, User user) {
+        public async Task<UserExpensePercentage> AddUserExpensePercentageAsync(UserExpensePercentage userExpensePercentage) {
             await _context.UserExpensePercentages.AddAsync(userExpensePercentage);
             await _context.SaveChangesAsync();
 

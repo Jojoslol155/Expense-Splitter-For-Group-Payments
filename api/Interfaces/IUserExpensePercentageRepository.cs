@@ -8,6 +8,6 @@ namespace api.Interfaces
 {
     public interface IUserExpensePercentageRepository
     {
-        Task<UserExpensePercentage> AddUserExpensePercentageAsync(UserExpensePercentage userExpensePercentage, Expense expense, User user);
+        Task<UserExpensePercentage> AddUserExpensePercentageAsync(UserExpensePercentage userExpensePercentage);
     }
 }

@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using api.Interfaces;
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
-using api.DTOs;
+using api.DTOs.UserExpensePercentage;
+using api.Mappers;
 
 namespace api.Controllers
 {
@@ -24,8 +25,29 @@ namespace api.Controllers
             _percentageRepo = percentageRepo;
         }
 
-        public async Task<UserExpensePercentage> AddUserExpensePercentageAsync(UserExpensePercentageDTO uePercentageDTO) {
-            UserExpensePercentage uePercentage = uePercentageDTO.To
+        [HttpPost]
+        public async Task<IActionResult> AddUserExpensePercentageAsync([FromBody] UserExpensePercentageDTO uePercentageDTO) {
+            UserExpensePercentage uePercentage = uePercentageDTO.ToUserExpensePercentageFromDTO();
+
+            if (!await _expenseRepo.ExpenseExists(uePercentageDTO.ExpenseID)) {
+                return BadRequest("Expense does not exist");
+            }
+            if (!await _userRepo.UserExists(uePercentageDTO.UserID)) {
+                return BadRequest("User does not exist");
+            }
+
+            var expense = await _expenseRepo.GetByIDAsync(uePercentage.ExpenseID);
+
+            var user = await _userRepo.GetByIDAsync(uePercentage.UserID);
+
+            if (expense != null && user != null) {
+                uePercentage.Expense = expense;
+                uePercentage.User = user;
+
+                await _percentageRepo.AddUserExpensePercentageAsync(uePercentage);
+            }
+
+            return Ok(uePercentage);
         }
     }
 }
