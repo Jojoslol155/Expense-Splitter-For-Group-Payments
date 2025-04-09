@@ -15,6 +15,6 @@ namespace api.Models
 
         public List<Expense> Expenses { get; set; } = new();
 
-        public List<User> Members {get; set; } = new();
+        public List<GroupMember> GroupMembers {get; set; } = new();
     }
 }

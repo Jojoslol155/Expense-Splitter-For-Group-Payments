@@ -13,7 +13,7 @@ namespace api.Mappers
             return new ExpenseGroupDTO{
                 Id = expenseGroupModel.Id,
                 Name = expenseGroupModel.Name,
-                Expenses = expenseGroupModel.Expenses.Select(e => e.ToExpenseDTO()).ToList()
+                Expenses = expenseGroupModel.Expenses.Select(e => e.ToExpenseDTO()).ToList(),
             };
         }
 

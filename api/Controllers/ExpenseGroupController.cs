@@ -24,6 +24,15 @@ namespace api.Controllers
             _userRepo = userRepo;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateExpenseGroupReqDTO expenseGroupDTO) {
+            var expenseGroupModel = expenseGroupDTO.ToExpenseGroupFromCreateDTO();
+
+            await _expenseGroupRepo.CreateAsync(expenseGroupModel);
+
+            return CreatedAtAction(nameof(GetById), new { id = expenseGroupModel.Id }, expenseGroupModel.ToExpenseGroupDTO());
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAll() {
             var expenseGroups = await _expenseGroupRepo.GetAllAsync();
@@ -42,21 +51,6 @@ namespace api.Controllers
             }
 
             return Ok(expenseGroup.ToExpenseGroupDTO());
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateExpenseGroupReqDTO expenseGroupDTO) {
-            var expenseGroupModel = expenseGroupDTO.ToExpenseGroupFromCreateDTO();
-
-            await _expenseGroupRepo.CreateAsync(expenseGroupModel);
-
-            var user = await _userRepo.GetByIDAsync(expenseGroupDTO.UserID);
-
-            if (user == null) {
-                return BadRequest("User not found");
-            }
-
-            return CreatedAtAction(nameof(GetById), new { id = expenseGroupModel.Id }, expenseGroupModel.ToExpenseGroupDTO());
         }
 
         [HttpPut]

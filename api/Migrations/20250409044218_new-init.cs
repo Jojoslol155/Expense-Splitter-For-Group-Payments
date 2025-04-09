@@ -59,54 +59,54 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ExpenseGroupMembers",
+                name: "GroupMembers",
                 columns: table => new
                 {
-                    ExpenseGroupsId = table.Column<int>(type: "int", nullable: false),
-                    MembersId = table.Column<int>(type: "int", nullable: false)
+                    ExpenseGroupID = table.Column<int>(type: "int", nullable: false),
+                    MemberID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ExpenseGroupMembers", x => new { x.ExpenseGroupsId, x.MembersId });
+                    table.PrimaryKey("PK_GroupMembers", x => new { x.ExpenseGroupID, x.MemberID });
                     table.ForeignKey(
-                        name: "FK_ExpenseGroupMembers_ExpenseGroups_ExpenseGroupsId",
-                        column: x => x.ExpenseGroupsId,
+                        name: "FK_GroupMembers_ExpenseGroups_ExpenseGroupID",
+                        column: x => x.ExpenseGroupID,
                         principalTable: "ExpenseGroups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ExpenseGroupMembers_Users_MembersId",
-                        column: x => x.MembersId,
+                        name: "FK_GroupMembers_Users_MemberID",
+                        column: x => x.MemberID,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ExpenseGroupMembers_MembersId",
-                table: "ExpenseGroupMembers",
-                column: "MembersId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Expenses_ExpenseGroupID",
                 table: "Expenses",
                 column: "ExpenseGroupID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GroupMembers_MemberID",
+                table: "GroupMembers",
+                column: "MemberID");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ExpenseGroupMembers");
-
-            migrationBuilder.DropTable(
                 name: "Expenses");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "GroupMembers");
 
             migrationBuilder.DropTable(
                 name: "ExpenseGroups");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

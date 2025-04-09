@@ -11,5 +11,6 @@ namespace api.Interfaces
         Task<List<User>> GetAllAsync();
         Task<User?> GetByIDAsync(int id);
         Task<User> CreateAsync(User userModel);
+        Task<bool> UserExists(int id);
     }
 }

@@ -12,8 +12,8 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20250409040238_rename-join-table")]
-    partial class renamejointable
+    [Migration("20250409044218_new-init")]
+    partial class newinit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,21 +24,6 @@ namespace api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ExpenseGroupUser", b =>
-                {
-                    b.Property<int>("ExpenseGroupsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MembersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ExpenseGroupsId", "MembersId");
-
-                    b.HasIndex("MembersId");
-
-                    b.ToTable("GroupMembers", (string)null);
-                });
 
             modelBuilder.Entity("api.Models.Expense", b =>
                 {
@@ -82,6 +67,21 @@ namespace api.Migrations
                     b.ToTable("ExpenseGroups");
                 });
 
+            modelBuilder.Entity("api.Models.GroupMember", b =>
+                {
+                    b.Property<int>("ExpenseGroupID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MemberID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ExpenseGroupID", "MemberID");
+
+                    b.HasIndex("MemberID");
+
+                    b.ToTable("GroupMembers", (string)null);
+                });
+
             modelBuilder.Entity("api.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -107,21 +107,6 @@ namespace api.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ExpenseGroupUser", b =>
-                {
-                    b.HasOne("api.Models.ExpenseGroup", null)
-                        .WithMany()
-                        .HasForeignKey("ExpenseGroupsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("api.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("MembersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("api.Models.Expense", b =>
                 {
                     b.HasOne("api.Models.ExpenseGroup", "ExpenseGroup")
@@ -131,9 +116,35 @@ namespace api.Migrations
                     b.Navigation("ExpenseGroup");
                 });
 
+            modelBuilder.Entity("api.Models.GroupMember", b =>
+                {
+                    b.HasOne("api.Models.ExpenseGroup", "ExpenseGroup")
+                        .WithMany("GroupMembers")
+                        .HasForeignKey("ExpenseGroupID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("api.Models.User", "Member")
+                        .WithMany("GroupMembers")
+                        .HasForeignKey("MemberID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ExpenseGroup");
+
+                    b.Navigation("Member");
+                });
+
             modelBuilder.Entity("api.Models.ExpenseGroup", b =>
                 {
                     b.Navigation("Expenses");
+
+                    b.Navigation("GroupMembers");
+                });
+
+            modelBuilder.Entity("api.Models.User", b =>
+                {
+                    b.Navigation("GroupMembers");
                 });
 #pragma warning restore 612, 618
         }
