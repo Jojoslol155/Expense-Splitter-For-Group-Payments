@@ -1,9 +1,11 @@
 import { Expense } from "./expenseTypes"
+import { User } from './user'
 
 export interface ExpenseGroup {
     ID: number
     name: string
     expenses: Expense[]
+    members: User[]
 }
 
 export type ExpenseGroupsContextType = {

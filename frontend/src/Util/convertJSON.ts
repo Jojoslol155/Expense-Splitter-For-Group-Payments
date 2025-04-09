@@ -1,11 +1,12 @@
 import { User, ExpenseGroup } from '../Types'
 
 export const convertJSONToExpenseGroup = (json: any): ExpenseGroup => {
-    const { id, name, expenses } = json;
+    const { id, name, expenses, members } = json;
     const group: ExpenseGroup = {
         ID: id,
         name,
         expenses,
+        members
     }
     return group
 }
