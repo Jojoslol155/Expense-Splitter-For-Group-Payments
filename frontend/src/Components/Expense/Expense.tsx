@@ -1,6 +1,5 @@
-import React from 'react'
 import { Accordion, AccordionDetails, AccordionSummary, ListItem, ListItemText } from '@mui/material'
-import formatDollarAmount from '../../Util/formatDollarAmount'
+import {formatDollarAmount, formatPercent} from '../../Util/formatting'
 import ExpandIcon from '../ExpandIcon/ExpandIcon'
 import './Expense.css'
 import { MemberPercentage } from '../../Types'
@@ -8,45 +7,30 @@ import { MemberPercentage } from '../../Types'
 type Props = {
     name: string
     amount: number
+    memberPercentages: MemberPercentage[]
 }
 
-const TestPercentageMap = (): MemberPercentage[] => {
-  const percentages: MemberPercentage[] = [{
-    expenseID: 1,
-    userID: 1,
-    percentage: .33,
-    userName: "Cassandra"
-  }, {
-    expenseID: 1,
-    userID: 1,
-    percentage: .33,
-    userName: "Princess"
-  }, {
-    expenseID: 1,
-    userID: 1,
-    percentage: .34,
-    userName: "Professor"
-  }]
-
-  return percentages
+const getAmountOwedForUser = (percentage: number, totalAmount: number): string => {
+  return formatDollarAmount(percentage * totalAmount)
 }
 
-const Expense = ({name, amount}: Props) => {
+const Expense = ({name, amount, memberPercentages}: Props) => {
   return (
     <ListItem>
-      <Accordion sx={{minWidth:'190px'}}>
+      <Accordion sx={{minWidth:'320px'}}>
         <AccordionSummary expandIcon={<ExpandIcon />}>
           <div className='expenseHeader'>
-            <div>{name}</div>
-            <div>{formatDollarAmount(amount)} </div>
+            <div className='expenseHeaderElement'>{name}</div>
+            <div className='expenseHeaderElement'>{formatDollarAmount(amount)} </div>
           </div>
         </AccordionSummary>
-        <AccordionDetails>
-            {TestPercentageMap().map(p => {
+        <AccordionDetails sx={{minWidth:'320px'}}>
+            {memberPercentages.map(p => {
               return (
                 <div className='percentageMapWrapper'>
-                  <div>{p.userName}</div>
-                  <div>{p.percentage}</div>
+                  <div className='percentageMapElement'>{p.firstName}</div>
+                  <div className='percentageMapElement'>{formatPercent(p.percentage)}</div>
+                  <div className='percentageMapElement'>{getAmountOwedForUser(p.percentage, amount)}</div>
                 </div>
               )})
             }

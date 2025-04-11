@@ -2,12 +2,20 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100px;
+    /* width: 150px; */
+    font-size: 18px;
+}
+
+.expenseHeaderElement {
+    width: 130px;
 }
 
 .percentageMapWrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 135px;
+}
+
+.percentageMapElement {
+    max-width: 50px;
 }

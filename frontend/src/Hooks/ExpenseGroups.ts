@@ -1,10 +1,10 @@
 import { useReducer, useContext } from 'react'
-import { ExpenseGroupsContextType, ExpenseGroup } from '../Types'
-import { GET_EXPENSE_GROUPS_URL } from '../config'
-import { useNavigate } from 'react-router-dom'
-import { ExpenseGroupsContext } from '../Context/ExpenseGroups';
+import { ExpenseGroupsContextType, ExpenseGroup, Expense } from '../Types'
+import { GET_EXPENSE_GROUPS_URL, GET_USERS_URL } from '../config'
+import { ExpenseGroupsContext } from '../Context/ExpenseGroups'
+import { ContactsContext } from '../Context/User'
 import { convertJSONToExpenseGroup } from '../Util/convertJSON'
-import { defaultExpenseGroup, editExpenseGroupForm } from '../Reducers/editExpenseGroupForm';
+import { defaultExpenseGroup, editExpenseGroupForm } from '../Reducers/editExpenseGroupForm'
 
 export function useGetAllExpenseGroups() {
     const { expenseGroups, setExpenseGroups } = useContext(ExpenseGroupsContext) as ExpenseGroupsContextType
@@ -15,7 +15,6 @@ export function useGetAllExpenseGroups() {
 
     const getExpenseGroups = async () => {
         try {
-            // TODO: set loading status
             fetch(GET_EXPENSE_GROUPS_URL, options).then(res => {
                 if (res.status !== 200) {
                     console.error("error")
@@ -26,7 +25,7 @@ export function useGetAllExpenseGroups() {
                 const groups = new Array<ExpenseGroup>;
 
                 groupsRes.forEach((eg: any) => {
-                    groups.push(convertJSONToExpenseGroup(eg));
+                    groups.push(convertJSONToExpenseGroup(eg))
                     setExpenseGroups(groups);
                 })
             }).catch(err => {
@@ -43,9 +42,10 @@ export function useGetAllExpenseGroups() {
 }
 
 export function useGetExpenseGroup(expenseGroupID: number) {
-    const [ expenseGroup, dispatch ]= useReducer(editExpenseGroupForm, defaultExpenseGroup)
+    const [ expenseGroup, dispatch ] = useReducer(editExpenseGroupForm, defaultExpenseGroup)
 
     // TODO: authentication
+    // TODO: refactor state management... :( 
     const options = {
         method: 'GET'
     }
@@ -58,7 +58,8 @@ export function useGetExpenseGroup(expenseGroupID: number) {
 
                 return res.json();
             }).then((json) => {
-                const group = convertJSONToExpenseGroup(json);
+                const group = convertJSONToExpenseGroup(json)
+
                 dispatch({type: 'SET_EXPENSE_GROUP', payload: group})
             })
         } catch(err) {
@@ -66,7 +67,6 @@ export function useGetExpenseGroup(expenseGroupID: number) {
             console.error(err)
         }
     }
-
 
     return [expenseGroup, getExpenseGroup, dispatch] as const
 }

@@ -1,0 +1,14 @@
+.userCardWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.contactIcon {
+    padding-right: 20px;
+    padding-bottom: 10px;
+}
+
+.name {
+    padding-bottom: 14px;
+}

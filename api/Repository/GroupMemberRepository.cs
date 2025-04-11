@@ -6,8 +6,6 @@ using api.Models;
 using api.Data;
 using api.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using api.DTOs.GroupMember;
-using System.Text.RegularExpressions;
 
 
 namespace api.Repository
@@ -21,7 +19,7 @@ namespace api.Repository
             _context = context;    
         }
 
-        public async Task<GroupMember> AddGroupMemberAsync(GroupMember groupMemberModel, ExpenseGroup group, User member) {
+        public async Task<GroupMember> AddGroupMemberAsync(ExpenseGroup group, User member) {
             GroupMember groupMember = new GroupMember {
                 ExpenseGroup = group,
                 Member = member

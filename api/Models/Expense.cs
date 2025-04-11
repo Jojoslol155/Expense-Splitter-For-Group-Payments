@@ -18,5 +18,7 @@ namespace api.Models
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal Amount { get; set; }
+
+        public List<UserExpensePercentage> UserExpensePercentages { get; set; } = new();
     }
 }

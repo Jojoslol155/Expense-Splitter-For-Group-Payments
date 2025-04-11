@@ -25,11 +25,20 @@ namespace api.Repository
         }
         
         public async Task<List<Expense>> GetAllAsync() {
-            return await _context.Expenses.ToListAsync();
+            return await _context.Expenses
+                .Include(e => e.UserExpensePercentages)
+                .ToListAsync();
         }
 
         public async Task<Expense?> GetByIDAsync(int id) {
-            return await _context.Expenses.FindAsync(id);
+            return await _context.Expenses
+                .Include(e => e.UserExpensePercentages)
+                .FirstOrDefaultAsync(e => e.Id == id);
+        }
+
+        public async Task<bool> ExpenseExists(int id)
+        {
+            return await _context.Expenses.AnyAsync(e => e.Id == id);
         }
 
     }

@@ -1,7 +1,7 @@
-import { User, ExpenseGroup } from '../Types'
+import { User, ExpenseGroup, Expense } from '../Types'
 
 export const convertJSONToExpenseGroup = (json: any): ExpenseGroup => {
-    const { id, name, expenses, members } = json;
+    const { id, name, expenses, members } = json
     const group: ExpenseGroup = {
         ID: id,
         name,
@@ -9,6 +9,18 @@ export const convertJSONToExpenseGroup = (json: any): ExpenseGroup => {
         members
     }
     return group
+}
+
+export const convertJSONToExpense = (json: any): Expense => {
+    const { name, id, expenseGroupID, amount, userExpensePercentages } = json
+    const expense: Expense = {
+        ID: id,
+        name,
+        amount,
+        expenseGroupID,
+        userExpensePercentages,
+    }
+    return expense
 }
 
 export const convertJSONToUser = (json: any): User => {
