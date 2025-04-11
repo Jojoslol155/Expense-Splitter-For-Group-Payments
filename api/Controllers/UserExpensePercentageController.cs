@@ -47,7 +47,7 @@ namespace api.Controllers
                 await _percentageRepo.AddUserExpensePercentageAsync(uePercentage);
             }
 
-            return Ok(uePercentage);
+            return Ok(uePercentageDTO);
         }
     }
 }

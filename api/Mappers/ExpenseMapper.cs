@@ -15,6 +15,7 @@ namespace api.Mappers
                 Name = expenseModel.Name,
                 Amount = expenseModel.Amount,
                 ExpenseGroupID = expenseModel.ExpenseGroupID,
+                UserExpensePercentages = expenseModel.UserExpensePercentages.Select(uep => uep.ToUserExpensePercentageDTO()).ToList()
             };
         }
 
