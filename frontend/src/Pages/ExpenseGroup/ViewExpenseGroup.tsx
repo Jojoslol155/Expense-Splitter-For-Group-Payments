@@ -25,7 +25,7 @@ function ViewExpenseGroup() {
           <List sx={{ paddingLeft: '20px'}}>
             {expenseGroup.expenses.map(ex => {
               return <div>
-                <Expense name={ex.name} amount={ex.amount}/>
+                <Expense name={ex.name} amount={ex.amount} memberPercentages={ex.userExpensePercentages}/>
                 </div>
             })}
           </List>

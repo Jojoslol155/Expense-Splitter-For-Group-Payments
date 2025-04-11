@@ -7,34 +7,14 @@ import { MemberPercentage } from '../../Types'
 type Props = {
     name: string
     amount: number
-}
-
-const TestPercentageMap = (): MemberPercentage[] => {
-  const percentages: MemberPercentage[] = [{
-    expenseID: 1,
-    userID: 1,
-    percentage: .33,
-    userName: "Cassandra"
-  }, {
-    expenseID: 1,
-    userID: 1,
-    percentage: .33,
-    userName: "Princess"
-  }, {
-    expenseID: 1,
-    userID: 1,
-    percentage: .34,
-    userName: "Professor"
-  }]
-
-  return percentages
+    memberPercentages: MemberPercentage[]
 }
 
 const getAmountOwedForUser = (percentage: number, totalAmount: number): string => {
   return formatDollarAmount(percentage * totalAmount)
 }
 
-const Expense = ({name, amount}: Props) => {
+const Expense = ({name, amount, memberPercentages}: Props) => {
   return (
     <ListItem>
       <Accordion sx={{minWidth:'320px'}}>
@@ -45,7 +25,7 @@ const Expense = ({name, amount}: Props) => {
           </div>
         </AccordionSummary>
         <AccordionDetails sx={{minWidth:'320px'}}>
-            {TestPercentageMap().map(p => {
+            {memberPercentages.map(p => {
               return (
                 <div className='percentageMapWrapper'>
                   <div className='percentageMapElement'>{p.userName}</div>
