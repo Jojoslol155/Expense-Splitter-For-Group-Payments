@@ -3,6 +3,7 @@ export interface Expense {
     ID: number
     amount: number
     expenseGroupID: number
+    userExpensePercentages: MemberPercentage[]
 }
 
 export interface MemberPercentage {

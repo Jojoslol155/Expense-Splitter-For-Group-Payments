@@ -27,17 +27,21 @@ namespace api.Repository
 
         public async Task<List<ExpenseGroup>> GetAllAsync() {
             return await _context.ExpenseGroups
-                .Include(e => e.Expenses)
+                .Include(eg => eg.Expenses)
                 .Include(e => e.GroupMembers)
                 .ThenInclude(gm => gm.Member)
+                .Include(eg => eg.Expenses)
+                .ThenInclude(e => e.UserExpensePercentages)
                 .ToListAsync();
         }
 
         public async Task<ExpenseGroup?> GetByIDAsync(int id) {
             return await _context.ExpenseGroups
-                .Include(e => e.Expenses)
+                .Include(eg => eg.Expenses)
                 .Include(e => e.GroupMembers)
                 .ThenInclude(gm => gm.Member)
+                .Include(eg => eg.Expenses)
+                .ThenInclude(e => e.UserExpensePercentages)
                 .FirstOrDefaultAsync(eg => eg.Id == id);
         }
 
