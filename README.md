@@ -18,3 +18,6 @@ Install node & npm
 * run `npm install` in the frontend directory
 * run `npm run start`
 open `localhost:3000` in your browser
+
+### Attributions
+(Contact icons created by Indra Maulana Yusuf - Flaticon)[https://www.flaticon.com/free-icons/contact]

@@ -2,7 +2,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 150px;
+    /* width: 150px; */
+    font-size: 18px;
+}
+
+.expenseHeaderElement {
+    width: 130px;
 }
 
 .percentageMapWrapper {

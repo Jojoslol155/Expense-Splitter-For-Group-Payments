@@ -40,8 +40,8 @@ const Expense = ({name, amount}: Props) => {
       <Accordion sx={{minWidth:'320px'}}>
         <AccordionSummary expandIcon={<ExpandIcon />}>
           <div className='expenseHeader'>
-            <div>{name}</div>
-            <div>{formatDollarAmount(amount)} </div>
+            <div className='expenseHeaderElement'>{name}</div>
+            <div className='expenseHeaderElement'>{formatDollarAmount(amount)} </div>
           </div>
         </AccordionSummary>
         <AccordionDetails sx={{minWidth:'320px'}}>

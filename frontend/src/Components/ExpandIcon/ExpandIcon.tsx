@@ -1,5 +1,5 @@
 import React from 'react'
-import DownArrow from './DownArrow.png'
+import DownArrow from '../Images/DownArrow.png'
 
 const ExpandIcon = () => {
   return (
