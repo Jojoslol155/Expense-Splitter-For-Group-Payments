@@ -1,7 +1,6 @@
 import { useReducer, useContext } from 'react'
 import { ExpenseGroupsContextType, ExpenseGroup } from '../Types'
 import { GET_EXPENSE_GROUPS_URL } from '../config'
-import { useNavigate } from 'react-router-dom'
 import { ExpenseGroupsContext } from '../Context/ExpenseGroups';
 import { convertJSONToExpenseGroup } from '../Util/convertJSON'
 import { defaultExpenseGroup, editExpenseGroupForm } from '../Reducers/editExpenseGroupForm';
@@ -15,7 +14,6 @@ export function useGetAllExpenseGroups() {
 
     const getExpenseGroups = async () => {
         try {
-            // TODO: set loading status
             fetch(GET_EXPENSE_GROUPS_URL, options).then(res => {
                 if (res.status !== 200) {
                     console.error("error")
