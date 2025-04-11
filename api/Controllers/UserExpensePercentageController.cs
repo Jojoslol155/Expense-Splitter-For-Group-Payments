@@ -43,6 +43,7 @@ namespace api.Controllers
             if (expense != null && user != null) {
                 uePercentage.Expense = expense;
                 uePercentage.User = user;
+                uePercentage.FirstName = user.FirstName;
 
                 await _percentageRepo.AddUserExpensePercentageAsync(uePercentage);
             }

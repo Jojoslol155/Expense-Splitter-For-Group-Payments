@@ -13,7 +13,8 @@ namespace api.Mappers
             return new UserExpensePercentageDTO {
                 ExpenseID = uePercentageModel.ExpenseID,
                 UserID = uePercentageModel.UserID,
-                Percentage = uePercentageModel.Percentage
+                Percentage = uePercentageModel.Percentage,
+                FirstName = uePercentageModel.FirstName
             };
         }
 
@@ -22,6 +23,7 @@ namespace api.Mappers
                 ExpenseID = uePercentageDTO.ExpenseID,
                 UserID = uePercentageDTO.UserID,
                 Percentage = uePercentageDTO.Percentage,
+                FirstName = uePercentageDTO.FirstName
             };
         }
     }

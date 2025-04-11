@@ -45,6 +45,7 @@ export function useGetExpenseGroup(expenseGroupID: number) {
     const [ expenseGroup, dispatch ] = useReducer(editExpenseGroupForm, defaultExpenseGroup)
 
     // TODO: authentication
+    // TODO: refactor state management... :( 
     const options = {
         method: 'GET'
     }
@@ -58,23 +59,6 @@ export function useGetExpenseGroup(expenseGroupID: number) {
                 return res.json();
             }).then((json) => {
                 const group = convertJSONToExpenseGroup(json)
-                console.log("group?")
-                if (group.expenses.length > 0) {
-                    console.log("expensess")
-                    try {
-                        group.expenses[0].userExpensePercentages.forEach(uep => {
-                            const userID = uep.userID
-                            
-                            fetch(`${GET_USERS_URL}/${userID}`).then(res => {
-                                return res.json()
-                            }).then((userJSON) => {
-                                console.log(userJSON)
-                            })
-                        })
-                    } catch (err) {
-                        console.error(err)
-                    }
-                }
 
                 dispatch({type: 'SET_EXPENSE_GROUP', payload: group})
             })
@@ -83,7 +67,6 @@ export function useGetExpenseGroup(expenseGroupID: number) {
             console.error(err)
         }
     }
-
 
     return [expenseGroup, getExpenseGroup, dispatch] as const
 }

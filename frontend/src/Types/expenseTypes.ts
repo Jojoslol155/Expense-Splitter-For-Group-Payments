@@ -9,6 +9,6 @@ export interface Expense {
 export interface MemberPercentage {
     expenseID: number
     percentage: number
-    userName: string
+    firstName: string
     userID: number
 }

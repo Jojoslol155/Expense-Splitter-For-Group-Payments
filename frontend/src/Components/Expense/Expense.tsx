@@ -28,7 +28,7 @@ const Expense = ({name, amount, memberPercentages}: Props) => {
             {memberPercentages.map(p => {
               return (
                 <div className='percentageMapWrapper'>
-                  <div className='percentageMapElement'>{p.userName}</div>
+                  <div className='percentageMapElement'>{p.firstName}</div>
                   <div className='percentageMapElement'>{formatPercent(p.percentage)}</div>
                   <div className='percentageMapElement'>{getAmountOwedForUser(p.percentage, amount)}</div>
                 </div>

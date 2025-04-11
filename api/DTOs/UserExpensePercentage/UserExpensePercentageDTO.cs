@@ -10,5 +10,6 @@ namespace api.DTOs.UserExpensePercentage
         public int ExpenseID { get; set; }
         public int UserID { get; set; }
         public double Percentage { get; set; }
+        public string FirstName { get; set; } = string.Empty;
     }
 }
