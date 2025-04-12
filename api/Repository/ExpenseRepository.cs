@@ -43,7 +43,15 @@ namespace api.Repository
 
         public async Task<Expense?> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var expenseModel = await _context.Expenses.FirstOrDefaultAsync(eg => eg.Id == id);
+
+            if (expenseModel == null) {
+                return null;
+            }
+
+            _context.Expenses.Remove(expenseModel);
+            await _context.SaveChangesAsync();
+            return expenseModel;
         }
     }
 }

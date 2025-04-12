@@ -54,5 +54,17 @@ namespace api.Controllers
             return Ok(expense.ToExpenseDTO());
         }
 
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id) {
+            var expense = await _expenseRepo.DeleteAsync(id);
+            
+            if (expense == null) {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
     }
 }
