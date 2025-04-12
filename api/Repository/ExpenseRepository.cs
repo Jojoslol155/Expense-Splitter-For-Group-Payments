@@ -41,5 +41,9 @@ namespace api.Repository
             return await _context.Expenses.AnyAsync(e => e.Id == id);
         }
 
+        public async Task<Expense?> DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
