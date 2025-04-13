@@ -13,19 +13,15 @@ function App() {
   return (
     <ContactsContextProvider>
       <ExpenseGroupsContextProvider>
-        <div className="App">
+        <div className="appWrapper">
           <BrowserRouter>
-            <div className='app-wrapper'>
               <Nav />
-              <Container>
               <Routes>
                   <Route path="/" element={<Dashboard />}/>
                   <Route path="/group" element={<ViewExpenseGroup />}/> 
                   <Route path="/contacts" element={<ViewContacts />}/> 
                   <Route path="/group/:id/view" element={<ViewExpenseGroup />}/>
               </Routes>
-              </Container>
-            </div>
           </BrowserRouter>
         </div>
       </ExpenseGroupsContextProvider>

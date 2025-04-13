@@ -1,4 +1,6 @@
-.dashboard-wrapper {
+.dashboardWrapper {
     background-color: var(--background);
     padding: 20px;
+    flex-grow: 1;
+    overflow-y: auto;
 }
