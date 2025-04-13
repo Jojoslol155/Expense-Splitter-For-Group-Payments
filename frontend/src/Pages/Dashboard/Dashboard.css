@@ -1,4 +1,15 @@
-.dashboard-wrapper {
+.dashboardWrapper {
     background-color: var(--background);
-    padding: 20px;
+    padding: 30px;
+    flex-grow: 1;
+    flex-grow: 1;
+    flex-shrink: 0;
+    overflow-y: auto;
+    height: 100%;
 }
+
+@media only screen and (max-width: 1000px) {
+    .dashboardWrapper {
+      padding-bottom: 60px;
+    }
+  }

@@ -12,7 +12,7 @@ function Dashboard() {
 
 
   return (
-    <div className='dashboard-wrapper'>
+    <div className='dashboardWrapper'>
         <ExpenseGroups groups={expenseGroups}/>
     </div>
   );

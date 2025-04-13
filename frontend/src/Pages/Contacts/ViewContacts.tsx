@@ -12,7 +12,7 @@ const ViewContacts = () => {
   }, [])
 
   return (
-    <div className='contacts-wrapper'>
+    <div className='contactsWrapper'>
       {contacts && contacts.map(c => {
         return (<div>
           <UserCard user={c} />
