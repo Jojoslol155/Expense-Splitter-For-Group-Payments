@@ -1,6 +1,5 @@
 .navWrapper {
     background-color: var(--secondary);
-    /* height: 100%; */
     width: 200px;
     display: flex;
     flex-direction: column;
@@ -35,8 +34,7 @@
       padding: 10px;
       position: fixed;
       top: 0;
-      left: 0;
-      z-index: 100;
+      z-index: 1;
     }
   }
 

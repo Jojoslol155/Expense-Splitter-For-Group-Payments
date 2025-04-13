@@ -3,4 +3,11 @@
     flex-grow: 1;
     flex-shrink: 0;
     overflow-y: auto;
+    height: 100%;
 }
+
+@media only screen and (max-width: 1000px) {
+    .expenseGroupsWrapper {
+      padding-bottom: 60px;
+    }
+  }

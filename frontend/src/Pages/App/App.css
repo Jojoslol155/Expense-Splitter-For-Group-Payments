@@ -12,7 +12,7 @@ body {
   height: 100%;
   overflow: hidden;
   display: flex;
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
   overflow: hidden;
 }
 
@@ -21,6 +21,7 @@ body {
   color: var(--text);
   display: flex;
   height: 100%;
+  padding-bottom: 50px;
 }
 
 #root {
@@ -30,7 +31,8 @@ body {
 @media only screen and (max-width: 1000px) {
   .appWrapper {
     flex-direction: column;
-    overflow-y: auto;
+    
     padding-top: 60px;
+    
   }
 }
