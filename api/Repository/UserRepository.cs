@@ -34,5 +34,17 @@ namespace api.Repository
         public async Task<bool> UserExists(int id) {
             return await _context.Users.AnyAsync(u => u.Id == id);
         }
+        public async Task<User?> DeleteAsync(int id)
+        {
+            var userModel = await _context.Users.FirstOrDefaultAsync(eg => eg.Id == id);
+
+            if (userModel == null) {
+                return null;
+            }
+
+            _context.Users.Remove(userModel);
+            await _context.SaveChangesAsync();
+            return userModel;
+        }
     }
 }

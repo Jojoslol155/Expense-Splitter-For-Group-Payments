@@ -4,11 +4,35 @@ html {
   --secondary: #29A3A3;
   --text: #DEF7F7; 
   --selected: #31C4C4;
+  height: 100%;
 }
 
-.app-wrapper {
+body {
+  margin: 0px;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  /* box-sizing: border-box; */
+  overflow: hidden;
+}
+
+.appWrapper {
   background-color: var(--background);
   color: var(--text);
   display: flex;
-  height: 100vh;
+  height: 100%;
+  padding-bottom: 50px;
+}
+
+#root {
+  width: 100%;
+}
+
+@media only screen and (max-width: 1000px) {
+  .appWrapper {
+    flex-direction: column;
+    
+    padding-top: 60px;
+    
+  }
 }

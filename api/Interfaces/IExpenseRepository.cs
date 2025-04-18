@@ -12,7 +12,7 @@ namespace api.Interfaces
         Task<Expense?> GetByIDAsync(int id);
         Task<Expense> CreateAsync(Expense expenseGroupModel);
         // Task<Expense?> UpdateAsync(int id, UpdateExpense=ReqDTO expenseDTO);
-        // Task<Expense?> DeleteAsync(int id);
+        Task<Expense?> DeleteAsync(int id);
         Task<bool> ExpenseExists(int id);
     }
 }
