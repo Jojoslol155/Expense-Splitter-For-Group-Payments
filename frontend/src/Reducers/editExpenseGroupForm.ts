@@ -7,6 +7,8 @@ export const editExpenseGroupForm = (state: ExpenseGroup, action: ExpenseFormAct
         return {...state, name: action.paylod}
     case 'SET_EXPENSE_GROUP':
         return {...action.payload}
+    case 'SET_EXPENSE':
+        return {...state, expenses: [...state.expenses, action.payload]}
  }
 }
 
