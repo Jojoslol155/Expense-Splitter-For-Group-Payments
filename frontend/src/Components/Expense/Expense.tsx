@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, ListItem, ListItemText } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, ListItem, ListItemText, Slider } from '@mui/material'
 import {formatDollarAmount, formatPercent} from '../../Util/formatting'
 import ExpandIcon from '../ExpandIcon/ExpandIcon'
 import './Expense.css'
@@ -24,13 +24,14 @@ const Expense = ({name, amount, memberPercentages}: Props) => {
             <div className='expenseHeaderElement'>{formatDollarAmount(amount)} </div>
           </div>
         </AccordionSummary>
-        <AccordionDetails sx={{minWidth:'320px'}}>
+        <AccordionDetails sx={{minWidth:'500px'}}>
             {memberPercentages.map(p => {
               return (
                 <div className='percentageMapWrapper'>
-                  <div className='percentageMapElement'>{p.firstName}</div>
-                  <div className='percentageMapElement'>{formatPercent(p.percentage)}</div>
-                  <div className='percentageMapElement'>{getAmountOwedForUser(p.percentage, amount)}</div>
+                  <div className='percentageMapElement name'>{p.firstName}</div>
+                  <Slider defaultValue={p.percentage * 100} min={0} max={100} onChange={handlePercentageSlider}/>
+                  <div className='percentageMapElement numbers marginLeft'>{formatPercent(p.percentage)}</div>
+                  <div className='percentageMapElement numbers'>{getAmountOwedForUser(p.percentage, amount)}</div>
                 </div>
               )})
             }
@@ -38,6 +39,10 @@ const Expense = ({name, amount, memberPercentages}: Props) => {
       </Accordion>
     </ListItem>
   )
+}
+
+const handlePercentageSlider = () => {
+
 }
 
 export default Expense
