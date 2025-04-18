@@ -47,5 +47,17 @@ return CreatedAtAction(nameof(GetById), new { id = userModel.Id }, userModel.ToU
 
             return Ok(user.ToUserDTO());
         }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id) {
+            var user = await _repo.DeleteAsync(id);
+            
+            if (user == null) {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
     }
 }
