@@ -7,6 +7,7 @@ using api.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using api.DTOs.User;
 using api.Repository;
+using api.Models;
 
 namespace api.Controllers
 {
@@ -46,6 +47,28 @@ return CreatedAtAction(nameof(GetById), new { id = userModel.Id }, userModel.ToU
             }
 
             return Ok(user.ToUserDTO());
+        }
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id) {
+            var user = await _repo.GetByIDAsync(id);
+            
+            if (user == null) {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+         [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateUserReqDTO userDTO) {
+            var userModel = await _repo.UpdateAsync(id, userDTO);
+
+            if (userModel == null) {
+                return NotFound();
+            }
+
+            return Ok(userModel.ToUserDTO());
         }
     }
 }

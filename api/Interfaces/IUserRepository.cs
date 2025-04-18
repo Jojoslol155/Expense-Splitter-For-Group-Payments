@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Models;
+using api.DTOs.User;
 
 namespace api.Interfaces
 {
@@ -12,5 +13,7 @@ namespace api.Interfaces
         Task<User?> GetByIDAsync(int id);
         Task<User> CreateAsync(User userModel);
         Task<bool> UserExists(int id);
+        Task<User?> UpdateAsync(int id, UpdateUserReqDTO userDTO);
+        Task<User?> DeleteAsync(int id);
     }
 }

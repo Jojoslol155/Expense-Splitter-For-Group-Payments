@@ -51,5 +51,17 @@ namespace api.Controllers
             return Ok(groupMemberDTO);
         }
 
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id) {
+            var deleteMember = await _groupMemberRepo.DeleteAsync(id);
+            
+            if (deleteMember == null) {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
     }
 }
