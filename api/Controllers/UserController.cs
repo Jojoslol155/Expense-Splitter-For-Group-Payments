@@ -7,7 +7,6 @@ using api.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using api.DTOs.User;
 using api.Repository;
-using api.Models;
 
 namespace api.Controllers
 {
@@ -46,12 +45,13 @@ return CreatedAtAction(nameof(GetById), new { id = userModel.Id }, userModel.ToU
                 return NotFound();
             }
 
-            return Ok(user.ToUserDTO());
+            return NoContent();
         }
+
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id) {
-            var user = await _repo.GetByIDAsync(id);
+            var user = await _repo.DeleteAsync(id);
             
             if (user == null) {
                 return NotFound();
