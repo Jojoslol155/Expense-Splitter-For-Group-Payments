@@ -35,6 +35,7 @@ namespace api.Repository
         public async Task<bool> UserExists(int id) {
             return await _context.Users.AnyAsync(u => u.Id == id);
         }
+
         public async Task<User?> DeleteAsync(int id)  {
             var userModel = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 
@@ -46,6 +47,7 @@ namespace api.Repository
             await _context.SaveChangesAsync();
             return userModel;
         }
+
         public async Task<User?> UpdateAsync(int id, UpdateUserReqDTO userDTO) {
             var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 
@@ -68,5 +70,6 @@ namespace api.Repository
             await _context.SaveChangesAsync();
             return existingUser;
         }
+
     }
 }
