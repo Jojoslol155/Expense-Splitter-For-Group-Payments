@@ -1,6 +1,8 @@
-import { Accordion, AccordionDetails, AccordionSummary, ListItem, ListItemText } from '@mui/material'
-import {formatDollarAmount, formatPercent} from '../../Util/formatting'
+import React from 'react'
+import { Accordion, AccordionDetails, AccordionSummary, ListItem } from '@mui/material'
+import {formatDollarAmount } from '../../Util/formatting'
 import ExpandIcon from '../ExpandIcon/ExpandIcon'
+import UserExpensePercentage from '../MemberPercentage/MemberPercentage'
 import './Expense.css'
 import { MemberPercentage } from '../../Types'
 
@@ -8,10 +10,7 @@ type Props = {
     name: string
     amount: number
     memberPercentages: MemberPercentage[]
-}
-
-const getAmountOwedForUser = (percentage: number, totalAmount: number): string => {
-  return formatDollarAmount(percentage * totalAmount)
+    // dispatch: Dispatch<ExpenseFormAction>
 }
 
 const Expense = ({name, amount, memberPercentages}: Props) => {
@@ -24,14 +23,10 @@ const Expense = ({name, amount, memberPercentages}: Props) => {
             <div className='expenseHeaderElement'>{formatDollarAmount(amount)} </div>
           </div>
         </AccordionSummary>
-        <AccordionDetails sx={{minWidth:'320px'}}>
+        <AccordionDetails sx={{minWidth:'500px'}}>
             {memberPercentages.map(p => {
               return (
-                <div className='percentageMapWrapper'>
-                  <div className='percentageMapElement'>{p.firstName}</div>
-                  <div className='percentageMapElement'>{formatPercent(p.percentage)}</div>
-                  <div className='percentageMapElement'>{getAmountOwedForUser(p.percentage, amount)}</div>
-                </div>
+                <UserExpensePercentage memberPercentage={p} amount={amount} />
               )})
             }
         </AccordionDetails>
@@ -39,5 +34,6 @@ const Expense = ({name, amount, memberPercentages}: Props) => {
     </ListItem>
   )
 }
+
 
 export default Expense
