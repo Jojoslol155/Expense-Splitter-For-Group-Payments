@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.DTOs.User;
 using api.Interfaces;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
@@ -34,9 +35,9 @@ namespace api.Repository
         public async Task<bool> UserExists(int id) {
             return await _context.Users.AnyAsync(u => u.Id == id);
         }
-        public async Task<User?> DeleteAsync(int id)
-        {
-            var userModel = await _context.Users.FirstOrDefaultAsync(eg => eg.Id == id);
+
+        public async Task<User?> DeleteAsync(int id)  {
+            var userModel = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 
             if (userModel == null) {
                 return null;
@@ -46,5 +47,29 @@ namespace api.Repository
             await _context.SaveChangesAsync();
             return userModel;
         }
+
+        public async Task<User?> UpdateAsync(int id, UpdateUserReqDTO userDTO) {
+            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (existingUser == null) {
+                return null;
+            }
+            bool nameChanged = existingUser.FirstName != userDTO.FirstName;
+
+            existingUser.FirstName = userDTO.FirstName;
+            existingUser.LastName = userDTO.LastName;
+            existingUser.Email = userDTO.Email;
+
+                if(nameChanged){
+                var updateUeTable = await _context.UserExpensePercentages.Where(p => p.UserID == id).ToListAsync();
+                foreach (var entry in updateUeTable){
+                    entry.FirstName = userDTO.FirstName;
+                }
+             }
+
+            await _context.SaveChangesAsync();
+            return existingUser;
+        }
+
     }
 }
