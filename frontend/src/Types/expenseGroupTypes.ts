@@ -13,4 +13,6 @@ export type ExpenseGroupsContextType = {
     setExpenseGroups: (expenseGroups: Array<ExpenseGroup>) => void
 }
 
-export interface CreateExpenseGroupForm extends Omit<ExpenseGroup, 'ID'> {}
+export interface CreateExpenseGroupForm {
+    name: string
+}

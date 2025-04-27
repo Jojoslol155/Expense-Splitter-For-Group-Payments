@@ -1,10 +1,11 @@
 import { useReducer, useContext } from 'react'
-import { ExpenseGroupsContextType, ExpenseGroup, Expense } from '../Types'
-import { GET_EXPENSE_GROUPS_URL, GET_USERS_URL } from '../config'
+import { ExpenseGroupsContextType, ExpenseGroup, Expense, MemberPercentage } from '../Types'
+import { GET_EXPENSE_GROUPS_URL, GET_USERS_URL, GET_PERCENTAGES_URL } from '../config'
 import { ExpenseGroupsContext } from '../Context/ExpenseGroups'
 import { ContactsContext } from '../Context/User'
 import { convertJSONToExpenseGroup } from '../Util/convertJSON'
 import { defaultExpenseGroup, editExpenseGroupForm } from '../Reducers/editExpenseGroupForm'
+//import { memberPercentagesForm, defaultMemberPercentages } from '../Reducers/editExpense'
 
 export function useGetAllExpenseGroups() {
     const { expenseGroups, setExpenseGroups } = useContext(ExpenseGroupsContext) as ExpenseGroupsContextType
@@ -22,7 +23,7 @@ export function useGetAllExpenseGroups() {
 
                 return res.json();
             }).then((groupsRes) => {
-                const groups = new Array<ExpenseGroup>;
+                const groups = new Array<ExpenseGroup>();
 
                 groupsRes.forEach((eg: any) => {
                     groups.push(convertJSONToExpenseGroup(eg))
