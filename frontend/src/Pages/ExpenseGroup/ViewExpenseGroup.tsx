@@ -2,16 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useGetExpenseGroup } from '../../Hooks/ExpenseGroups'
 import ExpenseCard from '../../Components/Expense/ExpenseCard'
-import { Alert, List, Modal, Stack, Box, Typography, Button, TextField } from '@mui/material'
-import { GET_PERCENTAGES_URL, GET_EXPENSE_GROUPS_URL, GET_EXPENSES_URL } from '../../config'
+import { Alert, List, Modal, Stack, Box, Typography, Button } from '@mui/material'
 import UserCard from '../../Components/Contact/UserCard'
 import PageHeader from './ExpenseGroupPageHeader'
 import SectionHeader from '../../Components/SectionHeader'
 import { get } from 'lodash'
-import { Expense, MemberPercentage } from '../../Types'
 import { useGetAllContacts } from '../../Hooks/Users'
 import { useNavigate } from 'react-router-dom'
-import { deleteExpenseGroup, addGroupMember } from '../../apiHandlers'
+import { deleteExpenseGroup, addGroupMember, saveMemberPercentages } from '../../apiHandlers'
 import './ViewExpenseGroup.css'
 
 function ViewExpenseGroup() {
@@ -45,44 +43,6 @@ function ViewExpenseGroup() {
     p: 4,
   }
   
-  const saveMemberPercentages = async (expense: Expense) => {
-    let percentageSum = 0;
-    for (let i = 0; i < expense.userExpensePercentages.length; i++) {
-      percentageSum = Math.round(percentageSum + expense.userExpensePercentages[i].percentage)
-    }
-  
-    if (percentageSum !== 1) {
-      setShowAlert(true)
-      return
-    }
-  
-    for (let i = 0; i < expense.userExpensePercentages.length; i++) {
-      const options = {
-        method: 'PUT',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: toMemberPercentageReq(expense.userExpensePercentages[i]),
-      }
-  
-        try {
-            fetch(GET_PERCENTAGES_URL + `/${get(expense, 'id')}`, options).then(res => {
-                if (res.status !== 200) {
-                    console.error("error")
-                }
-  
-                return res
-            })
-        } catch(e) {
-            console.error(e)
-        }
-    }
-  }
-  
-  const toMemberPercentageReq = (mp: MemberPercentage) => {
-    const json = JSON.stringify(mp)
-    return json
-  }
 
   return (
     <div className='expenseGroupsWrapper'>
@@ -128,23 +88,42 @@ function ViewExpenseGroup() {
                 <Typography variant="h6">
                   {"Add a new member"}
                 </Typography>
-                <div>
-                  {contacts.map(c => {
-                    return (<>
-                      <UserCard user={c} addButton={true}/>
-                    </>
-                    )
-                  })}
-                </div>
+                <>
+                  {
+                    contacts.filter(c => {
+                      let memberFound = false
+                      expenseGroup.members.forEach(m => {
+                        if (get(m, 'id') == get(c, 'ID')) {
+                          memberFound = true
+                        }
+                      })
+                      if (!memberFound) {
+                        return c
+                      }
+                    }).map(c => {
+                        return (<>
+                          <UserCard user={c} 
+                            addButton={true} 
+                            expenseGroupID={expenseGroup.ID} 
+                            addGroupMember={addGroupMember} 
+                            closeModal={() => {
+                              setOpenNewMemberModal(false)
+                            }}
+                            key={c.ID} />
+                        </>
+                        )
+                      })
+                  }
+                </>
                 <Button onClick={() => {
-                  addGroupMember()
+                  setOpenNewMemberModal(false)
                 }}>
-                  Submit
+                  Done
                 </Button>
               </Box>
             </Modal>
             {expenseGroup.expenses.map(ex => {
-              return <ExpenseCard expense={ex} dispatch={dispatch} key={ex.ID} saveMemberPercentages={saveMemberPercentages} />
+              return <ExpenseCard expense={ex} dispatch={dispatch} key={ex.ID} saveMemberPercentages={saveMemberPercentages} setShowAlert={setShowAlert} />
             })}
           </List>
         )}
@@ -153,8 +132,8 @@ function ViewExpenseGroup() {
           <>
             <List sx={{ paddingLeft: '35px'}}>
               {expenseGroup.members.map(member => {
-                return <div>
-                  <UserCard user={member} addButton={false}/>
+                return <div key={member.ID + member.firstName}>
+                  <UserCard user={member} addButton={false} key={member.ID} />
                 </div>
               })}
             </List>

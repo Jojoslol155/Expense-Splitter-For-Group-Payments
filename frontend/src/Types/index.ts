@@ -4,4 +4,4 @@ export * from './expenseTypes'
 
 export * from './actions'
 
-export * from './user'
+export * from './userTypes'

@@ -8,11 +8,12 @@ import { ExpenseGroupFormAction, Expense, MemberPercentage } from '../../Types'
 
 type Props = {
     expense: Expense
-    saveMemberPercentages: (expense: Expense) => void
+    saveMemberPercentages: (expense: Expense, setShowAlert: (alert: boolean) => void) => void
+    setShowAlert: (alert: boolean) => void
     dispatch: Dispatch<ExpenseGroupFormAction>
 }
 
-const ExpenseCard = ({expense, dispatch, saveMemberPercentages}: Props) => {
+const ExpenseCard = ({expense, dispatch, saveMemberPercentages, setShowAlert}: Props) => {
   return (
     <ListItem>
       <Accordion sx={{minWidth:'320px'}}>
@@ -31,7 +32,7 @@ const ExpenseCard = ({expense, dispatch, saveMemberPercentages}: Props) => {
         </AccordionDetails>
         <div className='buttonWrapper'>
           <Button onClick={() => {
-            saveMemberPercentages(expense)
+            saveMemberPercentages(expense, setShowAlert)
           }}>Save Changes</Button>
         </div>
       </Accordion>
