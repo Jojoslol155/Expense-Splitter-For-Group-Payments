@@ -4,10 +4,10 @@ import './ViewExpenseGroup.css'
 
 type Props = {
     header: string
-    setOpenModal: (isOpen: boolean) => void
+    setOpenDeleteModal: (isOpen: boolean) => void
 }
 
-const PageHeader = ({header, setOpenModal}: Props) => {
+const PageHeader = ({header, setOpenDeleteModal}: Props) => {
   return (
     <Box>
         <div className='pageHeaderWrapper'>
@@ -16,7 +16,7 @@ const PageHeader = ({header, setOpenModal}: Props) => {
             <ButtonGroup>
               <Button>Edit</Button>
               <Button onClick={() => {
-                setOpenModal(true)
+                setOpenDeleteModal(true)
               }}>Delete</Button>
             </ButtonGroup>
           </div>

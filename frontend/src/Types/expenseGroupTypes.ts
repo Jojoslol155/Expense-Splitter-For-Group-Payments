@@ -1,5 +1,5 @@
 import { Expense } from "./expenseTypes"
-import { User } from './user'
+import { User } from './userTypes'
 
 export interface ExpenseGroup {
     ID: number

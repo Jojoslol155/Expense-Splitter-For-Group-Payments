@@ -12,3 +12,8 @@ export interface MemberPercentage {
     firstName: string
     userID: number
 }
+
+export interface GroupMember {
+    expenseGroupID: number
+    memberID: number
+}
