@@ -51,8 +51,18 @@ namespace api.Controllers
             return Ok(groupMemberDTO);
         }
 
+        [HttpGet]
+        [Route("/group/{groupID}")]
+        public async Task<IActionResult> GetAllMembersForExpenseGroup([FromRoute] int groupID) {
+            var groupMembers = await _groupMemberRepo.GetAllForExpenseGroup(groupID);
+
+            var groupMemberDTOs = groupMembers.Select(gm => gm.ToGroupMemberDTO());
+            
+            return Ok(groupMemberDTOs);
+        }
+
         [HttpDelete]
-        [Route("/user/{userID}/group/{groupID}")]
+        [Route("group/{groupID}/user/{userID}")]
         public async Task<IActionResult> Delete([FromRoute] int userID, int groupID) {
             var deleteMember = await _groupMemberRepo.DeleteAsync(userID, groupID);
             
