@@ -8,7 +8,7 @@ import ViewContacts from '../Contacts/ViewContacts'
 import ExpenseGroupsContextProvider from '../../Context/ExpenseGroups'
 import AuthContextProvider from '../../Context/Auth'
 import ContactsContextProvider from '../../Context/Contacts'
-import { Container } from '@mui/material'
+import Login from '../Login/Login'
 
 function App() {
   return (
@@ -23,6 +23,7 @@ function App() {
                     <Route path="/group" element={<ViewExpenseGroup />}/> 
                     <Route path="/contacts" element={<ViewContacts />}/> 
                     <Route path="/group/:id/view" element={<ViewExpenseGroup />}/>
+                    <Route path="/login" element={<Login /> }/>
                 </Routes>
             </BrowserRouter>
           </div>

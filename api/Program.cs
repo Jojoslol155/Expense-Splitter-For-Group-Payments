@@ -2,8 +2,10 @@ using api.Data;
 using api.Interfaces;
 using api.Models;
 using api.Repository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +30,22 @@ builder.Services.AddControllers().AddNewtonsoftJson(options => {
 builder.Services.AddDbContext<ApplicationDBContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddIdentity<User, IdentityRole>(options => {
+    options.Password.RequireDigit = true;
+    options.Password.RequiredLength = 7;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+}).AddEntityFrameworkStores<ApplicationDBContext>();
+
+builder.Services.AddAuthentication(options => {
+    options.DefaultAuthenticateScheme =  
+    options.DefaultChallengeScheme = 
+    options.DefaultForbidScheme = 
+    options.DefaultScheme = 
+    options.DefaultSignInScheme = 
+    options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer();
 
 builder.Services.AddScoped<IExpenseGroupRepository, ExpenseGroupRepository>();
 builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
