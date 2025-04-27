@@ -1,5 +1,5 @@
 import React from 'react'
-import { Accordion, AccordionDetails, AccordionSummary, ListItem } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, ListItem, Button } from '@mui/material'
 import {formatDollarAmount } from '../../Util/formatting'
 import ExpandIcon from '../ExpandIcon/ExpandIcon'
 import UserExpensePercentage from '../MemberPercentage/MemberPercentage'
@@ -30,6 +30,9 @@ const Expense = ({name, amount, memberPercentages}: Props) => {
               )})
             }
         </AccordionDetails>
+        <div className='buttonWrapper'>
+          <Button>Save Changes</Button>
+        </div>
       </Accordion>
     </ListItem>
   )

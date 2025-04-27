@@ -6,6 +6,7 @@ using api.Interfaces;
 using api.Models;
 using api.Data;
 using Microsoft.EntityFrameworkCore;
+using api.DTOs.UserExpensePercentage;
 
 namespace api.Repository
 {
@@ -23,6 +24,23 @@ namespace api.Repository
             await _context.SaveChangesAsync();
 
             return userExpensePercentage;
+        }
+
+        public async Task<List<UserExpensePercentage>> GetAllAsync()
+        {
+            return await _context.UserExpensePercentages.ToListAsync();
+        }
+
+        public async Task<List<UserExpensePercentage>> GetAllByExpenseIDAsync(int expenseID)
+        {
+            return await _context.UserExpensePercentages
+                .Where(p => p.ExpenseID == expenseID)
+                .ToListAsync();
+        }
+
+        public Task<UserExpensePercentage> UpdateAsync(int id, UserExpensePercentageDTO userExpensePercentageDTO)
+        {
+            throw new NotImplementedException();
         }
     }
 }

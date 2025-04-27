@@ -50,5 +50,38 @@ namespace api.Controllers
 
             return Ok(uePercentageDTO);
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll() {
+            var expensePercentages = await _percentageRepo.GetAllAsync();
+
+            var percentageDTO = expensePercentages.Select(p => p.ToUserExpensePercentageDTO());
+
+            return Ok(percentageDTO);
+
+
+        }
+
+        [HttpGet("{expenseID}")]
+        public async Task<IActionResult> GetAllForExpense([FromRoute] int expenseID) {
+            var expensePercentages = await _percentageRepo.GetAllByExpenseIDAsync(expenseID);
+            
+            var percentageDTO = expensePercentages.Select(p => p.ToUserExpensePercentageDTO());
+
+            return Ok(percentageDTO);
+
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UserExpensePercentageDTO percentageDTO) {
+            var percentageModel = await _percentageRepo.UpdateAsync(id, percentageDTO);
+
+            if (percentageModel == null) {
+                return NotFound();
+            }
+
+            return Ok(percentageModel.ToUserExpensePercentageDTO());
+        }
     }
 }

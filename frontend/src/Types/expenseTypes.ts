@@ -12,3 +12,12 @@ export interface MemberPercentage {
     firstName: string
     userID: number
 }
+
+export interface MemberPercentageForm {
+    memberPercentages: MemberPercentage[]
+}
+
+export type MemberPercentagesContextType = {
+    memberPercentages: Array<MemberPercentage>
+    setMemberPercentages: (expenseGroups: Array<MemberPercentage>) => void
+}
