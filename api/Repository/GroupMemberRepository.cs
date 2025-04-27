@@ -30,8 +30,8 @@ namespace api.Repository
 
             return groupMember;
         }
-         public async Task<GroupMember?> DeleteAsync(int id)  {
-            var member = await _context.GroupMembers.FirstOrDefaultAsync(gm => gm.MemberID == id);
+         public async Task<GroupMember?> DeleteAsync(int userID, int expenseGroupID)  {
+            var member = await _context.GroupMembers.FirstOrDefaultAsync(gm => gm.MemberID == userID && gm.ExpenseGroupID == expenseGroupID);
 
             if (member == null) {
                 return null;

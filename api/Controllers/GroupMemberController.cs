@@ -52,9 +52,9 @@ namespace api.Controllers
         }
 
         [HttpDelete]
-        [Route("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] int id) {
-            var deleteMember = await _groupMemberRepo.DeleteAsync(id);
+        [Route("/user/{userID}/group/{groupID}")]
+        public async Task<IActionResult> Delete([FromRoute] int userID, int groupID) {
+            var deleteMember = await _groupMemberRepo.DeleteAsync(userID, groupID);
             
             if (deleteMember == null) {
                 return NotFound();
