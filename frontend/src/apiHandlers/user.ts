@@ -1,7 +1,6 @@
 import { GET_GROUP_MEMBERS_URL } from '../config'
 import { GroupMember } from '../Types'
 
-
 export const addGroupMember = async (groupMember: GroupMember) => {
     const options = {
         method: 'POST',

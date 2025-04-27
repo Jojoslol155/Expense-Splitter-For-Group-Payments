@@ -23,12 +23,12 @@ function ViewExpenseGroup() {
 
   useEffect(() => {
     getExpenseGroup()
-  }, [])
+  }, [expenseGroup])
 
   
   useEffect(() => {
     getContacts()
-  }, [])
+  }, [contacts])
 
   const style = {
     position: 'absolute',
