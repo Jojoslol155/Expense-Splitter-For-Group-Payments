@@ -25,7 +25,7 @@ namespace api.Controllers
 
             await _repo.CreateAsync(userModel);
 
-return CreatedAtAction(nameof(GetById), new { id = userModel.Id }, userModel.ToUserDTO());
+            return CreatedAtAction(nameof(GetById), new { id = userModel.Id }, userModel.ToUserDTO());
         }
 
         [HttpGet]
@@ -45,7 +45,19 @@ return CreatedAtAction(nameof(GetById), new { id = userModel.Id }, userModel.ToU
                 return NotFound();
             }
 
-            return Ok(user.ToUserDTO());
+            return NoContent();
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateUserReqDTO userDTO) {
+            var userModel = await _repo.UpdateAsync(id, userDTO);
+
+            if (userModel == null) {
+                return NotFound();
+            }
+
+            return Ok(userModel.ToUserDTO());
         }
 
         [HttpDelete]

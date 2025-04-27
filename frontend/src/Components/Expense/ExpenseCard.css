@@ -10,12 +10,8 @@
     width: 130px;
 }
 
-.percentageMapWrapper {
+.buttonWrapper {
+    width: 100%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.percentageMapElement {
-    max-width: 50px;
+    justify-content: flex-end;
 }

@@ -30,6 +30,17 @@ namespace api.Repository
 
             return groupMember;
         }
+         public async Task<GroupMember?> DeleteAsync(int id)  {
+            var member = await _context.GroupMembers.FirstOrDefaultAsync(gm => gm.MemberID == id);
+
+            if (member == null) {
+                return null;
+            }
+
+            _context.GroupMembers.Remove(member);
+            await _context.SaveChangesAsync();
+            return member;
+        }
 
     }
 }
