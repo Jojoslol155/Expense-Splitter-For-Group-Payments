@@ -75,7 +75,7 @@ namespace api.Controllers
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UserExpensePercentageDTO percentageDTO) {
-            var percentageModel = await _percentageRepo.UpdateAsync(id, percentageDTO);
+            var percentageModel = await _percentageRepo.UpdateAsync(percentageDTO);
 
             if (percentageModel == null) {
                 return NotFound();

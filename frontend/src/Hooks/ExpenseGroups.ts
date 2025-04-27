@@ -23,7 +23,7 @@ export function useGetAllExpenseGroups() {
 
                 return res.json();
             }).then((groupsRes) => {
-                const groups = new Array<ExpenseGroup>;
+                const groups = new Array<ExpenseGroup>();
 
                 groupsRes.forEach((eg: any) => {
                     groups.push(convertJSONToExpenseGroup(eg))
@@ -71,19 +71,3 @@ export function useGetExpenseGroup(expenseGroupID: number) {
 
     return [expenseGroup, getExpenseGroup, dispatch] as const
 }
-
-export function usePutExpense(expense: Expense) {
-
-    const putExpense = async () => {
-        
-    }
-
-    return [expense, putExpense] as const
-}
-
-
-
-// public int ExpenseID { get; set; }
-// public int UserID { get; set; }
-// public double Percentage { get; set; }
-// public string FirstName { get; set; } = string.Empty;

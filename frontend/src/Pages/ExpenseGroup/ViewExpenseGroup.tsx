@@ -24,9 +24,7 @@ function ViewExpenseGroup() {
         {expenseGroup.expenses && (
           <List sx={{ paddingLeft: '20px'}}>
             {expenseGroup.expenses.map(ex => {
-              return <div>
-                <ExpenseCard expense={ex} dispatch={dispatch}/>
-                </div>
+              return <ExpenseCard expense={ex} dispatch={dispatch} key={ex.ID}/>
             })}
           </List>
         )}

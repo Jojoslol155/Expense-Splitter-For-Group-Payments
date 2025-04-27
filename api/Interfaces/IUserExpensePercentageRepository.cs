@@ -12,6 +12,6 @@ namespace api.Interfaces
         Task<UserExpensePercentage> AddUserExpensePercentageAsync(UserExpensePercentage userExpensePercentage);
         Task<List<UserExpensePercentage>> GetAllAsync();
         Task<List<UserExpensePercentage>> GetAllByExpenseIDAsync(int expenseID);
-        Task<UserExpensePercentage> UpdateAsync(int id, UserExpensePercentageDTO userExpensePercentageDTO);
+        Task<UserExpensePercentage> UpdateAsync(UserExpensePercentageDTO userExpensePercentageDTO);
     }
 }

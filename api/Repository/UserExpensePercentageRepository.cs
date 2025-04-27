@@ -38,9 +38,18 @@ namespace api.Repository
                 .ToListAsync();
         }
 
-        public Task<UserExpensePercentage> UpdateAsync(int id, UserExpensePercentageDTO userExpensePercentageDTO)
+        public async Task<UserExpensePercentage> UpdateAsync(UserExpensePercentageDTO userExpensePercentageDTO)
         {
-            throw new NotImplementedException();
+            var existingUEP = await _context.UserExpensePercentages.FirstOrDefaultAsync(uep => uep.ExpenseID == userExpensePercentageDTO.ExpenseID && uep.UserID == userExpensePercentageDTO.UserID);
+            if (existingUEP == null) {
+                return null;
+            }
+
+            existingUEP.FirstName = userExpensePercentageDTO.FirstName;
+            existingUEP.Percentage = userExpensePercentageDTO.Percentage;
+
+            await _context.SaveChangesAsync();
+            return existingUEP;
         }
     }
 }

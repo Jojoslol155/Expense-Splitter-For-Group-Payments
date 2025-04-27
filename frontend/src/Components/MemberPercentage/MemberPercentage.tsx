@@ -16,12 +16,8 @@ const getAmountOwedForUser = (percentage: number, totalAmount: number): string =
   
 
 const UserExpensePercentage = ({memberPercentage, amount, dispatch}: Props) => {
-  //const [percentage, setPercentage] = useState(memberPercentage.percentage)
 
-
-  // TODO: add dispatch
   const handleSlider = (event:any, v: number) => {
-    //setPercentage(v);
     
     dispatch({type: 'SET_MEMBER_PERCENTAGE', payload: {
       expenseID: memberPercentage.expenseID,

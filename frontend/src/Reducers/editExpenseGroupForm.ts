@@ -11,9 +11,6 @@ export const editExpenseGroupForm = (state: ExpenseGroup, action: ExpenseGroupFo
     case 'SET_EXPENSE':
         return {...state, expenses: [...state.expenses, action.payload]}
     case 'SET_MEMBER_PERCENTAGE':
-        console.log(action.payload.expenseID)
-        console.log(state.expenses)
-
         for (let i = 0; i < state.expenses.length; i++) {
             let e = state.expenses[i]
 
@@ -36,28 +33,6 @@ export const editExpenseGroupForm = (state: ExpenseGroup, action: ExpenseGroupFo
         }
 
         return {...state}
-        // state.expenses.forEach(e => {
-        //   if (get(e, 'id') == action.payload.expenseID) {
-        //     console.log("found expense!")
-
-        //     e.userExpensePercentages.forEach(uep => {
-        //         console.log("found uep!")
-        //         if (uep.userID == action.payload.userID) {
-        //             console.log("found user!")
-        //             const newExpense = e;
-        //             const newPercentage: MemberPercentage = {
-        //                 expenseID: action.payload.expenseID,
-        //                 userID: action.payload.userID,
-        //                 firstName: action.payload.firstName,
-        //                 percentage: action.payload.percentage
-        //             }
-        //             newExpense.userExpensePercentages = [...newExpense.userExpensePercentages, newPercentage]
-        //             return {...state, expenses: [...state.expenses, newExpense]}
-        //         }
-        //     })
-        //   } 
-        // })
-        // return {...state}
     default:
         return {...state}
     }
