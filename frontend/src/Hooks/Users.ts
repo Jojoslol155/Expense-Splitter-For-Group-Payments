@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { User, ContactsContextType } from '../Types'
 import { GET_USERS_URL } from '../config'
 import { useNavigate } from 'react-router-dom'
-import { ContactsContext } from '../Context/User';
+import { ContactsContext } from '../Context/Contacts';
 import { convertJSONToUser } from '../Util/convertJSON'
 
 export function useGetAllContacts() {
