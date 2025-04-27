@@ -53,20 +53,16 @@ function ViewExpenseGroup() {
 
         fetch(GET_EXPENSES_URL + `/${expenseID}`, options).then(res => {
           return res
-        }).then(() => {
-          fetch(GET_EXPENSE_GROUPS_URL + `/${expenseGroup.ID}`, options).then(res => {
-            console.log("fetching?")
-            console.log(res)
-            if (res.status !== 204) {
-              // setStatus(StatusType.ERROR)
-              console.error("error: ", res.statusText)
-              // throw new Error("Could not create new World State")
-          }
-            console.log(res)
-            return res
-          })
         })
       }
+    
+      fetch(GET_EXPENSE_GROUPS_URL + `/${expenseGroup.ID}`, options).then(res => {
+        if (res.status !== 204) {
+          console.error("error: ", res.statusText)
+      }
+        return res
+      })
+      
     } catch(e) {
       console.error(e)
     }
@@ -100,9 +96,7 @@ function ViewExpenseGroup() {
                     console.error("error")
                 }
   
-                return res.json();
-            }).then(json => {
-                console.log(json)
+                return res
             })
         } catch(e) {
             console.error(e)
@@ -112,7 +106,6 @@ function ViewExpenseGroup() {
   
   const toMemberPercentageReq = (mp: MemberPercentage) => {
     const json = JSON.stringify(mp)
-    console.log(json)
     return json
   }
   
