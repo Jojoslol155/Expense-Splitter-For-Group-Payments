@@ -29,7 +29,7 @@ const UserExpensePercentage = ({memberPercentage, amount, dispatch}: Props) => {
 
   return (
     <div className='percentageMapWrapper'>
-    <div className='percentageMapElement name'>{memberPercentage.firstName}</div>
+    <div className='percentageMapElement percentageName'>{memberPercentage.firstName}</div>
     <Slider 
       value={memberPercentage.percentage} 
       min={0} 
