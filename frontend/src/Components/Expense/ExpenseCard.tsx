@@ -1,0 +1,46 @@
+import React, {Dispatch} from 'react'
+import { Accordion, AccordionDetails, AccordionSummary, ListItem, Button } from '@mui/material'
+import {formatDollarAmount } from '../../Util/formatting'
+import ExpandIcon from '../ExpandIcon/ExpandIcon'
+import UserExpensePercentage from '../MemberPercentage/MemberPercentage'
+import { usePutExpense } from '../../Hooks/ExpenseGroups'
+import './ExpenseCard.css'
+import { MemberPercentage, ExpenseGroupFormAction, Expense } from '../../Types'
+
+type Props = {
+    expense: Expense
+    dispatch: Dispatch<ExpenseGroupFormAction>
+}
+
+const ExpenseCard = ({expense, dispatch}: Props) => {
+  const [putExpense] = usePutExpense(expense)
+
+  return (
+    <ListItem>
+      <Accordion sx={{minWidth:'320px'}}>
+        <AccordionSummary expandIcon={<ExpandIcon />}>
+          <div className='expenseHeader'>
+            <div className='expenseHeaderElement'>{expense.name}</div>
+            <div className='expenseHeaderElement'>{formatDollarAmount(expense.amount)} </div>
+          </div>
+        </AccordionSummary>
+        <AccordionDetails sx={{minWidth:'500px'}}>
+            {expense.userExpensePercentages.map(p => {
+              return (
+                <UserExpensePercentage memberPercentage={p} amount={expense.amount} dispatch={dispatch}/>
+              )})
+            }
+        </AccordionDetails>
+        <div className='buttonWrapper'>
+          <Button onClick={() => {
+            //putExpense()
+            console.log("put!")
+          }}>Save Changes</Button>
+        </div>
+      </Accordion>
+    </ListItem>
+  )
+}
+
+
+export default ExpenseCard

@@ -1,10 +1,11 @@
 import { useReducer, useContext } from 'react'
-import { ExpenseGroupsContextType, ExpenseGroup, Expense } from '../Types'
-import { GET_EXPENSE_GROUPS_URL, GET_USERS_URL } from '../config'
+import { ExpenseGroupsContextType, ExpenseGroup, Expense, MemberPercentage } from '../Types'
+import { GET_EXPENSE_GROUPS_URL, GET_USERS_URL, GET_PERCENTAGES_URL } from '../config'
 import { ExpenseGroupsContext } from '../Context/ExpenseGroups'
 import { ContactsContext } from '../Context/User'
 import { convertJSONToExpenseGroup } from '../Util/convertJSON'
 import { defaultExpenseGroup, editExpenseGroupForm } from '../Reducers/editExpenseGroupForm'
+//import { memberPercentagesForm, defaultMemberPercentages } from '../Reducers/editExpense'
 
 export function useGetAllExpenseGroups() {
     const { expenseGroups, setExpenseGroups } = useContext(ExpenseGroupsContext) as ExpenseGroupsContextType
@@ -70,3 +71,19 @@ export function useGetExpenseGroup(expenseGroupID: number) {
 
     return [expenseGroup, getExpenseGroup, dispatch] as const
 }
+
+export function usePutExpense(expense: Expense) {
+
+    const putExpense = async () => {
+        
+    }
+
+    return [expense, putExpense] as const
+}
+
+
+
+// public int ExpenseID { get; set; }
+// public int UserID { get; set; }
+// public double Percentage { get; set; }
+// public string FirstName { get; set; } = string.Empty;

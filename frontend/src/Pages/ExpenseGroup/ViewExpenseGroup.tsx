@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useGetExpenseGroup } from '../../Hooks/ExpenseGroups'
-import Expense from '../../Components/Expense/Expense'
+import ExpenseCard from '../../Components/Expense/ExpenseCard'
 import { List, Stack } from '@mui/material'
 import UserCard from '../../Components/Contact/UserCard'
 import PageHeader from '../../Components/PageHeader'
@@ -10,7 +10,7 @@ import './ViewExpenseGroup.css'
 
 function ViewExpenseGroup() {
   const { id } = useParams()
-  const [expenseGroup, getExpenseGroup] = useGetExpenseGroup(Number(id))
+  const [expenseGroup, getExpenseGroup, dispatch] = useGetExpenseGroup(Number(id))
 
   useEffect(() => {
     getExpenseGroup()
@@ -25,7 +25,7 @@ function ViewExpenseGroup() {
           <List sx={{ paddingLeft: '20px'}}>
             {expenseGroup.expenses.map(ex => {
               return <div>
-                <Expense name={ex.name} amount={ex.amount} memberPercentages={ex.userExpensePercentages}/>
+                <ExpenseCard expense={ex} dispatch={dispatch}/>
                 </div>
             })}
           </List>
