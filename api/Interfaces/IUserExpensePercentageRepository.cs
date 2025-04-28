@@ -13,6 +13,6 @@ namespace api.Interfaces
         Task<List<UserExpensePercentage>> GetAllAsync();
         Task<List<UserExpensePercentage>> GetAllByExpenseIDAsync(int expenseID);
         Task<UserExpensePercentage> UpdateAsync(UserExpensePercentageDTO userExpensePercentageDTO);
-        Task<UserExpensePercentage> DeleteAsync(string userID, int expenseID);
+        Task<UserExpensePercentage> DeleteAsync(int expenseID, string userID);
     }
 }

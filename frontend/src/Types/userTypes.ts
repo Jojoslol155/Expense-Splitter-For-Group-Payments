@@ -11,12 +11,23 @@ export type ContactsContextType = {
 }
 
 export type UserContextType = {
-    refreshToken: string
-    accessToken: string
-    setAccessToken: (token: string) => void
-    setRefreshToken: (token: string) => void
+    token: string
+    setToken: (token: string) => void
     username: string
+    setUsername: (username: string) => void
     email: string
-    setEmail: (token: string) => void
-    setUsername: (token: string) => void
+    setEmail: (email: string) => void
+}
+
+export type LoginForm = {
+    username: string
+    password: string
+}
+
+export type RegisterForm = {
+    firstName: string
+    lastName: string
+    email: string
+    password: string
+    username: string
 }

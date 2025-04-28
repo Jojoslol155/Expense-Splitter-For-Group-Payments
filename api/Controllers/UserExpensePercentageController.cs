@@ -74,7 +74,7 @@ namespace api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UserExpensePercentageDTO percentageDTO) {
+        public async Task<IActionResult> Update([FromBody] UserExpensePercentageDTO percentageDTO) {
             var percentageModel = await _percentageRepo.UpdateAsync(percentageDTO);
 
             if (percentageModel == null) {
@@ -82,6 +82,18 @@ namespace api.Controllers
             }
 
             return Ok(percentageModel.ToUserExpensePercentageDTO());
+        }
+
+        [HttpDelete]
+        [Route("expense/{expenseID}/user/{userID}")]
+        public async Task<IActionResult> Delete([FromRoute] int expenseID, [FromRoute] string userID) {
+            var uep = await _percentageRepo.DeleteAsync(expenseID, userID);
+            
+            if (uep == null) {
+                return NotFound();
+            }
+
+            return NoContent();
         }
     }
 }

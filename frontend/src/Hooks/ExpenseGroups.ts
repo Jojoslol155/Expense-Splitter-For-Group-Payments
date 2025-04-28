@@ -4,7 +4,7 @@ import { GET_EXPENSE_GROUPS_URL, GET_USERS_URL, GET_PERCENTAGES_URL } from '../c
 import { ExpenseGroupsContext } from '../Context/ExpenseGroups'
 import { ContactsContext } from '../Context/Contacts'
 import { convertJSONToExpenseGroup } from '../Util/convertJSON'
-import { defaultExpenseGroup, editExpenseGroupForm } from '../Reducers/editExpenseGroupForm'
+import { defaultExpenseGroup, expenseGroupState } from '../Reducers/expenseGroupState'
 //import { memberPercentagesForm, defaultMemberPercentages } from '../Reducers/editExpense'
 
 export function useGetAllExpenseGroups() {
@@ -43,7 +43,7 @@ export function useGetAllExpenseGroups() {
 }
 
 export function useGetExpenseGroup(expenseGroupID: number) {
-    const [ expenseGroup, dispatch ] = useReducer(editExpenseGroupForm, defaultExpenseGroup)
+    const [ expenseGroup, dispatch ] = useReducer(expenseGroupState, defaultExpenseGroup)
 
     // TODO: authentication
     // TODO: refactor state management... :( 

@@ -52,7 +52,7 @@ namespace api.Repository
             return existingUEP;
         }
 
-        public async Task<UserExpensePercentage> DeleteAsync(string userID, int expenseID) {
+        public async Task<UserExpensePercentage> DeleteAsync(int expenseID, string userID) {
             var uepModel = await _context.UserExpensePercentages.FirstOrDefaultAsync(uep => uep.UserID == userID && uep.ExpenseID == expenseID);
 
             if (uepModel == null) {
@@ -63,5 +63,6 @@ namespace api.Repository
             await _context.SaveChangesAsync();
             return uepModel;
         }
+
     }
 }

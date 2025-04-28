@@ -1,23 +1,32 @@
-import React, { createContext } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import { useLocalStorage } from '../Hooks/LocalStorage'
-import { UserContextType } from '../Types'
+import { LoginForm, RegisterForm, UserContextType } from '../Types'
 
-export const AuthContext = createContext<UserContextType | null>(null)
+export const AuthContext = createContext<UserContextType>({} as UserContextType)
 
-const AuthContextProvider = ({ children }: React.PropsWithChildren<unknown>) => {
-    const [accessToken, setAccessToken] = useLocalStorage("accessToken", "")
-    const [refreshToken, setRefreshToken] = useLocalStorage("refreshToken", "")
-    const [email, setEmail] = useLocalStorage("email", "")
-    const [username, setUsername] = useLocalStorage("username", "")
+export const AuthContextProvider = ({ children }: React.PropsWithChildren<unknown>) => {
+    // const navigate = useNavigate()
+    const [token, setToken] = useState('')
+    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
+    // const [isReady, setIsReady] = useState(false)
+
+    useEffect(() => {
+        const username = localStorage.getItem("username")
+        const token = localStorage.getItem("token")
+        if (username && token && username !== '' && token !== '') {
+            setUsername(username)
+            setToken(token)
+        }
+    }, [])
+
 
     return <AuthContext.Provider value={{
-        accessToken,
-        refreshToken,
-        setAccessToken,
-        setRefreshToken,
+        token,
+        username,
         email,
         setEmail,
-        username,
+        setToken,
         setUsername
     }}>
         {children}

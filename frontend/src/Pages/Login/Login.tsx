@@ -1,22 +1,63 @@
-import { TextField } from '@mui/material'
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { backdropClasses, Button, TextField } from '@mui/material'
+import { useLogin } from '../../Hooks/Auth'
+import './Login.css'
+import { AuthContext } from '../../Context/Auth'
+import { UserContextType } from '../../Types'
+import { Navigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-type Props = {}
+const Login = () => {
+  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('')
+  const {token} = useContext(AuthContext) as UserContextType
+  const [login] = useLogin({username, password})
 
-const Login = (props: Props) => {
-  return (
-    <div>
-      <p>First name</p>
-      <TextField />
+  const style = {
+    backgroundColor: 'white'
+  }
 
-      <p>Last name</p>
-      <TextField />
+  const buttonStyle = {
+    backgroundColor: '#29A3A3'
+  }
 
-      <p>Email name</p>
-      <TextField />
+  return token && token !== '' ? <>
+      <Navigate to="/" />
+    </> : (
+    <div className='loginFormWrapper'>
+      <div className='loginHeader'>
+        $plit
+      </div>
+      <TextField 
+        value={username} 
+        sx={style} 
+        label={"Username"}
+        id="filled-required"
+        variant="filled"
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          event.preventDefault()
+          setUsername(event.target.value)
+      }}/>
 
-      <p>Password</p>
-      <TextField />
+      <TextField 
+        value={password} 
+        sx={style} 
+        label={"Password"}
+        type={"password"}
+        id="filled-password-input"
+        variant="filled"
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          event.preventDefault()
+          setPassword(event.target.value)
+      }}/>
+      <Button variant="contained" style={buttonStyle} onClick={() => {
+        login()
+      }}>
+        LOGIN
+      </Button>
+      <div>
+        Don't have an account? Register <Link className='registerLink' to="/register">here</Link>
+      </div>
     </div>
   )
 }

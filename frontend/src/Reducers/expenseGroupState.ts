@@ -2,10 +2,10 @@ import { ExpenseGroup, ExpenseGroupFormAction, MemberPercentage } from '../Types
 import { defaultCreateExpenseGroupForm } from './createExpenseGroupForm'
 import { get } from 'lodash'
 
-export const editExpenseGroupForm = (state: ExpenseGroup, action: ExpenseGroupFormAction) => {
+export const expenseGroupState = (state: ExpenseGroup, action: ExpenseGroupFormAction) => {
  switch (action.type) {
     case 'SET_EXPENSE_GROUP_NAME':
-        return {...state, name: action.paylod}
+        return {...state, name: action.payload}
     case 'SET_EXPENSE_GROUP':
         return {...action.payload}
     case 'SET_EXPENSE':
