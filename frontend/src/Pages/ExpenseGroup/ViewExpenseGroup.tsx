@@ -3,25 +3,32 @@ import { useParams } from 'react-router-dom'
 import { useGetExpenseGroup } from '../../Hooks/ExpenseGroups'
 import ExpenseCard from '../../Components/Expense/ExpenseCard'
 import { Alert, List, Modal, Stack, Box, Typography, Button } from '@mui/material'
-import { GET_PERCENTAGES_URL, GET_EXPENSE_GROUPS_URL, GET_EXPENSES_URL } from '../../config'
 import UserCard from '../../Components/Contact/UserCard'
 import PageHeader from './ExpenseGroupPageHeader'
 import SectionHeader from '../../Components/SectionHeader'
 import { get } from 'lodash'
-import { Expense, MemberPercentage } from '../../Types'
+import { useGetAllContacts } from '../../Hooks/Users'
 import { useNavigate } from 'react-router-dom'
+import { deleteExpenseGroup, addGroupMember, saveMemberPercentages } from '../../apiHandlers'
 import './ViewExpenseGroup.css'
 
 function ViewExpenseGroup() {
   const { id } = useParams()
   const [expenseGroup, getExpenseGroup, dispatch] = useGetExpenseGroup(Number(id))
   const [ showAlert, setShowAlert ] = useState(false)
-  const [ openModal, setOpenModal ] = useState(false)
+  const [ openDeleteModal, setOpenDeleteModal ] = useState(false)
+  const [ openNewMemberModal, setOpenNewMemberModal ] = useState(false)
   const navigate = useNavigate()
+  const [contacts, getContacts] = useGetAllContacts()
 
   useEffect(() => {
     getExpenseGroup()
-  }, [])
+  }, [expenseGroup])
+
+  
+  useEffect(() => {
+    getContacts()
+  }, [contacts])
 
   const style = {
     position: 'absolute',
@@ -35,92 +42,12 @@ function ViewExpenseGroup() {
     boxShadow: 24,
     p: 4,
   }
-
-  const deleteExpenseGroup = async () => {
-    const options = {
-      method: 'DELETE',
-      headers: { 
-        'Content-type': 'application/json',
-      }
-    }
-    // delete all expenses first
-    try {
-      const expenses = expenseGroup.expenses
-
-      for (let i = 0; i < expenses.length; i++) {
-        const exp = expenses[i]
-        const expenseID = get(exp, 'id')
-
-        fetch(GET_EXPENSES_URL + `/${expenseID}`, options).then(res => {
-          return res
-        }).then(() => {
-          fetch(GET_EXPENSE_GROUPS_URL + `/${expenseGroup.ID}`, options).then(res => {
-            console.log("fetching?")
-            console.log(res)
-            if (res.status !== 204) {
-              // setStatus(StatusType.ERROR)
-              console.error("error: ", res.statusText)
-              // throw new Error("Could not create new World State")
-          }
-            console.log(res)
-            return res
-          })
-        })
-      }
-    } catch(e) {
-      console.error(e)
-    }
-
-    navigate('/')
-  }
-
-  const saveMemberPercentages = async (expense: Expense) => {
-    let percentageSum = 0;
-    for (let i = 0; i < expense.userExpensePercentages.length; i++) {
-      percentageSum = Math.round(percentageSum + expense.userExpensePercentages[i].percentage)
-    }
-  
-    if (percentageSum !== 1) {
-      setShowAlert(true)
-      return
-    }
-  
-    for (let i = 0; i < expense.userExpensePercentages.length; i++) {
-      const options = {
-        method: 'PUT',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: toMemberPercentageReq(expense.userExpensePercentages[i]),
-      }
-  
-        try {
-            fetch(GET_PERCENTAGES_URL + `/${get(expense, 'id')}`, options).then(res => {
-                if (res.status !== 200) {
-                    console.error("error")
-                }
-  
-                return res.json();
-            }).then(json => {
-                console.log(json)
-            })
-        } catch(e) {
-            console.error(e)
-        }
-    }
-  }
-  
-  const toMemberPercentageReq = (mp: MemberPercentage) => {
-    const json = JSON.stringify(mp)
-    console.log(json)
-    return json
-  }
   
 
   return (
     <div className='expenseGroupsWrapper'>
       <Stack spacing={2}>
-        <PageHeader header={expenseGroup.name} setOpenModal={setOpenModal}/>
+        <PageHeader header={expenseGroup.name} setOpenDeleteModal={setOpenDeleteModal}/>
         <SectionHeader text={"Expenses"}/>
         {expenseGroup.expenses && (
           <List sx={{ paddingLeft: '20px'}}>
@@ -129,43 +56,93 @@ function ViewExpenseGroup() {
             }}>
               Percentages must total to 100%
             </Alert>}
-            <Modal open={openModal}
+            <Modal open={openDeleteModal}
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
               onClose={() => {
-                setOpenModal(false)
-            }}>
+                setOpenDeleteModal(false)
+              }}>
               <Box sx={style}>
                 <Typography variant="h6">
                   {"Are you sure you want to delete?"}
                 </Typography>
                 <Button onClick={() => {
-                  deleteExpenseGroup()
+                  deleteExpenseGroup(expenseGroup, navigate)
                 }}>
                   Delete
                 </Button>
                 <Button onClick={() => {
-                  setOpenModal(false)
+                  setOpenDeleteModal(false)
                 }}>
                   Cancel
                 </Button>
               </Box>
-                
+            </Modal>
+            <Modal open={openNewMemberModal}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+              onClose={() => {
+                setOpenNewMemberModal(false)
+              }}>
+              <Box sx={style}>
+                <Typography variant="h6">
+                  {"Add a new member"}
+                </Typography>
+                <>
+                  {
+                    contacts.filter(c => {
+                      let memberFound = false
+                      expenseGroup.members.forEach(m => {
+                        if (get(m, 'id') == get(c, 'ID')) {
+                          memberFound = true
+                        }
+                      })
+                      if (!memberFound) {
+                        return c
+                      }
+                    }).map(c => {
+                        return (<>
+                          <UserCard user={c} 
+                            addButton={true} 
+                            expenseGroupID={expenseGroup.ID} 
+                            addGroupMember={addGroupMember} 
+                            closeModal={() => {
+                              setOpenNewMemberModal(false)
+                            }}
+                            key={c.ID} />
+                        </>
+                        )
+                      })
+                  }
+                </>
+                <Button onClick={() => {
+                  setOpenNewMemberModal(false)
+                }}>
+                  Done
+                </Button>
+              </Box>
             </Modal>
             {expenseGroup.expenses.map(ex => {
-              return <ExpenseCard expense={ex} dispatch={dispatch} key={ex.ID} saveMemberPercentages={saveMemberPercentages} />
+              return <ExpenseCard expense={ex} dispatch={dispatch} key={ex.ID} saveMemberPercentages={saveMemberPercentages} setShowAlert={setShowAlert} />
             })}
           </List>
         )}
         <SectionHeader text={"Members"}/>
         {expenseGroup.members && (
-          <List sx={{ paddingLeft: '35px'}}>
-            {expenseGroup.members.map(member => {
-              return <div>
-                <UserCard user={member} />
-              </div>
-            })}
-          </List>
+          <>
+            <List sx={{ paddingLeft: '35px'}}>
+              {expenseGroup.members.map(member => {
+                return <div key={member.ID + member.firstName}>
+                  <UserCard user={member} addButton={false} key={member.ID} />
+                </div>
+              })}
+            </List>
+            <Button style={{width:'200px'}} onClick={() => {
+              setOpenNewMemberModal(true)
+              }}>
+              Add new
+            </Button>
+            </>
         )}
       </Stack>
     </div>

@@ -10,6 +10,7 @@ namespace api.Interfaces
     public interface IGroupMemberRepository
     {
         Task<GroupMember> AddGroupMemberAsync(ExpenseGroup group, User member);
-        Task<GroupMember> DeleteAsync(int id);
+        Task<List<GroupMember>> GetAllForExpenseGroup(int expenseGroupID);
+        Task<GroupMember> DeleteAsync(int userID, int expenseGroupID);
     }
 }

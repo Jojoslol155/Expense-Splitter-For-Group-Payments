@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import './Dashboard.css'
 import { useGetAllExpenseGroups } from '../../Hooks/ExpenseGroups';
 import ExpenseGroups from '../../Components/ExpenseGroups/ExpenseGroups';
+import AddNew from '../../Components/AddNew/AddNew';
 
 function Dashboard() {
   const [expenseGroups, getExpenseGroups] = useGetAllExpenseGroups();
@@ -13,7 +14,10 @@ function Dashboard() {
 
   return (
     <div className='dashboardWrapper'>
-        <ExpenseGroups groups={expenseGroups}/>
+          <AddNew/>
+
+         <ExpenseGroups groups={expenseGroups} />
+          
     </div>
   );
 }
