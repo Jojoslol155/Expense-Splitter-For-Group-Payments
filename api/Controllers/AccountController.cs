@@ -26,6 +26,7 @@ namespace api.Controllers
                     FirstName = registerDTO.FirstName,
                     LastName = registerDTO.LastName,
                     Email = registerDTO.Email,
+                    UserName = registerDTO.UserName,
                 };
 
                 var createdUser = await _userManager.CreateAsync(user, registerDTO.Password);

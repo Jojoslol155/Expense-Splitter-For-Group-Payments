@@ -18,12 +18,6 @@ namespace api.Repository
             _context = context; 
         }
 
-        public async Task<User> CreateAsync(User userModel) {
-            await _context.Users.AddAsync(userModel);
-            await _context.SaveChangesAsync();
-            return userModel;
-        }
-
         public async Task<List<User>> GetAllAsync() {
             return await _context.Users.ToListAsync();
         }

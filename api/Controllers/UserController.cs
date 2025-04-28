@@ -20,14 +20,6 @@ namespace api.Controllers
             _repo = userRepo;
         }
 
-        [HttpPost] public async Task<IActionResult> Create([FromBody] CreateUserReqDTO userDTO) {
-            var userModel = userDTO.ToUserFromCreateDTO();
-
-            await _repo.CreateAsync(userModel);
-
-            return CreatedAtAction(nameof(GetById), new { id = userModel.Id }, userModel.ToUserDTO());
-        }
-
         [HttpGet]
         public async Task<IActionResult> GetAll() {
             var users = await _repo.GetAllAsync();

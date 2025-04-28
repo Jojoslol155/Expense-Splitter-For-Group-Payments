@@ -11,6 +11,9 @@ namespace api.DTOs.Account {
 
         [Required]
         public required string? LastName { get; set; }
+
+        [Required]
+        public required string? UserName { get; set; }
         
         [Required]
         [EmailAddress]

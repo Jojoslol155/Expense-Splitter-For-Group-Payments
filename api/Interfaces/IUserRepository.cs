@@ -11,7 +11,6 @@ namespace api.Interfaces
     {
         Task<List<User>> GetAllAsync();
         Task<User?> GetByIDAsync(string id);
-        Task<User> CreateAsync(User userModel);
         Task<bool> UserExists(string id);
         Task<User?> UpdateAsync(string id, UpdateUserReqDTO userDTO);
         Task<User?> DeleteAsync(string id);
