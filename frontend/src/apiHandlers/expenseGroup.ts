@@ -1,6 +1,6 @@
 import { NavigateFunction } from 'react-router-dom'
 import { ExpenseGroup } from '../Types'
-//import { get } from 'loadash'
+import { get } from 'lodash'
 import { GET_EXPENSE_GROUPS_URL, GET_EXPENSES_URL } from '../config'
 
 export const deleteExpenseGroup = async (expenseGroup: ExpenseGroup, navigate: NavigateFunction) => {
