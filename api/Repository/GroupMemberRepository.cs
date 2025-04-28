@@ -38,7 +38,7 @@ namespace api.Repository
                 .ToListAsync();
         }
 
-         public async Task<GroupMember?> DeleteAsync(int userID, int expenseGroupID)  {
+         public async Task<GroupMember?> DeleteAsync(string userID, int expenseGroupID)  {
             var member = await _context.GroupMembers.FirstOrDefaultAsync(gm => gm.MemberID == userID && gm.ExpenseGroupID == expenseGroupID);
 
             if (member == null) {

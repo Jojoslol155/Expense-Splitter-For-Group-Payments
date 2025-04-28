@@ -38,7 +38,7 @@ namespace api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById([FromRoute] int id) {
+        public async Task<IActionResult> GetById([FromRoute] string id) {
             var user = await _repo.GetByIDAsync(id);
 
             if (user == null) {
@@ -50,7 +50,7 @@ namespace api.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateUserReqDTO userDTO) {
+        public async Task<IActionResult> Update([FromRoute] string id, [FromBody] UpdateUserReqDTO userDTO) {
             var userModel = await _repo.UpdateAsync(id, userDTO);
 
             if (userModel == null) {
@@ -62,7 +62,7 @@ namespace api.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] int id) {
+        public async Task<IActionResult> Delete([FromRoute] string id) {
             var user = await _repo.DeleteAsync(id);
             
             if (user == null) {

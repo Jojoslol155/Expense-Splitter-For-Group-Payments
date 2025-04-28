@@ -28,15 +28,15 @@ namespace api.Repository
             return await _context.Users.ToListAsync();
         }
         
-        public async Task<User?> GetByIDAsync(int id) {
+        public async Task<User?> GetByIDAsync(string id) {
             return await _context.Users.FindAsync(id);
         }
 
-        public async Task<bool> UserExists(int id) {
+        public async Task<bool> UserExists(string id) {
             return await _context.Users.AnyAsync(u => u.Id == id);
         }
 
-        public async Task<User?> DeleteAsync(int id)  {
+        public async Task<User?> DeleteAsync(string id)  {
             var userModel = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 
             if (userModel == null) {
@@ -48,7 +48,7 @@ namespace api.Repository
             return userModel;
         }
 
-        public async Task<User?> UpdateAsync(int id, UpdateUserReqDTO userDTO) {
+        public async Task<User?> UpdateAsync(string id, UpdateUserReqDTO userDTO) {
             var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 
             if (existingUser == null) {

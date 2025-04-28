@@ -10,10 +10,10 @@ export interface MemberPercentage {
     expenseID: number
     percentage: number
     firstName: string
-    userID: number
+    userID: string
 }
 
 export interface GroupMember {
     expenseGroupID: number
-    memberID: number
+    memberID: string
 }

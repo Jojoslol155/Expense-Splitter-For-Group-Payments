@@ -28,6 +28,7 @@ namespace api.Data
         // TODO: expense and percentage mapping
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            base.OnModelCreating(modelBuilder);
             // Join tables for many-to-many relationships
             modelBuilder.Entity<GroupMember>()
                 .HasKey(gm => new { gm.ExpenseGroupID, gm.MemberID } );

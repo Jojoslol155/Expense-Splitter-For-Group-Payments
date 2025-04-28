@@ -63,12 +63,12 @@ namespace api.Controllers
 
         [HttpDelete]
         [Route("group/{groupID}/user/{userID}")]
-        public async Task<IActionResult> Delete([FromRoute] int userID, int groupID) {
+        public async Task<IActionResult> Delete([FromRoute] string userID, int groupID) {
             var deleteMember = await _groupMemberRepo.DeleteAsync(userID, groupID);
             
             if (deleteMember == null) {
                 return NotFound();
-            }
+            } 
 
             return NoContent();
         }
