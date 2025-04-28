@@ -25,8 +25,6 @@ namespace api.Data
 
         public DbSet<UserExpensePercentage> UserExpensePercentages { get; set; }
 
-        // TODO: expense and percentage mapping
-
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
             // Join tables for many-to-many relationships
