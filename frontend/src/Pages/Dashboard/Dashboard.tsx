@@ -3,14 +3,17 @@ import './Dashboard.css'
 import { useGetAllExpenseGroups } from '../../Hooks/ExpenseGroups';
 import ExpenseGroups from '../../Components/ExpenseGroups/ExpenseGroups';
 import AddNew from '../../Components/AddNew/AddNew';
-import { Alert, List, Modal, Stack, Box, Typography, Button ,TextField} from '@mui/material'
+import { Alert, List, Modal, Stack, Box, Typography, Button, TextField } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+import {createExpenseGroup} from '../../Services'
 
 import { CreateExpenseGroupForm } from '../../Types';
 
 function Dashboard() {
   const [expenseGroups, getExpenseGroups] = useGetAllExpenseGroups();
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState("");
+    const [name, setName] = useState("");
+    const navigate = useNavigate()
     
   useEffect(() => {
     getExpenseGroups()
@@ -64,10 +67,11 @@ function Dashboard() {
                           
                               name
                           }
-                          
-                      
+                          createExpenseGroup(newExpenseGroup,navigate)
+                      setOpen(false);
+                      navigate("/") 
                   }}>
-                      {"+"}
+                      {"add"}
                   </Button>
               </Box>
           </Modal>

@@ -12,6 +12,4 @@ export const createExpenseGroupForm = (name: string): CreateExpenseGroupForm => 
 
 export const defaultCreateExpenseGroupForm : CreateExpenseGroupForm = {
     name: '',
-    expenses: [],
-    members: []
 }

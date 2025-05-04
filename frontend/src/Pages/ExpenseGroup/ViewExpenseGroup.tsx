@@ -9,7 +9,7 @@ import SectionHeader from '../../Components/SectionHeader'
 import { get } from 'lodash'
 import { useGetAllContacts } from '../../Hooks/Users'
 import { useNavigate } from 'react-router-dom'
-import { deleteExpenseGroup, addGroupMember, saveMemberPercentages } from '../../apiHandlers'
+import { deleteExpenseGroup, addGroupMember, saveMemberPercentages } from '../../Services'
 import './ViewExpenseGroup.css'
 
 function ViewExpenseGroup() {
