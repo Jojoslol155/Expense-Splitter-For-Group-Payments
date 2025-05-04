@@ -8,7 +8,7 @@ namespace api.Models
     public class UserExpensePercentage
     {
         public int ExpenseID { get; set; }
-        public int UserID { get; set; }
+        public string UserID { get; set; } = string.Empty;
         public double Percentage { get; set; }
         public string FirstName { get; set; } = string.Empty; // TODO can probably use the navigation property instead
         public Expense Expense { get; set; } = null!;

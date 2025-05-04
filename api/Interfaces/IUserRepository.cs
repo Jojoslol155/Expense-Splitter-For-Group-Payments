@@ -10,10 +10,9 @@ namespace api.Interfaces
     public interface IUserRepository
     {
         Task<List<User>> GetAllAsync();
-        Task<User?> GetByIDAsync(int id);
-        Task<User> CreateAsync(User userModel);
-        Task<bool> UserExists(int id);
-        Task<User?> UpdateAsync(int id, UpdateUserReqDTO userDTO);
-        Task<User?> DeleteAsync(int id);
+        Task<User?> GetByIDAsync(string id);
+        Task<bool> UserExists(string id);
+        Task<User?> UpdateAsync(string id, UpdateUserReqDTO userDTO);
+        Task<User?> DeleteAsync(string id);
     }
 }

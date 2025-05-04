@@ -7,7 +7,7 @@ import { Button } from '@mui/material'
 type Props = {
   user: User
   addButton: boolean
-  addGroupMember?: (groupMember: GroupMember) => void
+  addGroupMember?: (groupMember: GroupMember, firstName: string) => void
   expenseGroupID?: number
   closeModal?: () => void
 }
@@ -26,7 +26,7 @@ const UserCard = ({user, addButton, expenseGroupID, addGroupMember, closeModal}:
                 memberID: user.ID,
                 expenseGroupID: expenseGroupID
               }
-              addGroupMember(newGroupMember)
+              addGroupMember(newGroupMember, user.firstName)
               if (closeModal) {
                 closeModal()
               }

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Data
 {
-    public class ApplicationDBContext : DbContext
+    public class ApplicationDBContext : IdentityDbContext<User>
     {
         public ApplicationDBContext(DbContextOptions dbContextOptions)
         : base(dbContextOptions) {
@@ -18,15 +19,14 @@ namespace api.Data
 
         public DbSet<Expense> Expenses { get; set; }
         
-        public DbSet<User> Users { get; set; }
+        // public DbSet<User> Users { get; set; }
 
         public DbSet<GroupMember> GroupMembers { get; set; }
 
         public DbSet<UserExpensePercentage> UserExpensePercentages { get; set; }
 
-        // TODO: expense and percentage mapping
-
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            base.OnModelCreating(modelBuilder);
             // Join tables for many-to-many relationships
             modelBuilder.Entity<GroupMember>()
                 .HasKey(gm => new { gm.ExpenseGroupID, gm.MemberID } );

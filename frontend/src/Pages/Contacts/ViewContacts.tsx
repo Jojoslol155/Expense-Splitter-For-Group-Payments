@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { User } from '../../Types'
 import { useGetAllContacts } from '../../Hooks/Users'
 import './ViewContacts.css'
 import UserCard from '../../Components/Contact/UserCard'

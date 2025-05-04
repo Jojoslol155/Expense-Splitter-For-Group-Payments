@@ -11,6 +11,6 @@ namespace api.Interfaces
     {
         Task<GroupMember> AddGroupMemberAsync(ExpenseGroup group, User member);
         Task<List<GroupMember>> GetAllForExpenseGroup(int expenseGroupID);
-        Task<GroupMember> DeleteAsync(int userID, int expenseGroupID);
+        Task<GroupMember> DeleteAsync(string userID, int expenseGroupID);
     }
 }

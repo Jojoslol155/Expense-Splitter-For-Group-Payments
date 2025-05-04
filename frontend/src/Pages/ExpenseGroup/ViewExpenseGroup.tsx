@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useGetExpenseGroup } from '../../Hooks/ExpenseGroups'
 import ExpenseCard from '../../Components/Expense/ExpenseCard'
@@ -9,7 +9,6 @@ import SectionHeader from '../../Components/SectionHeader'
 import { get } from 'lodash'
 import { useGetAllContacts } from '../../Hooks/Users'
 import { useNavigate } from 'react-router-dom'
-
 import { deleteExpenseGroup, addGroupMember, saveMemberPercentages } from '../../Services'
 import './ViewExpenseGroup.css'
 
@@ -124,7 +123,7 @@ function ViewExpenseGroup() {
               </Box>
             </Modal>
             {expenseGroup.expenses.map(ex => {
-              return <ExpenseCard expense={ex} dispatch={dispatch} key={ex.ID} saveMemberPercentages={saveMemberPercentages} setShowAlert={setShowAlert} />
+              return <ExpenseCard expense={ex} dispatch={dispatch} key={ex.ID + "c"} saveMemberPercentages={saveMemberPercentages} setShowAlert={setShowAlert} />
             })}
           </List>
         )}
