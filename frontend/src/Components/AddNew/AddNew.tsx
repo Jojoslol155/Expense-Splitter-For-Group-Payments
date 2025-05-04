@@ -1,15 +1,33 @@
 import React, { useEffect } from 'react'
-import AddNewCard from './AddNewCard'
+
 import { Grid } from '@mui/material'
-function AddNew() {
+
+import { ExpenseGroup } from '../../Types'
+import { Box, Button, ButtonGroup, Divider, Typography } from '@mui/material'
+
+type Props = {
+    
+    setOpen: (isOpen: boolean) => void
+}
+export const  AddNew = ({ setOpen }: Props) => {
     useEffect(() => {
         console.log('addbox');
 
     }, []);
     return (
-        <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-            <AddNewCard/>
-        </Grid>
+        <Box>
+            <div className='Dashbaoard'>
+                <Typography variant='h3'>{ }</Typography>
+                <div>
+                    <ButtonGroup>
+                        <Button onClick={() => {
+                            setOpen(true)
+                        }}>Create New</Button>
+                    </ButtonGroup>
+                </div>
+            </div>
+            <Divider sx={{ background: 'var(--secondary)' }} />
+        </Box>
     );
 }
 export default AddNew;
