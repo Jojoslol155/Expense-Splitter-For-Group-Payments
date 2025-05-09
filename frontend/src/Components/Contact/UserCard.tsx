@@ -1,8 +1,7 @@
 import React from 'react'
-import { GroupMember, User } from '../../Types'
+import { GroupMember, User, Balance } from '../../Types'
 import ContactIcon from '../../Images/Contact.png'
 import './UserCard.css'
-import { Button } from '@mui/material'
 import MUIButton from '../MUIButton/MUIButton'
 
 type Props = {
@@ -11,9 +10,10 @@ type Props = {
   addGroupMember?: (groupMember: GroupMember, firstName: string) => void
   expenseGroupID?: number
   closeModal?: () => void
+  balances?: Balance[]
 }
 
-const UserCard = ({user, addButton, expenseGroupID, addGroupMember, closeModal}: Props) => {
+const UserCard = ({user, addButton, expenseGroupID, addGroupMember, closeModal, balances}: Props) => {
   return (
     <div className='userCardWrapper'>
       <img src={ContactIcon} width={32} height={32} className='contactIcon'/>

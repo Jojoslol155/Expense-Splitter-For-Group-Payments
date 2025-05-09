@@ -4,6 +4,7 @@ export interface Expense {
     amount: number
     expenseGroupID: number
     userExpensePercentages: MemberPercentage[]
+    paidByUserId: string
 }
 
 export type ExpenseForm = Omit<Expense, "ID" | "userExpensePercentages">
@@ -13,6 +14,15 @@ export interface MemberPercentage {
     percentage: number
     firstName: string
     userID: string
+}
+
+export interface Balance {
+    owedToName: string
+    amount: number
+}
+
+export interface BalanceDictionary {
+    [OwedFromID: string] : Balance[]
 }
 
 export interface GroupMember {

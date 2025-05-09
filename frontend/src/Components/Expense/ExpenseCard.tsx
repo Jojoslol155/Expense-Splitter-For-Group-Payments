@@ -1,10 +1,10 @@
 import React, {Dispatch} from 'react'
-import { Accordion, AccordionDetails, AccordionSummary, ListItem, Button, Alert } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, ListItem, Button, Alert, Typography } from '@mui/material'
 import {formatDollarAmount } from '../../Util/formatting'
 import ExpandIcon from '../ExpandIcon/ExpandIcon'
 import UserExpensePercentage from '../MemberPercentage/MemberPercentage'
 import './ExpenseCard.css'
-import { ExpenseGroupFormAction, Expense, MemberPercentage } from '../../Types'
+import { ExpenseGroupFormAction, Expense } from '../../Types'
 import MUIButton from '../MUIButton/MUIButton'
 
 type Props = {

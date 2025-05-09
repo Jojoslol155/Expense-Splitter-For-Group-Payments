@@ -12,13 +12,14 @@ export const convertJSONToExpenseGroup = (json: any): ExpenseGroup => {
 }
 
 export const convertJSONToExpense = (json: any): Expense => {
-    const { name, id, expenseGroupID, amount, userExpensePercentages } = json
+    const { name, id, expenseGroupID, amount, userExpensePercentages, paidByUserId } = json
     const expense: Expense = {
         ID: id,
         name,
         amount,
         expenseGroupID,
         userExpensePercentages,
+        paidByUserId
     }
     return expense
 }
