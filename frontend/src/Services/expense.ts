@@ -1,9 +1,8 @@
-import { NavigateFunction } from 'react-router-dom'
 import { get } from 'lodash'
 import { GET_EXPENSES_URL, GET_PERCENTAGES_URL } from '../config'
-import { ExpenseForm, MemberPercentage } from '../Types'
+import { ExpenseForm, User, MemberPercentage } from '../Types'
 
-export const createExpense = async (expense: ExpenseForm, expenseGroupID: number, userID: string, firstName: string) => {
+export const createExpense = async (expense: ExpenseForm, expenseGroupID: number, members: User[]) => {
 
     const options = {
         method: 'POST',
@@ -16,30 +15,36 @@ export const createExpense = async (expense: ExpenseForm, expenseGroupID: number
     try {
         fetch(`${GET_EXPENSES_URL}/${expenseGroupID}`, options).then(res => { 
             console.log(res)
-            if (res.status !== 201) {
+            if (res.status !== 201 && res.status !== 200) {
                 throw new Error(res.statusText)
             }
             return res.json() 
 
         }).then(json => {
-            const newUEP: MemberPercentage = {
-                percentage: 1,
-                expenseID: get(json, 'id'),
-                userID,
-                firstName
-            }
-
-            const UEPOptions = {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json',
-                },
-                body: JSON.stringify(newUEP)
-            }
-            fetch(GET_PERCENTAGES_URL, UEPOptions).then(res => {
-                if(res.status != 201) {
-                    throw new Error(res.statusText)
+            var percent = 1
+            members.forEach(member => {
+                const newUEP: MemberPercentage = {
+                    percentage: percent,
+                    expenseID: get(json, 'id'),
+                    userID: "" + get(member, 'id'),
+                    firstName: member.firstName
                 }
+                percent = 0
+    
+                // TODO also need to add blank UEP for all members
+    
+                const UEPOptions = {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json',
+                    },
+                    body: JSON.stringify(newUEP)
+                }
+                fetch(GET_PERCENTAGES_URL, UEPOptions).then(res => {
+                    if(res.status != 201 && res.status !== 200) {
+                        throw new Error(res.statusText)
+                    }
+                })
             })
         })
 

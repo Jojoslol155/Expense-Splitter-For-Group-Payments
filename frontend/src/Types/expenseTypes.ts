@@ -15,6 +15,15 @@ export interface MemberPercentage {
     userID: string
 }
 
+export interface Balance {
+    owedToName: string
+    amount: number
+}
+
+export interface BalanceDictionary {
+    [OwedFromID: string] : Balance[]
+}
+
 export interface GroupMember {
     expenseGroupID: number
     memberID: string

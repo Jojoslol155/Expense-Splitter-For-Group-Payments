@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useGetExpenseGroup } from '../../Hooks/ExpenseGroups'
 import ExpenseCard from '../../Components/Expense/ExpenseCard'
-import { Alert, List, Modal, Stack, Box, Typography, Button, TextField } from '@mui/material'
+import { Alert, List, Modal, Stack, Box, Typography, TextField } from '@mui/material'
 import UserCard from '../../Components/Contact/UserCard'
 import PageHeader from './ExpenseGroupPageHeader'
 import SectionHeader from '../../Components/SectionHeader'
@@ -12,8 +12,10 @@ import { useNavigate } from 'react-router-dom'
 import { deleteExpenseGroup, addGroupMember, saveMemberPercentages, createExpense } from '../../Services'
 import './ViewExpenseGroup.css'
 import MUIButton from '../../Components/MUIButton/MUIButton'
-import { ExpenseForm, UserContextType } from '../../Types'
+import { ExpenseForm, UserContextType, BalanceDictionary } from '../../Types'
 import { AuthContext } from '../../Context/Auth'
+
+interface AmountsOwed {[OwedFromID: string] : number}
 
 function ViewExpenseGroup() {
   const { id } = useParams()
@@ -27,15 +29,21 @@ function ViewExpenseGroup() {
   const navigate = useNavigate()
   const [contacts, getContacts] = useGetAllContacts()
   const { firstName, userID } = useContext(AuthContext) as UserContextType
-
+  const [ balances, setBalances ] = useState<BalanceDictionary>({}) 
+  
   useEffect(() => {
     getExpenseGroup()
   }, [])
 
-  
   useEffect(() => {
     getContacts()
   }, [])
+
+  useEffect(() => {
+    getAmountsOwed()
+  }, [expenseGroup])
+  
+
 
   const style = {
     position: 'absolute',
@@ -47,6 +55,26 @@ function ViewExpenseGroup() {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
+  }
+
+  const getAmountsOwed = () => {
+    // simple map of ID to sum of amount OWED, local only
+    var amountsOwed: AmountsOwed = {}
+
+    expenseGroup.expenses.forEach(exp => {
+      exp.userExpensePercentages.forEach(uep => {
+
+        if (!amountsOwed[uep.userID]) {
+          amountsOwed[uep.userID] = 0
+        }
+
+        const amount = exp.amount * uep.percentage
+
+        amountsOwed[uep.userID] += amount
+      })
+    })
+
+    console.log(amountsOwed)
   }
   
 
@@ -113,7 +141,7 @@ function ViewExpenseGroup() {
                     amount: expenseAmount,
                     expenseGroupID: expenseGroup.ID
                   }
-                  createExpense(expense, expenseGroup.ID, userID, firstName)
+                  createExpense(expense, expenseGroup.ID, expenseGroup.members)
                   setOpenNewExpenseModal(false)
                   getExpenseGroup()
                 }}
@@ -169,7 +197,7 @@ function ViewExpenseGroup() {
               </Box>
             </Modal>
             {expenseGroup.expenses.map(ex => {
-              return <ExpenseCard expense={ex} dispatch={dispatch} key={ex.ID + "c"} saveMemberPercentages={saveMemberPercentages} setShowAlert={setShowAlert} />
+              return <ExpenseCard expense={ex} dispatch={dispatch} key={get(ex, "id") + "c"} saveMemberPercentages={saveMemberPercentages} setShowAlert={setShowAlert} />
             })}
           </List>
         )}
@@ -186,7 +214,11 @@ function ViewExpenseGroup() {
             <List sx={{ paddingLeft: '35px'}}>
               {expenseGroup.members.map(member => {
                 return <div key={member.ID + member.firstName}>
-                  <UserCard user={member} addButton={false} key={member.ID} />
+                  <UserCard 
+                    //balances={balances[member.ID]}
+                    user={member} 
+                    addButton={false} 
+                    key={member.ID} />
                 </div>
               })}
             </List>
