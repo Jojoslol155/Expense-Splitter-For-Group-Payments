@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useReducer, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useGetExpenseGroup } from '../../Hooks/ExpenseGroups'
 import ExpenseCard from '../../Components/Expense/ExpenseCard'
-import { Alert, List, Modal, Stack, Box, Typography, TextField, Select, MenuItem, InputLabel } from '@mui/material'
+import { Alert, List, Modal, Stack, Box, Typography, TextField, Select, MenuItem, InputLabel, ButtonGroup } from '@mui/material'
 import UserCard from '../../Components/Contact/UserCard'
 import PageHeader from './ExpenseGroupPageHeader'
 import SectionHeader from '../../Components/SectionHeader'
@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom'
 import { deleteExpenseGroup, addGroupMember, saveMemberPercentages, createExpense } from '../../Services'
 import './ViewExpenseGroup.css'
 import MUIButton from '../../Components/MUIButton/MUIButton'
-import { ExpenseForm, UserContextType, BalanceDictionary } from '../../Types'
+import { ExpenseForm, UserContextType, BalanceDictionary, GroupMember } from '../../Types'
 import { AuthContext } from '../../Context/Auth'
 import { defaultExpenseForm } from '../../Reducers/createExpenseGroupForm'
 import AddNew from '../../Components/AddNew/AddNew'
@@ -27,6 +27,7 @@ function ViewExpenseGroup() {
   const [ openNewMemberModal, setOpenNewMemberModal ] = useState(false)
   const [ openNewExpenseModal, setOpenNewExpenseModal] = useState(false)
   const [ expenseForm, setExpenseForm ] = useState(defaultExpenseForm)
+  const [ memberToAdd, setMemberToAdd ] = useState('')
   const navigate = useNavigate()
   const [contacts, getContacts] = useGetAllContacts()
   const { firstName, userID } = useContext(AuthContext) as UserContextType
@@ -64,6 +65,8 @@ function ViewExpenseGroup() {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
+    display: 'flex',
+    flexDirection: 'column'
   }
 
   const getAmountsOwed = () => {
@@ -157,17 +160,19 @@ function ViewExpenseGroup() {
                         </MenuItem>)
                     })}
                   </Select>
-                <MUIButton onClick={() => {
-                  setOpenNewExpenseModal(false)
-                  handleSubmit()
-                }}
-                  text={"Add"}
-                />
-                <MUIButton onClick={() => {
-                  setOpenNewExpenseModal(false)
-                }}
-                  text="Cancel"
-                />
+                  <ButtonGroup>
+                    <MUIButton onClick={() => {
+                      setOpenNewExpenseModal(false)
+                      handleSubmit()
+                    }}
+                      text={"Add"}
+                    />
+                    <MUIButton onClick={() => {
+                      setOpenNewExpenseModal(false)
+                    }}
+                      text="Cancel"
+                    />
+                  </ButtonGroup>
               </Box>
             </Modal>
             <Modal open={openNewMemberModal}
@@ -181,8 +186,12 @@ function ViewExpenseGroup() {
                   {"Add a new member"}
                 </Typography>
                 <>
+                <Select value={memberToAdd} label={"Contact name"}
+                  onChange={(e) => {
+                    setMemberToAdd(e.target.value)
+                  }}>
                   {
-                    contacts.filter(c => {
+                    contacts.filter((c) => {
                       let memberFound = false
                       expenseGroup.members.forEach(m => {
                         if (get(m, 'id') == get(c, 'ID')) {
@@ -192,22 +201,29 @@ function ViewExpenseGroup() {
                       if (!memberFound) {
                         return c
                       }
-                    }).map(c => {
-                        return (<>
-                          <UserCard user={c} 
-                            addButton={true} 
-                            expenseGroupID={expenseGroup.ID} 
-                            addGroupMember={addGroupMember} 
-                            closeModal={() => {
-                              setOpenNewMemberModal(false)
-                            }}
-                            key={c.ID} />
-                        </>
-                        )
-                      })
-                  }
+                    }).map((c) => {
+                    if (c.ID !== userID) {
+                      return (
+                        <MenuItem value={c.ID}>{c.firstName} {" "} {c.lastName} </MenuItem>
+                      )
+                    }
+                  })}
+                </Select>
                 </>
                 <MUIButton onClick={() => {
+                  const gm: GroupMember = {
+                    expenseGroupID: expenseGroup.ID,
+                    memberID: memberToAdd
+                  }
+                  const firstNameToAdd = () => {
+                    contacts.forEach(c => {
+                      if (c.ID == memberToAdd) {
+                        return c.firstName
+                      }
+                    })
+                    return ""
+                  }
+                  addGroupMember(gm, firstNameToAdd())
                   setOpenNewMemberModal(false)
                 }} text={"Done"}/>
               </Box>
