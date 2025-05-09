@@ -26,27 +26,29 @@ export const createExpense = (expense: ExpenseForm, expenseGroupID: number, memb
             var percent = 1
 
             members.forEach((member) => {
-                const newUEP: MemberPercentage = {
-                    percentage: percent,
-                    expenseID: get(json, 'id'),
-                    userID: "" + get(member, 'id'),
-                    firstName: member.firstName
-                }
-                percent = 0
-                const UEPOptions = {
-                    method: 'POST',
-                    headers: {
-                        'Content-type': 'application/json',
-                    },
-                    body: JSON.stringify(newUEP)
-                }
-                
-                fetch(GET_PERCENTAGES_URL, UEPOptions).then(res => {
-                    if(res.status != 201 && res.status !== 200) {
-                        throw new Error(res.statusText)
+                if(get(member, 'id') !== expense.paidByUserId) {
+                    const newUEP: MemberPercentage = {
+                        percentage: percent,
+                        expenseID: get(json, 'id'),
+                        userID: "" + get(member, 'id'),
+                        firstName: member.firstName
                     }
-
-                })
+                    percent = 0
+                    const UEPOptions = {
+                        method: 'POST',
+                        headers: {
+                            'Content-type': 'application/json',
+                        },
+                        body: JSON.stringify(newUEP)
+                    }
+                    
+                    fetch(GET_PERCENTAGES_URL, UEPOptions).then(res => {
+                        if(res.status != 201 && res.status !== 200) {
+                            throw new Error(res.statusText)
+                        }
+    
+                    })
+                }
             })
         })
 

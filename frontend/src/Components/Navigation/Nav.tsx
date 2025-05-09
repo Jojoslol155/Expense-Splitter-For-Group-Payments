@@ -16,7 +16,7 @@ const Nav = () => {
         <Link className='navButton' to="/contacts"> Contacts </Link>
         <Link className='navButton' to="/"> Settings </Link>
       </div>
-      <div>
+      <div className='bottomButtonsWrapper'>
         <div className="pfp">
           <img src={ContactIcon} width={32} height={32} className='contactIcon'/>
           <div style={{paddingBottom: "9px"}}>{firstName}</div> 

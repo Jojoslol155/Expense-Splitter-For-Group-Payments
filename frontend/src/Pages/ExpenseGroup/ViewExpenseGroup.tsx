@@ -223,7 +223,9 @@ function ViewExpenseGroup() {
                     })
                     return ""
                   }
-                  addGroupMember(gm, firstNameToAdd())
+                  if(memberToAdd !== "") {
+                    addGroupMember(gm, firstNameToAdd())
+                  }
                   setOpenNewMemberModal(false)
                 }} text={"Done"}/>
               </Box>
