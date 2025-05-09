@@ -44,7 +44,9 @@ namespace api.Controllers
                 new NewUserDTO {
                     UserName = user.UserName,
                     Email = user.Email,
-                    Token = _tokenService.CreateToken(user)
+                    Token = _tokenService.CreateToken(user),
+                    FirstName = user.FirstName,
+                    Id = user.Id
                 }
             );
         } 
@@ -65,11 +67,15 @@ namespace api.Controllers
                 var createdUser = await _userManager.CreateAsync(user, registerDTO.Password);
 
                 if (createdUser.Succeeded) {
+                    var getUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == registerDTO.UserName);
+
                     return Ok(
                         new NewUserDTO {
                             UserName = user.UserName,
+                            FirstName = user.FirstName,
                             Email = user.Email,
-                            Token = _tokenService.CreateToken(user)
+                            Token = _tokenService.CreateToken(user),
+                            Id = getUser.Id,
                         }
                     );
                 } else {

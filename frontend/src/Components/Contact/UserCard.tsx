@@ -3,6 +3,7 @@ import { GroupMember, User } from '../../Types'
 import ContactIcon from '../../Images/Contact.png'
 import './UserCard.css'
 import { Button } from '@mui/material'
+import MUIButton from '../MUIButton/MUIButton'
 
 type Props = {
   user: User
@@ -19,21 +20,22 @@ const UserCard = ({user, addButton, expenseGroupID, addGroupMember, closeModal}:
       <div className='name'>{user.firstName} {user.lastName} </div>
       {addButton && (
         <> 
-          <Button onClick={() => {
-            if (expenseGroupID && addGroupMember) {
-
-              const newGroupMember: GroupMember = {
-                memberID: user.ID,
-                expenseGroupID: expenseGroupID
+          <MUIButton 
+            text={"+"}
+            onClick={() => {
+              if (expenseGroupID && addGroupMember) {
+  
+                const newGroupMember: GroupMember = {
+                  memberID: user.ID,
+                  expenseGroupID: expenseGroupID
+                }
+                addGroupMember(newGroupMember, user.firstName)
+                if (closeModal) {
+                  closeModal()
+                }
               }
-              addGroupMember(newGroupMember, user.firstName)
-              if (closeModal) {
-                closeModal()
-              }
-            }
-          }}> 
-            {"+"}
-          </Button>
+            }}
+          />
         </>
       )}
     </div>

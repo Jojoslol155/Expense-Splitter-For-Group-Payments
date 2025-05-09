@@ -6,6 +6,8 @@ export interface Expense {
     userExpensePercentages: MemberPercentage[]
 }
 
+export type ExpenseForm = Omit<Expense, "ID" | "userExpensePercentages">
+
 export interface MemberPercentage {
     expenseID: number
     percentage: number

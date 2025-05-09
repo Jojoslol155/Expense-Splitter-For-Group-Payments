@@ -1,25 +1,32 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useGetExpenseGroup } from '../../Hooks/ExpenseGroups'
 import ExpenseCard from '../../Components/Expense/ExpenseCard'
-import { Alert, List, Modal, Stack, Box, Typography, Button } from '@mui/material'
+import { Alert, List, Modal, Stack, Box, Typography, Button, TextField } from '@mui/material'
 import UserCard from '../../Components/Contact/UserCard'
 import PageHeader from './ExpenseGroupPageHeader'
 import SectionHeader from '../../Components/SectionHeader'
 import { get } from 'lodash'
 import { useGetAllContacts } from '../../Hooks/Users'
 import { useNavigate } from 'react-router-dom'
-import { deleteExpenseGroup, addGroupMember, saveMemberPercentages } from '../../Services'
+import { deleteExpenseGroup, addGroupMember, saveMemberPercentages, createExpense } from '../../Services'
 import './ViewExpenseGroup.css'
+import MUIButton from '../../Components/MUIButton/MUIButton'
+import { ExpenseForm, UserContextType } from '../../Types'
+import { AuthContext } from '../../Context/Auth'
 
 function ViewExpenseGroup() {
   const { id } = useParams()
   const [expenseGroup, getExpenseGroup, dispatch] = useGetExpenseGroup(Number(id))
+  const [ expenseName, setExpenseName ] = useState('')
+  const [ expenseAmount, setExpenseAmount ] = useState(0)
   const [ showAlert, setShowAlert ] = useState(false)
   const [ openDeleteModal, setOpenDeleteModal ] = useState(false)
   const [ openNewMemberModal, setOpenNewMemberModal ] = useState(false)
+  const [ openNewExpenseModal, setOpenNewExpenseModal] = useState(false)
   const navigate = useNavigate()
   const [contacts, getContacts] = useGetAllContacts()
+  const { firstName, userID } = useContext(AuthContext) as UserContextType
 
   useEffect(() => {
     getExpenseGroup()
@@ -36,8 +43,7 @@ function ViewExpenseGroup() {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
-    bgcolor: '#041010',
-    color: '#DEF7F7',
+    bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
@@ -66,18 +72,60 @@ function ViewExpenseGroup() {
                 <Typography variant="h6">
                   {"Are you sure you want to delete?"}
                 </Typography>
-                <Button onClick={() => {
+                <MUIButton onClick={() => {
                   deleteExpenseGroup(expenseGroup, navigate)
-                }}>
-                  Delete
-                </Button>
-                <Button onClick={() => {
+                }} text={"Delete"}/>
+                <MUIButton onClick={() => {
                   setOpenDeleteModal(false)
-                }}>
-                  Cancel
-                </Button>
+                }} text={"Cancel"}/>
               </Box>
             </Modal>
+            <Modal open={openNewExpenseModal}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+              onClose={() => {
+                setOpenNewExpenseModal(false)
+              }}> 
+                <Box sx={style}>
+                  <TextField
+                      value={expenseName}
+                      label={"name"}
+                      id="filled-required"
+                      variant="filled"
+                      onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                          event.preventDefault()
+                          setExpenseName(event.target.value)
+                      }} />
+                      <TextField 
+                        value={expenseAmount}
+                        label={"amount"}
+                        type="number"
+                        id="filled-required"
+                        variant="filled"
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                          event.preventDefault()
+                          setExpenseAmount(event.target.valueAsNumber)
+                        }}
+                      />
+                <MUIButton onClick={() => {
+                  const expense: ExpenseForm = {
+                    name: expenseName,
+                    amount: expenseAmount,
+                    expenseGroupID: expenseGroup.ID
+                  }
+                  createExpense(expense, expenseGroup.ID, userID, firstName)
+                  setOpenNewExpenseModal(false)
+                  getExpenseGroup()
+                }}
+                  text={"Add"}
+                />
+                <MUIButton onClick={() => {
+                  setOpenNewExpenseModal(false)
+                }}
+                  text="Cancel"
+                />
+              </Box>
+              </Modal>
             <Modal open={openNewMemberModal}
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
@@ -115,11 +163,9 @@ function ViewExpenseGroup() {
                       })
                   }
                 </>
-                <Button onClick={() => {
+                <MUIButton onClick={() => {
                   setOpenNewMemberModal(false)
-                }}>
-                  Done
-                </Button>
+                }} text={"Done"}/>
               </Box>
             </Modal>
             {expenseGroup.expenses.map(ex => {
@@ -127,6 +173,13 @@ function ViewExpenseGroup() {
             })}
           </List>
         )}
+          <div>
+            <MUIButton onClick={() => {
+              setOpenNewExpenseModal(true)
+            }}
+              text="Add new expense"
+            />
+          </div>
         <SectionHeader text={"Members"}/>
         {expenseGroup.members && (
           <>
@@ -137,11 +190,13 @@ function ViewExpenseGroup() {
                 </div>
               })}
             </List>
-            <Button style={{width:'200px'}} onClick={() => {
-              setOpenNewMemberModal(true)
-              }}>
-              Add new
-            </Button>
+            <div>
+              <MUIButton onClick={() => {
+                setOpenNewMemberModal(true)
+                }}
+                text="Add new member"
+              />
+            </div>
             </>
         )}
       </Stack>

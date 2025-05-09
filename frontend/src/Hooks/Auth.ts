@@ -5,7 +5,7 @@ import { AuthContext } from "../Context/Auth"
 import { LoginForm, RegisterForm, UserContextType } from '../Types'
 
 export const useLogin = (loginData: LoginForm) => {
-    const { token, setToken } = useContext(AuthContext) as UserContextType
+    const { setToken, setID, setFirstName, setEmail } = useContext(AuthContext) as UserContextType
     const navigate = useNavigate()
 
     const options = {
@@ -23,11 +23,21 @@ export const useLogin = (loginData: LoginForm) => {
                 }
                 return res.json()
             }).then(json => {
-                console.log(json)
-                setToken(json['token'])
-                localStorage.setItem('token', json['token'])
-                localStorage.setItem('username', json['userName'])
-                localStorage.setItem('email', json['email'])
+                const firstName = json['firstName']
+                const token = json['token']
+                const id = json['id']
+                const email = json['email']
+                const username = json['userName']
+
+                setToken(token)
+                setID(id)
+                setFirstName(firstName)
+                setEmail(email)
+                localStorage.setItem('token', token)
+                localStorage.setItem('username', username)
+                localStorage.setItem('firstName', firstName)
+                localStorage.setItem('email', email)
+                localStorage.setItem('id', id)
                 navigate('/')
             })
         } catch (e) {

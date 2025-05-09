@@ -9,14 +9,20 @@ export const AuthContextProvider = ({ children }: React.PropsWithChildren<unknow
     const [token, setToken] = useState('')
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
+    const [firstName, setFirstName] = useState('')
+    const [userID, setID] = useState('')
     // const [isReady, setIsReady] = useState(false)
 
     useEffect(() => {
         const username = localStorage.getItem("username")
         const token = localStorage.getItem("token")
-        if (username && token && username !== '' && token !== '') {
+        const userID = localStorage.getItem("id")
+        const firstName = localStorage.getItem("firstName")
+        if (username && token && firstName && userID && username !== '' && token !== '') {
             setUsername(username)
             setToken(token)
+            setFirstName(firstName)
+            setID(userID)
         }
     }, [])
 
@@ -25,9 +31,13 @@ export const AuthContextProvider = ({ children }: React.PropsWithChildren<unknow
         token,
         username,
         email,
+        firstName,
+        userID,
         setEmail,
         setToken,
-        setUsername
+        setUsername,
+        setFirstName,
+        setID
     }}>
         {children}
     </AuthContext.Provider>
