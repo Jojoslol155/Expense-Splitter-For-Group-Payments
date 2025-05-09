@@ -15,6 +15,7 @@ namespace api.Mappers
                 Name = expenseModel.Name,
                 Amount = expenseModel.Amount,
                 ExpenseGroupID = expenseModel.ExpenseGroupID,
+                PaidByUserId = expenseModel.PaidByUserId,
                 UserExpensePercentages = expenseModel.UserExpensePercentages.Select(uep => uep.ToUserExpensePercentageDTO()).ToList()
             };
         }
@@ -23,6 +24,7 @@ namespace api.Mappers
             return new Expense {
                 Name = expenseDTO.Name,
                 Amount = expenseDTO.Amount,
+                PaidByUserId = expenseDTO.PaidByUserId,
                 ExpenseGroupID = expenseGroupID,
             };
         }

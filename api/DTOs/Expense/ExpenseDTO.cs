@@ -19,5 +19,7 @@ namespace api.DTOs.Expense
         public decimal Amount { get; set; }
 
         public List<UserExpensePercentageDTO> UserExpensePercentages { get; set; } = new();
+
+        public string PaidByUserId { get; set; }
     }
 }

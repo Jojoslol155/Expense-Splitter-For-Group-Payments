@@ -17,5 +17,6 @@ export const defaultCreateExpenseGroupForm : CreateExpenseGroupForm = {
 export const defaultExpenseForm: ExpenseForm = {
     name: '',
     amount: 0,
-    expenseGroupID: 0
+    expenseGroupID: 0,
+    paidByUserId: ''
 }

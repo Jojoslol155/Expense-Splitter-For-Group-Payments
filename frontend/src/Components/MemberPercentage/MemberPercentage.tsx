@@ -1,4 +1,4 @@
-import React, { Dispatch, useState } from 'react'
+import { Dispatch } from 'react'
 import { Slider } from '@mui/material'
 import { MemberPercentage, ExpenseGroupFormAction } from '../../Types'
 import { formatPercent, formatDollarAmount } from '../../Util/formatting'

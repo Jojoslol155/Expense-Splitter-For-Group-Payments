@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useReducer, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useGetExpenseGroup } from '../../Hooks/ExpenseGroups'
 import ExpenseCard from '../../Components/Expense/ExpenseCard'
-import { Alert, List, Modal, Stack, Box, Typography, TextField } from '@mui/material'
+import { Alert, List, Modal, Stack, Box, Typography, TextField, Select, MenuItem, InputLabel } from '@mui/material'
 import UserCard from '../../Components/Contact/UserCard'
 import PageHeader from './ExpenseGroupPageHeader'
 import SectionHeader from '../../Components/SectionHeader'
@@ -15,6 +15,7 @@ import MUIButton from '../../Components/MUIButton/MUIButton'
 import { ExpenseForm, UserContextType, BalanceDictionary } from '../../Types'
 import { AuthContext } from '../../Context/Auth'
 import { defaultExpenseForm } from '../../Reducers/createExpenseGroupForm'
+import AddNew from '../../Components/AddNew/AddNew'
 
 interface AmountsOwed {[OwedFromID: string] : number}
 
@@ -48,7 +49,7 @@ function ViewExpenseGroup() {
     setTimeout(() => {
       getExpenseGroup()
     }, 400)
-    
+
     //getExpenseGroup()
   }
 
@@ -66,7 +67,7 @@ function ViewExpenseGroup() {
   }
 
   const getAmountsOwed = () => {
-    // simple map of ID to sum of amount OWED, local only
+    // simple map of ID to sum of amount OWED TO that ID, local only
     var amountsOwed: AmountsOwed = {}
 
     expenseGroup.expenses.forEach(exp => {
@@ -122,27 +123,40 @@ function ViewExpenseGroup() {
               onClose={() => {
                 setOpenNewExpenseModal(false)
               }}> 
-                <Box sx={style}>
-                  <TextField
-                      value={expenseForm.name}
-                      label={"name"}
-                      id="filled-required"
-                      variant="filled"
-                      onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                          event.preventDefault()
-                          setExpenseForm({...expenseForm, name: event.target.value})
-                      }} />
-                      <TextField 
-                        value={expenseForm.amount}
-                        label={"amount"}
-                        type="number"
-                        id="filled-required"
-                        variant="filled"
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                          event.preventDefault()
-                          setExpenseForm({...expenseForm, amount: event.target.valueAsNumber})
-                        }}
-                      />
+              <Box sx={style}>
+                <TextField
+                    value={expenseForm.name}
+                    label={"Expense Title"}
+                    id="filled-required"
+                    variant="filled"
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                        event.preventDefault()
+                        setExpenseForm({...expenseForm, name: event.target.value})
+                    }} />
+                  <TextField 
+                    value={expenseForm.amount}
+                    label={"Amount"}
+                    type="number"
+                    id="filled-required"
+                    variant="filled"
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      event.preventDefault()
+                      setExpenseForm({...expenseForm, amount: event.target.valueAsNumber})
+                    }}
+                  />
+                  <InputLabel>Paid By</InputLabel>
+                  <Select value={expenseForm.paidByUserId}
+                      onChange={(e) => {
+                        setExpenseForm({...expenseForm, paidByUserId: e.target.value})
+                      }}>
+                    {expenseGroup.members.map(member => {
+                      var memberID = ""+ get(member, 'id') 
+                      return (
+                        <MenuItem value={memberID}>
+                            {member.firstName} {" "} {member.lastName}
+                        </MenuItem>)
+                    })}
+                  </Select>
                 <MUIButton onClick={() => {
                   setOpenNewExpenseModal(false)
                   handleSubmit()
@@ -155,7 +169,7 @@ function ViewExpenseGroup() {
                   text="Cancel"
                 />
               </Box>
-              </Modal>
+            </Modal>
             <Modal open={openNewMemberModal}
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
@@ -204,11 +218,7 @@ function ViewExpenseGroup() {
           </List>
         )}
           <div>
-            <MUIButton onClick={() => {
-              setOpenNewExpenseModal(true)
-            }}
-              text="Add new expense"
-            />
+            <AddNew setOpen={setOpenNewExpenseModal}/>
           </div>
         <SectionHeader text={"Members"}/>
         {expenseGroup.members && (

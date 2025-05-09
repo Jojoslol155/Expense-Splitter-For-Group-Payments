@@ -5,7 +5,6 @@ import { get } from 'lodash'
 export const saveMemberPercentages = async (expense: Expense, setShowAlert: (alert: boolean) => void) => {
     let percentageSum = 0;
     for (let i = 0; i < expense.userExpensePercentages.length; i++) {
-
       percentageSum = percentageSum + expense.userExpensePercentages[i].percentage
     }
   

@@ -20,5 +20,7 @@ namespace api.Models
         public decimal Amount { get; set; }
 
         public List<UserExpensePercentage> UserExpensePercentages { get; set; } = new();
+
+        public string PaidByUserId { get; set; }
     }
 }
