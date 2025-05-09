@@ -1,5 +1,13 @@
 import { JSX } from 'react'
-import { Button } from '@mui/material'
+import { Button, createTheme, ThemeProvider } from '@mui/material' 
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: "#29A3A3"
+        },
+    }
+})
 
 type Props = {
     onClick: () => void
@@ -9,7 +17,9 @@ type Props = {
 
 const MUIButton = ({onClick, text, children}: Props) => {
   return (
-    <Button onClick={onClick}>{text} {children}</Button>
+    <ThemeProvider theme={theme}>
+        <Button onClick={onClick}>{text} {children}</Button>
+    </ThemeProvider>
   )
 }
 
