@@ -1,9 +1,11 @@
+import { useReducer} from 'react'
 import { get } from 'lodash'
 import { GET_EXPENSES_URL, GET_PERCENTAGES_URL } from '../config'
 import { ExpenseForm, User, MemberPercentage } from '../Types'
+import { defaultExpenseGroup, expenseGroupState } from '../Reducers/expenseGroupState'
 
-export const createExpense = async (expense: ExpenseForm, expenseGroupID: number, members: User[]) => {
-
+export const createExpense = (expense: ExpenseForm, expenseGroupID: number, members: User[]) => {
+    
     const options = {
         method: 'POST',
         headers: {
@@ -22,7 +24,8 @@ export const createExpense = async (expense: ExpenseForm, expenseGroupID: number
 
         }).then(json => {
             var percent = 1
-            members.forEach(member => {
+
+            members.forEach((member) => {
                 const newUEP: MemberPercentage = {
                     percentage: percent,
                     expenseID: get(json, 'id'),
@@ -30,9 +33,6 @@ export const createExpense = async (expense: ExpenseForm, expenseGroupID: number
                     firstName: member.firstName
                 }
                 percent = 0
-    
-                // TODO also need to add blank UEP for all members
-    
                 const UEPOptions = {
                     method: 'POST',
                     headers: {
@@ -40,10 +40,12 @@ export const createExpense = async (expense: ExpenseForm, expenseGroupID: number
                     },
                     body: JSON.stringify(newUEP)
                 }
+                
                 fetch(GET_PERCENTAGES_URL, UEPOptions).then(res => {
                     if(res.status != 201 && res.status !== 200) {
                         throw new Error(res.statusText)
                     }
+
                 })
             })
         })
@@ -51,6 +53,8 @@ export const createExpense = async (expense: ExpenseForm, expenseGroupID: number
     } catch (e) {
         console.error(e)
     }
+    
+
 }
 
 export const deleteExpense = async () => {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useReducer, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useGetExpenseGroup } from '../../Hooks/ExpenseGroups'
 import ExpenseCard from '../../Components/Expense/ExpenseCard'
@@ -14,18 +14,18 @@ import './ViewExpenseGroup.css'
 import MUIButton from '../../Components/MUIButton/MUIButton'
 import { ExpenseForm, UserContextType, BalanceDictionary } from '../../Types'
 import { AuthContext } from '../../Context/Auth'
+import { defaultExpenseForm } from '../../Reducers/createExpenseGroupForm'
 
 interface AmountsOwed {[OwedFromID: string] : number}
 
 function ViewExpenseGroup() {
   const { id } = useParams()
   const [expenseGroup, getExpenseGroup, dispatch] = useGetExpenseGroup(Number(id))
-  const [ expenseName, setExpenseName ] = useState('')
-  const [ expenseAmount, setExpenseAmount ] = useState(0)
   const [ showAlert, setShowAlert ] = useState(false)
   const [ openDeleteModal, setOpenDeleteModal ] = useState(false)
   const [ openNewMemberModal, setOpenNewMemberModal ] = useState(false)
   const [ openNewExpenseModal, setOpenNewExpenseModal] = useState(false)
+  const [ expenseForm, setExpenseForm ] = useState(defaultExpenseForm)
   const navigate = useNavigate()
   const [contacts, getContacts] = useGetAllContacts()
   const { firstName, userID } = useContext(AuthContext) as UserContextType
@@ -43,6 +43,14 @@ function ViewExpenseGroup() {
     getAmountsOwed()
   }, [expenseGroup])
   
+  const handleSubmit = () => {
+    createExpense(expenseForm, expenseGroup.ID, expenseGroup.members)
+    setTimeout(() => {
+      getExpenseGroup()
+    }, 400)
+    
+    //getExpenseGroup()
+  }
 
 
   const style = {
@@ -116,34 +124,28 @@ function ViewExpenseGroup() {
               }}> 
                 <Box sx={style}>
                   <TextField
-                      value={expenseName}
+                      value={expenseForm.name}
                       label={"name"}
                       id="filled-required"
                       variant="filled"
                       onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                           event.preventDefault()
-                          setExpenseName(event.target.value)
+                          setExpenseForm({...expenseForm, name: event.target.value})
                       }} />
                       <TextField 
-                        value={expenseAmount}
+                        value={expenseForm.amount}
                         label={"amount"}
                         type="number"
                         id="filled-required"
                         variant="filled"
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                           event.preventDefault()
-                          setExpenseAmount(event.target.valueAsNumber)
+                          setExpenseForm({...expenseForm, amount: event.target.valueAsNumber})
                         }}
                       />
                 <MUIButton onClick={() => {
-                  const expense: ExpenseForm = {
-                    name: expenseName,
-                    amount: expenseAmount,
-                    expenseGroupID: expenseGroup.ID
-                  }
-                  createExpense(expense, expenseGroup.ID, expenseGroup.members)
                   setOpenNewExpenseModal(false)
-                  getExpenseGroup()
+                  handleSubmit()
                 }}
                   text={"Add"}
                 />

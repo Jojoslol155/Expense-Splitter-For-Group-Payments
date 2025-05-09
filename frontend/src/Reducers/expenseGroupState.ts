@@ -7,7 +7,13 @@ export const expenseGroupState = (state: ExpenseGroup, action: ExpenseGroupFormA
     case 'SET_EXPENSE_GROUP_NAME':
         return {...state, name: action.payload}
     case 'SET_EXPENSE_GROUP':
-        return {...action.payload}
+        const newGroup = {
+            name: action.payload.name,
+            ID: action.payload.ID,
+            expenses: [...action.payload.expenses],
+            members: [...action.payload.members]
+        }
+        return newGroup
     case 'SET_EXPENSE':
         return {...state, expenses: [...state.expenses, action.payload]}
     case 'SET_MEMBER_PERCENTAGE':
