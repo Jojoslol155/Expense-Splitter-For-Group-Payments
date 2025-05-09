@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import {createExpenseGroup} from '../../Services'
 
 import { CreateExpenseGroupForm } from '../../Types';
+import MUIButton from '../../Components/MUIButton/MUIButton';
 
 function Dashboard() {
   const [expenseGroups, getExpenseGroups] = useGetAllExpenseGroups();
@@ -60,19 +61,17 @@ function Dashboard() {
                           event.preventDefault()
                           setName(event.target.value)
                       }} />
-                  <Button onClick={() => {
-                      
-
-                          const newExpenseGroup: CreateExpenseGroupForm = {
-                          
-                              name
-                          }
-                          createExpenseGroup(newExpenseGroup,navigate)
+                  <MUIButton 
+                  onClick={() => {
+                    const newExpenseGroup: CreateExpenseGroupForm = {
+                        name
+                    }
+                    createExpenseGroup(newExpenseGroup,navigate)
                       setOpen(false);
                       navigate("/") 
-                  }}>
-                      {"add"}
-                  </Button>
+                  }}
+                  text="Add"
+                  />
               </Box>
           </Modal>
     </div>

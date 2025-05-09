@@ -11,6 +11,7 @@ import { useGetAllContacts } from '../../Hooks/Users'
 import { useNavigate } from 'react-router-dom'
 import { deleteExpenseGroup, addGroupMember, saveMemberPercentages, createExpense } from '../../Services'
 import './ViewExpenseGroup.css'
+import MUIButton from '../../Components/MUIButton/MUIButton'
 
 function ViewExpenseGroup() {
   const { id } = useParams()
@@ -67,16 +68,12 @@ function ViewExpenseGroup() {
                 <Typography variant="h6">
                   {"Are you sure you want to delete?"}
                 </Typography>
-                <Button onClick={() => {
+                <MUIButton onClick={() => {
                   deleteExpenseGroup(expenseGroup, navigate)
-                }}>
-                  Delete
-                </Button>
-                <Button onClick={() => {
+                }} text={"Delete"}/>
+                <MUIButton onClick={() => {
                   setOpenDeleteModal(false)
-                }}>
-                  Cancel
-                </Button>
+                }} text={"Cancel"}/>
               </Box>
             </Modal>
             <Modal open={openNewExpenseModal}
@@ -95,16 +92,16 @@ function ViewExpenseGroup() {
                           event.preventDefault()
                           setExpenseName(event.target.value)
                       }} />
-                <Button onClick={() => {
+                <MUIButton onClick={() => {
                   createExpense(expenseName, expenseGroup.ID, navigate)
-                }}>
-                  Add
-                </Button>
-                <Button onClick={() => {
+                }}
+                  text={"Add"}
+                />
+                <MUIButton onClick={() => {
                   setOpenNewExpenseModal(false)
-                }}>
-                  Cancel
-                </Button>
+                }}
+                  text="Cancel"
+                />
               </Box>
               </Modal>
             <Modal open={openNewMemberModal}
@@ -144,11 +141,9 @@ function ViewExpenseGroup() {
                       })
                   }
                 </>
-                <Button onClick={() => {
+                <MUIButton onClick={() => {
                   setOpenNewMemberModal(false)
-                }}>
-                  Done
-                </Button>
+                }} text={"Done"}/>
               </Box>
             </Modal>
             {expenseGroup.expenses.map(ex => {
@@ -156,11 +151,13 @@ function ViewExpenseGroup() {
             })}
           </List>
         )}
-          <Button style={{width:'200px'}} onClick={() => {
+          <div>
+            <MUIButton onClick={() => {
               setOpenNewExpenseModal(true)
-            }}>
-              Add new expense
-            </Button>
+            }}
+              text="Add new expense"
+            />
+          </div>
         <SectionHeader text={"Members"}/>
         {expenseGroup.members && (
           <>
@@ -171,11 +168,13 @@ function ViewExpenseGroup() {
                 </div>
               })}
             </List>
-            <Button style={{width:'200px'}} onClick={() => {
-              setOpenNewMemberModal(true)
-              }}>
-              Add new member
-            </Button>
+            <div>
+              <MUIButton onClick={() => {
+                setOpenNewMemberModal(true)
+                }}
+                text="Add new member"
+              />
+            </div>
             </>
         )}
       </Stack>

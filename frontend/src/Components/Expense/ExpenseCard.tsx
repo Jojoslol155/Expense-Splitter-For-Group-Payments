@@ -5,6 +5,7 @@ import ExpandIcon from '../ExpandIcon/ExpandIcon'
 import UserExpensePercentage from '../MemberPercentage/MemberPercentage'
 import './ExpenseCard.css'
 import { ExpenseGroupFormAction, Expense, MemberPercentage } from '../../Types'
+import MUIButton from '../MUIButton/MUIButton'
 
 type Props = {
     expense: Expense
@@ -31,9 +32,9 @@ const ExpenseCard = ({expense, dispatch, saveMemberPercentages, setShowAlert}: P
             }
         </AccordionDetails>
         <div className='buttonWrapper'>
-          <Button onClick={() => {
+          <MUIButton onClick={() => {
             saveMemberPercentages(expense, setShowAlert)
-          }}>Save Changes</Button>
+          }} text="Save Changes"/>
         </div>
       </Accordion>
     </ListItem>

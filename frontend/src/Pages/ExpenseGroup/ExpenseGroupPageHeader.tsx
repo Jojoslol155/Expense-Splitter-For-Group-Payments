@@ -1,6 +1,7 @@
 import React from 'react'
 import { Box, Button, ButtonGroup, Divider, Typography } from '@mui/material'
 import './ViewExpenseGroup.css'
+import MUIButton from '../../Components/MUIButton/MUIButton'
 
 type Props = {
     header: string
@@ -14,10 +15,13 @@ const PageHeader = ({header, setOpenDeleteModal}: Props) => {
           <Typography variant='h3'>{header}</Typography>
           <div>
             <ButtonGroup>
-              <Button>Edit</Button>
-              <Button onClick={() => {
+              <MUIButton onClick={() => {}} text='Edit'/>
+              <MUIButton 
+                onClick={() => {
                 setOpenDeleteModal(true)
-              }}>Delete</Button>
+              }}
+                text='Delete'
+              />
             </ButtonGroup>
           </div>
         </div> 
