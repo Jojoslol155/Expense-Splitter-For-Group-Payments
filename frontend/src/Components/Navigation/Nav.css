@@ -27,8 +27,6 @@
     align-items: center;
     padding-left: 10px;
     padding-right: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
     border-radius: 5px;
 }
 
@@ -36,6 +34,18 @@
     color: var(--primary);
     cursor: pointer;
     background-color: var(--selected);
+}
+
+.contactIcon {
+    padding-right: 20px;
+    padding-bottom: 10px;
+}
+
+.pfp {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
 .logout {
