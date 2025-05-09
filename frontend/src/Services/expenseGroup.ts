@@ -4,7 +4,7 @@ import { get } from 'lodash'
 import { GET_EXPENSE_GROUPS_URL, GET_EXPENSES_URL } from '../config'
 
 
-export const createExpenseGroup = async (createExpenseGroupForm: CreateExpenseGroupForm,navigate: NavigateFunction) => {
+export const createExpenseGroup = async (createExpenseGroupForm: CreateExpenseGroupForm, navigate: NavigateFunction) => {
     const options = {
         method: 'POST',
         headers: {

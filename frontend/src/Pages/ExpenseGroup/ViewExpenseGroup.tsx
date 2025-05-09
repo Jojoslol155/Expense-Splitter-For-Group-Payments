@@ -2,22 +2,24 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useGetExpenseGroup } from '../../Hooks/ExpenseGroups'
 import ExpenseCard from '../../Components/Expense/ExpenseCard'
-import { Alert, List, Modal, Stack, Box, Typography, Button } from '@mui/material'
+import { Alert, List, Modal, Stack, Box, Typography, Button, TextField } from '@mui/material'
 import UserCard from '../../Components/Contact/UserCard'
 import PageHeader from './ExpenseGroupPageHeader'
 import SectionHeader from '../../Components/SectionHeader'
 import { get } from 'lodash'
 import { useGetAllContacts } from '../../Hooks/Users'
 import { useNavigate } from 'react-router-dom'
-import { deleteExpenseGroup, addGroupMember, saveMemberPercentages } from '../../Services'
+import { deleteExpenseGroup, addGroupMember, saveMemberPercentages, createExpense } from '../../Services'
 import './ViewExpenseGroup.css'
 
 function ViewExpenseGroup() {
   const { id } = useParams()
   const [expenseGroup, getExpenseGroup, dispatch] = useGetExpenseGroup(Number(id))
+  const [ expenseName, setExpenseName ] = useState('')
   const [ showAlert, setShowAlert ] = useState(false)
   const [ openDeleteModal, setOpenDeleteModal ] = useState(false)
   const [ openNewMemberModal, setOpenNewMemberModal ] = useState(false)
+  const [ openNewExpenseModal, setOpenNewExpenseModal] = useState(false)
   const navigate = useNavigate()
   const [contacts, getContacts] = useGetAllContacts()
 
@@ -36,8 +38,7 @@ function ViewExpenseGroup() {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
-    bgcolor: '#041010',
-    color: '#DEF7F7',
+    bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
@@ -78,6 +79,34 @@ function ViewExpenseGroup() {
                 </Button>
               </Box>
             </Modal>
+            <Modal open={openNewExpenseModal}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+              onClose={() => {
+                setOpenNewExpenseModal(false)
+              }}> 
+                <Box sx={style}>
+                  <TextField
+                      value={expenseName}
+                      label={"name"}
+                      id="filled-required"
+                      variant="filled"
+                      onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                          event.preventDefault()
+                          setExpenseName(event.target.value)
+                      }} />
+                <Button onClick={() => {
+                  createExpense(expenseName, expenseGroup.ID, navigate)
+                }}>
+                  Add
+                </Button>
+                <Button onClick={() => {
+                  setOpenNewExpenseModal(false)
+                }}>
+                  Cancel
+                </Button>
+              </Box>
+              </Modal>
             <Modal open={openNewMemberModal}
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
@@ -127,6 +156,11 @@ function ViewExpenseGroup() {
             })}
           </List>
         )}
+          <Button style={{width:'200px'}} onClick={() => {
+              setOpenNewExpenseModal(true)
+            }}>
+              Add new expense
+            </Button>
         <SectionHeader text={"Members"}/>
         {expenseGroup.members && (
           <>
@@ -140,7 +174,7 @@ function ViewExpenseGroup() {
             <Button style={{width:'200px'}} onClick={() => {
               setOpenNewMemberModal(true)
               }}>
-              Add new
+              Add new member
             </Button>
             </>
         )}
