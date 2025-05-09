@@ -17,6 +17,10 @@ export type UserContextType = {
     setUsername: (username: string) => void
     email: string
     setEmail: (email: string) => void
+    firstName: string
+    setFirstName: (firstName: string) => void
+    userID: string
+    setID: (id: string) => void
 }
 
 export type LoginForm = {
