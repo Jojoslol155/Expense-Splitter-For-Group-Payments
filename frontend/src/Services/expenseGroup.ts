@@ -50,6 +50,28 @@ export const createExpenseGroup = async (createExpenseGroupForm: CreateExpenseGr
     
 }
 
+export const updateExpenseGroup = async (id: number, name: string) => {
+  console.log("updating")
+  const updateGroup = {
+    name
+  }
+  const options = {
+    method: 'PUT',
+    headers: { 
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify(updateGroup)
+  }
+
+  try {
+    fetch(GET_EXPENSE_GROUPS_URL + `/${id}`, options).then(res => {
+      console.log(res)
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 
 export const deleteExpenseGroup = async (expenseGroup: ExpenseGroup, navigate: NavigateFunction) => {
     const options = {

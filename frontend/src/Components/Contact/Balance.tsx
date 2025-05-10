@@ -15,9 +15,9 @@ const Balance = ({payment: {owedToName, amount} }: Props) => {
         <PaymentsOutlined/>
         {'Owes'} {formatDollarAmount(amount)} {"to: "} {owedToName}
       </div>
-      <div>
+      {/* <div>
         {"Mark paid"}
-      </div>
+      </div> */}
     </div>
   )
 }
