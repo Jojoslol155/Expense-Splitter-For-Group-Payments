@@ -1,9 +1,9 @@
 import React from 'react'
 import { GroupMember, User, Payment } from '../../Types'
 import ContactIcon from '../../Images/Contact.png'
-import './UserCard.css'
 import MUIButton from '../MUIButton/MUIButton'
-import { formatDollarAmount } from '../../Util/formatting'
+import Balance from './Balance'
+import './UserCard.css'
 
 type Props = {
   user: User
@@ -19,16 +19,16 @@ const UserCard = ({user, addButton, expenseGroupID, addGroupMember, closeModal, 
   console.log(payments)
   return (
     <div className='userCardWrapper'>
-      <img src={ContactIcon} width={32} height={32} className='contactIcon'/>
-      <div>
+      <div className='headerUser'>
+        <img src={ContactIcon} width={32} height={32} className='contactIcon'/>
         <div className='name'>{user.firstName} {user.lastName} </div>
+      </div>
+      <div>
         <div className='payments'>
           {payments && payments.map(p => {
             console.log(p)
             return (
-              <div>
-                {"Owes"} {formatDollarAmount(p.amount)} {"to: "} {p.owedToName}
-              </div>
+              <Balance payment={p}/>
             )
           })}
           </div>

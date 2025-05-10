@@ -1,0 +1,15 @@
+.balanceWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 600px;
+    padding-left: 50px;
+}
+
+.owes {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}

@@ -16,6 +16,7 @@ import { UserContextType, PaymentDictionary, GroupMember, Payment } from '../../
 import { AuthContext } from '../../Context/Auth'
 import { defaultExpenseForm } from '../../Reducers/createExpenseGroupForm'
 import AddNew from '../../Components/AddNew/AddNew'
+import { Add } from '@mui/icons-material'
 
 interface Balances {[UserID: string] : number}
 
@@ -30,7 +31,7 @@ function ViewExpenseGroup() {
   const { id } = useParams()
   const [expenseGroup, getExpenseGroup, dispatch] = useGetExpenseGroup(Number(id))
   const [ showWarningAlert, setShowWarningAlert ] = useState(false)
-  const [ openDeleteModal, setOpenDeleteModal ] = useState(false)
+  const [ openDeleteGroupModal, setOpenDeleteGroupModal ] = useState(false)
   const [ openNewMemberModal, setOpenNewMemberModal ] = useState(false)
   const [ openNewExpenseModal, setOpenNewExpenseModal] = useState(false)
   const [ expenseForm, setExpenseForm ] = useState(defaultExpenseForm)
@@ -172,12 +173,12 @@ function ViewExpenseGroup() {
   return (
     <div className='expenseGroupsWrapper'>
       <Stack spacing={2}>
-        <PageHeader header={expenseGroup.name} setOpenDeleteModal={setOpenDeleteModal}/>
+        <PageHeader header={expenseGroup.name} setOpenDeleteModal={setOpenDeleteGroupModal}/>
         <SectionHeader text={"Expenses"}/>
         {expenseGroup.expenses && (
           <List sx={{ paddingLeft: '20px'}}>
             {showWarningAlert && (
-              <div style={{paddingBottom: '6px', display: 'flex', justifyContent: 'flex-end', flexDirection: 'row'}}>
+              <div className='alertWrapper'>
                 <Alert severity='warning' onClose={() => {
                 setShowWarningAlert(false)
                 }}>
@@ -186,11 +187,11 @@ function ViewExpenseGroup() {
               </div>
               )
             }
-            <Modal open={openDeleteModal}
+            <Modal open={openDeleteGroupModal}
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
               onClose={() => {
-                setOpenDeleteModal(false)
+                setOpenDeleteGroupModal(false)
               }}>
               <Box sx={style}>
                 <Typography variant="h6">
@@ -200,7 +201,7 @@ function ViewExpenseGroup() {
                   deleteExpenseGroup(expenseGroup, navigate)
                 }} text={"Delete"}/>
                 <MUIButton isDisabled={false} onClick={() => {
-                  setOpenDeleteModal(false)
+                  setOpenDeleteGroupModal(false)
                 }} text={"Cancel"}/>
               </Box>
             </Modal>
@@ -320,7 +321,7 @@ function ViewExpenseGroup() {
             })}
           </List>
         )}
-          <div>
+          <div style={{paddingLeft:'35px', marginBottom:'20px'}}>
             <AddNew setOpen={setOpenNewExpenseModal}/>
           </div>
         <SectionHeader text={"Members"}/>
@@ -339,8 +340,8 @@ function ViewExpenseGroup() {
                 </div>
               })}
             </List>
-            <div>
-              <MUIButton isDisabled={false} onClick={() => {
+            <div style={{paddingLeft:'35px'}}>
+              <MUIButton isDisabled={false} startIcon={<Add />} onClick={() => {
                 setOpenNewMemberModal(true)
                 }}
                 text="Add new member"
