@@ -9,6 +9,11 @@ export interface Expense {
 
 export type ExpenseForm = Omit<Expense, "ID" | "userExpensePercentages">
 
+export interface EditExpenseForm {
+    name: string
+    amount: number
+}
+
 export interface Balances {[UserID: string] : number}
 
 export interface MemberPercentage {

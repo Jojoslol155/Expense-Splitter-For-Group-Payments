@@ -34,7 +34,7 @@ const PageHeader = ({header, setOpenDeleteModal, groupID}: Props) => {
       </div>}
     <ThemeProvider theme={darkTheme}>
       <Box>
-          <div className='pageHeaderWrapper'>
+          <div className='expPageHeaderWrapper'>
             {editingName ? (
               <TextField sx={{
                 '.MuiInputBase-input': {

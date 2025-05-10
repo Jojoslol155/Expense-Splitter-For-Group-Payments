@@ -1,7 +1,7 @@
 import { useReducer} from 'react'
 import { get } from 'lodash'
 import { GET_EXPENSES_URL, GET_PERCENTAGES_URL } from '../config'
-import { ExpenseForm, User, MemberPercentage } from '../Types'
+import { ExpenseForm, User, MemberPercentage, EditExpenseForm } from '../Types'
 import { defaultExpenseGroup, expenseGroupState } from '../Reducers/expenseGroupState'
 
 export const createExpense = (expense: ExpenseForm, expenseGroupID: number, members: User[]) => {
@@ -53,6 +53,26 @@ export const createExpense = (expense: ExpenseForm, expenseGroupID: number, memb
 
     } catch (e) {
         console.log(e)
+    }
+}
+
+export const updateExpense = async (expense: EditExpenseForm, expenseID: number) => {
+    const options = {
+        method: 'PUT',
+        headers: { 
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(expense)
+    }
+    try {
+        fetch(`${GET_EXPENSES_URL}/${expenseID}`, options).then(res => {
+            if (res.status != 200) {
+                throw new Error(res.statusText)
+            }
+        })
+        
+    } catch (error) {
+        console.log(error)
     }
 }
 
