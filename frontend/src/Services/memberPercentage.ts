@@ -11,6 +11,8 @@ export const saveMemberPercentages = async (expense: Expense, setShowAlert: (ale
     if (percentageSum !== 1) {
       setShowAlert(true)
       return
+    } else {
+      setShowAlert(false)
     }
   
     for (let i = 0; i < expense.userExpensePercentages.length; i++) {

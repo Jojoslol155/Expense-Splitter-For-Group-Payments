@@ -54,8 +54,6 @@ export const createExpense = (expense: ExpenseForm, expenseGroupID: number, memb
     } catch (e) {
         console.log(e)
     }
-    
-
 }
 
 export const deleteExpense = async (expenseID: number) => {
