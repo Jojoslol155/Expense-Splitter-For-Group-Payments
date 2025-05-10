@@ -55,6 +55,18 @@ namespace api.Controllers
             return Ok(expense.ToExpenseDTO());
         }
 
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateExpenseReqDTO expenseDTO) {
+            var expenseModel = await _expenseRepo.UpdateAsync(id, expenseDTO);
+
+            if (expenseModel == null) {
+                return NotFound();
+            }
+
+            return Ok(expenseModel.ToExpenseDTO());
+        }
+
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id) {

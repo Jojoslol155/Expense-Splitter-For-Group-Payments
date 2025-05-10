@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.DTOs.Expense;
 using api.Interfaces;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +42,20 @@ namespace api.Repository
             return await _context.Expenses.AnyAsync(e => e.Id == id);
         }
 
+        public async Task<Expense?> UpdateAsync(int id, UpdateExpenseReqDTO expenseDTO) {
+            var existingExpense = await _context.Expenses.FirstOrDefaultAsync(eg => eg.Id == id);
+
+            if (existingExpense == null) {
+                return null;
+            }
+
+            existingExpense.Name = expenseDTO.Name;
+            existingExpense.Amount = expenseDTO.Amount;
+            
+            await _context.SaveChangesAsync();
+            return existingExpense;
+        }
+
         public async Task<Expense?> DeleteAsync(int id)
         {
             var expenseModel = await _context.Expenses.FirstOrDefaultAsync(eg => eg.Id == id);
@@ -53,5 +68,6 @@ namespace api.Repository
             await _context.SaveChangesAsync();
             return expenseModel;
         }
+
     }
 }

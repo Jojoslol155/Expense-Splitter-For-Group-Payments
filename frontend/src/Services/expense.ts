@@ -52,7 +52,7 @@ export const createExpense = (expense: ExpenseForm, expenseGroupID: number, memb
         })
 
     } catch (e) {
-        console.error(e)
+        console.log(e)
     }
     
 
@@ -62,8 +62,19 @@ export const deleteExpense = async (expenseID: number) => {
     console.log("deleting expense!")
     const options = {
         method: 'DELETE',
-        headers: {
+        headers: { 
             'Content-type': 'application/json',
         },
+    }
+    try {
+        fetch(`${GET_EXPENSES_URL}/${expenseID}`, options).then(res => {
+            console.log(res)
+            if (res.status != 204) {
+                throw new Error(res.statusText)
+            }
+        })
+        
+    } catch (error) {
+        console.log(error)
     }
 }
