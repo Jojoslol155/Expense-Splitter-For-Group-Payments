@@ -9,7 +9,7 @@ import SectionHeader from '../../Components/SectionHeader'
 import { get } from 'lodash'
 import { useGetAllContacts } from '../../Hooks/Users'
 import { useNavigate } from 'react-router-dom'
-import { deleteExpenseGroup, addGroupMember, saveMemberPercentages, createExpense } from '../../Services'
+import { deleteExpenseGroup, addGroupMember, saveMemberPercentages, createExpense, deleteExpense } from '../../Services'
 import './ViewExpenseGroup.css'
 import MUIButton from '../../Components/MUIButton/MUIButton'
 import { UserContextType, PaymentDictionary, GroupMember, Payment } from '../../Types'
@@ -17,6 +17,7 @@ import { AuthContext } from '../../Context/Auth'
 import { defaultExpenseForm } from '../../Reducers/createExpenseGroupForm'
 import AddNew from '../../Components/AddNew/AddNew'
 import { Add } from '@mui/icons-material'
+import DeleteModal from '../../Components/Modals/DeleteModal'
 
 interface Balances {[UserID: string] : number}
 
@@ -36,6 +37,7 @@ function ViewExpenseGroup() {
   const [ openNewMemberModal, setOpenNewMemberModal ] = useState(false)
   const [ openNewExpenseModal, setOpenNewExpenseModal] = useState(false)
   const [ expenseForm, setExpenseForm ] = useState(defaultExpenseForm)
+  const [ expenseIDToODelete, setExpenseIDToDelete] = useState(0)
   const [ memberToAdd, setMemberToAdd ] = useState('')
   const navigate = useNavigate()
   const [contacts, getContacts] = useGetAllContacts()
@@ -71,13 +73,12 @@ function ViewExpenseGroup() {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
+    color: 'var(--text)',
+    backgroundColor: '#1B2437',
     boxShadow: 24,
     p: 4,
     display: 'flex',
     flexDirection: 'column',
-    
   }
 
   const getNameForId = (id: string): string => {
@@ -193,24 +194,26 @@ function ViewExpenseGroup() {
               </div>
               )
             }
-            <Modal open={openDeleteGroupModal}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
+            <DeleteModal style={style} open={openDeleteGroupModal}
               onClose={() => {
                 setOpenDeleteGroupModal(false)
-              }}>
-              <Box sx={style}>
-                <Typography variant="h6">
-                  {"Are you sure you want to delete?"}
-                </Typography>
-                <MUIButton isDisabled={false} onClick={() => {
-                  deleteExpenseGroup(expenseGroup, navigate)
-                }} text={"Delete"}/>
-                <MUIButton isDisabled={false} onClick={() => {
-                  setOpenDeleteGroupModal(false)
-                }} text={"Cancel"}/>
-              </Box>
-            </Modal>
+              }}
+              handleDelete={() => {
+                setOpenDeleteGroupModal(false)
+                deleteExpenseGroup(expenseGroup, navigate)
+              }}
+            />
+
+              <DeleteModal style={style} open={openDeleteExpenseModal}
+              onClose={() => {
+                setOpenDeleteExpenseModal(false)
+              }}
+              handleDelete={() => {
+                setOpenDeleteExpenseModal(false)
+                deleteExpense(expenseIDToODelete)
+              }}
+            />
+
             <Modal open={openNewExpenseModal}
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
@@ -328,6 +331,7 @@ function ViewExpenseGroup() {
                 dispatch={dispatch} 
                 key={get(ex, "id") + "c"} 
                 openDeleteExpenseModal={() => {
+                  setExpenseIDToDelete(get(ex, "id", 0))
                   setOpenDeleteExpenseModal(true)
                 }}
                 saveMemberPercentages={saveMemberPercentages} 
