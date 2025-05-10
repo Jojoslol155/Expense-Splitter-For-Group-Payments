@@ -6,6 +6,7 @@ const theme = createTheme({
         primary: {
             main: "#206BC4"
         },
+        mode: 'dark'
     }
 })
 
@@ -14,12 +15,13 @@ type Props = {
     text?: string
     children?: string | JSX.Element | JSX.Element[] 
     isDisabled: boolean
+    startIcon?: JSX.Element
 }
 
-const MUIButton = ({onClick, text, children, isDisabled}: Props) => {
+const MUIButton = ({onClick, text, children, isDisabled, startIcon}: Props) => {
   return (
     <ThemeProvider theme={theme}>
-        <Button onClick={onClick} variant='outlined' disabled={isDisabled}>{text} {children}</Button>
+        <Button onClick={onClick} startIcon={startIcon} variant='outlined' disabled={isDisabled}>{text} {children}</Button>
     </ThemeProvider>
   )
 }

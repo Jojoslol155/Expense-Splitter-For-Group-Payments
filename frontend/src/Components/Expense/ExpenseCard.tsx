@@ -1,5 +1,6 @@
 import React, {Dispatch, useContext} from 'react'
-import { Accordion, AccordionDetails, AccordionSummary, ListItem } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, ButtonGroup, Icon, ListItem } from '@mui/material'
+import { Delete, Check } from '@mui/icons-material'
 import {formatDollarAmount } from '../../Util/formatting'
 import ExpandIcon from '../ExpandIcon/ExpandIcon'
 import UserExpensePercentage from '../MemberPercentage/MemberPercentage'
@@ -13,9 +14,10 @@ type Props = {
     saveMemberPercentages: (expense: Expense, setShowAlert: (alert: boolean) => void) => void
     setShowAlert: (alert: boolean) => void
     dispatch: Dispatch<ExpenseGroupFormAction>
+    openDeleteExpenseModal: () => void
   }
   
-  const ExpenseCard = ({expense, dispatch, saveMemberPercentages, setShowAlert}: Props) => {
+  const ExpenseCard = ({expense, dispatch, saveMemberPercentages, setShowAlert, openDeleteExpenseModal}: Props) => {
     const { contacts } = useContext(ContactsContext) as ContactsContextType
     const paidByName = () => {
       var name = ""
@@ -46,9 +48,12 @@ type Props = {
           </AccordionDetails>
           <div className='buttonWrapper'>
             <div style={{paddingRight: '15px', paddingBottom: '10px'}}>
-              <MUIButton isDisabled={false} onClick={() => {
-                saveMemberPercentages(expense, setShowAlert)
-              }} text="Save Changes"/>
+              <ButtonGroup>
+                <MUIButton isDisabled={false} startIcon={<Delete  />} onClick={openDeleteExpenseModal} text={"Delete"}/>
+                <MUIButton isDisabled={false} startIcon={<Check />} onClick={() => {
+                  saveMemberPercentages(expense, setShowAlert)
+                }} text="Save Changes"/>
+              </ButtonGroup>
             </div>
           </div>
         </Accordion>

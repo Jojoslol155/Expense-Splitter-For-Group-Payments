@@ -16,6 +16,7 @@ namespace api.Controllers
     {
         private readonly IExpenseRepository _expenseRepo;
         private readonly IExpenseGroupRepository _expenseGroupRepo;
+        private readonly IUserExpensePercentageRepository _uepRepo;
 
         public ExpenseController(IExpenseRepository expenseRepo, IExpenseGroupRepository expenseGroupRepo)
         {
@@ -57,11 +58,17 @@ namespace api.Controllers
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id) {
-            var expense = await _expenseRepo.DeleteAsync(id);
-            
-            if (expense == null) {
+            var getExpense = await _expenseRepo.GetByIDAsync(id);
+
+            if (getExpense == null) {
                 return NotFound();
             }
+
+            for (var i = 0; id < getExpense.UserExpensePercentages.Count; id++) {
+                await _uepRepo.DeleteAsync(id, getExpense.UserExpensePercentages[i].UserID);
+            }
+            
+            await _expenseRepo.DeleteAsync(id);
 
             return NoContent();
         }

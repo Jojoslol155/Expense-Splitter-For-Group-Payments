@@ -19,6 +19,6 @@ Install node & npm
 open `localhost:3000` in your browser
 
 ### Attributions
-[Contact icons created by Indra Maulana Yusuf - Flaticon](https://www.flaticon.com/free-icons/contact)
-[Logout icons created by Gregor Cresnar - Flaticon](https://www.flaticon.com/free-icons/logout)
-[Dollar sign icons created by Hight Quality Icons - Flaticon](https://www.flaticon.com/free-icons/dollar-sign)
+* [Contact icons created by Indra Maulana Yusuf - Flaticon](https://www.flaticon.com/free-icons/contact)
+* [Logout icons created by Gregor Cresnar - Flaticon](https://www.flaticon.com/free-icons/logout)
+* [Dollar sign icons created by Hight Quality Icons - Flaticon](https://www.flaticon.com/free-icons/dollar-sign)

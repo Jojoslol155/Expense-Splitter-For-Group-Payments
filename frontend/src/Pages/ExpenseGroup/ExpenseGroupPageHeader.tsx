@@ -2,6 +2,7 @@ import {useState} from 'react'
 import { Box, ButtonGroup, createTheme, Divider, TextField, ThemeProvider, Typography } from '@mui/material'
 import './ViewExpenseGroup.css'
 import MUIButton from '../../Components/MUIButton/MUIButton'
+import { Delete, Edit } from '@mui/icons-material'
 
 type Props = {
     header: string
@@ -30,10 +31,11 @@ const PageHeader = ({header, setOpenDeleteModal}: Props) => {
             )}
             <div>
               <ButtonGroup>
-                <MUIButton isDisabled={false} onClick={() => {
+                <MUIButton isDisabled={false} startIcon={<Edit />} onClick={() => {
                   setEditingName(true)
                 }} text='Edit'/>
                 <MUIButton isDisabled={false} 
+                  startIcon={<Delete  />}
                   onClick={() => {
                     setOpenDeleteModal(true)
                   }}

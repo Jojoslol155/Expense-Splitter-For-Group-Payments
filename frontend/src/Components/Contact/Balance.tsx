@@ -1,10 +1,24 @@
 import React from 'react'
+import { Payment } from '../../Types'
+import { formatDollarAmount } from '../../Util/formatting'
+import './Balance.css'
+import { PaymentsOutlined } from '@mui/icons-material'
 
-type Props = {}
+type Props = {
+  payment: Payment
+}
 
-const Balance = (props: Props) => {
+const Balance = ({payment: {owedToName, amount} }: Props) => {
   return (
-    <div>Balance</div>
+    <div className="balanceWrapper">
+      <div className='owes'>
+        <PaymentsOutlined/>
+        {'Owes'} {formatDollarAmount(amount)} {"to: "} {owedToName}
+      </div>
+      <div>
+        {"Mark paid"}
+      </div>
+    </div>
   )
 }
 

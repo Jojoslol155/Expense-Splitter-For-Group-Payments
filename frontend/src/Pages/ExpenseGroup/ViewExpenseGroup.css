@@ -10,6 +10,9 @@
   .expenseGroupsWrapper {
     padding-bottom: 60px;
   }
+  .alertWrapper {
+    top: 205px !important;
+  }
 }
 
 .pageHeaderWrapper{
@@ -17,4 +20,12 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+}
+
+.alertWrapper {
+  padding-bottom: 6px; 
+  position: fixed;
+  right: 30px;
+  top: 110px;
+  max-width: 500px;
 }

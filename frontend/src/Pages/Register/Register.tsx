@@ -21,7 +21,7 @@ const Register = () => {
   }
 
   const style = {
-    backgroundColor: 'white'
+    backgroundColor: '#e8f0fe'
   }
 
   return token && token !== '' ? <>
