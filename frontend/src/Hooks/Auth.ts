@@ -49,6 +49,9 @@ export const useLogin = (loginData: LoginForm) => {
 }
 
 export const useRegister = (registerData: RegisterForm) => {
+    const { setToken, setID, setFirstName, setEmail } = useContext(AuthContext) as UserContextType
+    const navigate = useNavigate()
+    
     const options = {
         method: 'POST',
         headers: { 
@@ -62,7 +65,22 @@ export const useRegister = (registerData: RegisterForm) => {
         return fetch(REGISTER_URL, options).then(res => {
             return res.json()
         }).then(json => {
-            return json
+              const firstName = json['firstName']
+                const token = json['token']
+                const id = json['id']
+                const email = json['email']
+                const username = json['userName']
+
+                setToken(token)
+                setID(id)
+                setFirstName(firstName)
+                setEmail(email)
+                localStorage.setItem('token', token)
+                localStorage.setItem('username', username)
+                localStorage.setItem('firstName', firstName)
+                localStorage.setItem('email', email)
+                localStorage.setItem('id', id)
+                navigate('/')
         })
         } catch (e) {
             console.error(e)
