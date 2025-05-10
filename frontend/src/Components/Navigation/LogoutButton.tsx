@@ -5,17 +5,15 @@ import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../Context/Auth'
 import { UserContextType } from '../../Types'
 import { Button } from '@mui/material'
-import MUIButton from '../MUIButton/MUIButton'
 
 type Props = {}
 
 const LogoutButton = (props: Props) => {
-  const navigate = useNavigate()
   const { token, setToken } = useContext(AuthContext) as UserContextType
 
   return (
     <div>
-      <MUIButton onClick={() => {
+      <Button onClick={() => {
           setToken('')
           localStorage.clear()
       }}

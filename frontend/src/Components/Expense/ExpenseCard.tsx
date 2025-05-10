@@ -1,13 +1,12 @@
 import React, {Dispatch, useContext} from 'react'
-import { Accordion, AccordionDetails, AccordionSummary, ListItem, Button, Alert, Typography } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, ListItem } from '@mui/material'
 import {formatDollarAmount } from '../../Util/formatting'
 import ExpandIcon from '../ExpandIcon/ExpandIcon'
 import UserExpensePercentage from '../MemberPercentage/MemberPercentage'
-import './ExpenseCard.css'
 import { ExpenseGroupFormAction, Expense,  ContactsContextType } from '../../Types'
 import MUIButton from '../MUIButton/MUIButton'
 import { ContactsContext } from '../../Context/Contacts'
-import { get } from 'lodash'
+import './ExpenseCard.css'
 
 type Props = {
     expense: Expense
@@ -46,9 +45,11 @@ type Props = {
               }
           </AccordionDetails>
           <div className='buttonWrapper'>
-            <MUIButton onClick={() => {
-              saveMemberPercentages(expense, setShowAlert)
-            }} text="Save Changes"/>
+            <div style={{paddingRight: '15px', paddingBottom: '10px'}}>
+              <MUIButton onClick={() => {
+                saveMemberPercentages(expense, setShowAlert)
+              }} text="Save Changes"/>
+            </div>
           </div>
         </Accordion>
       </ListItem>
