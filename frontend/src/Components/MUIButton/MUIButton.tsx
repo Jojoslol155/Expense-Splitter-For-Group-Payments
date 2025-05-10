@@ -4,7 +4,7 @@ import { Button, createTheme, ThemeProvider } from '@mui/material'
 const theme = createTheme({
     palette: {
         primary: {
-            main: "#29A3A3"
+            main: "#206BC4"
         },
     }
 })
@@ -13,12 +13,13 @@ type Props = {
     onClick: () => void
     text?: string
     children?: string | JSX.Element | JSX.Element[] 
+    isDisabled: boolean
 }
 
-const MUIButton = ({onClick, text, children}: Props) => {
+const MUIButton = ({onClick, text, children, isDisabled}: Props) => {
   return (
     <ThemeProvider theme={theme}>
-        <Button onClick={onClick}>{text} {children}</Button>
+        <Button onClick={onClick} variant='outlined' disabled={isDisabled}>{text} {children}</Button>
     </ThemeProvider>
   )
 }

@@ -1,10 +1,10 @@
 import { NavigateFunction } from 'react-router-dom'
-import { CreateExpenseGroupForm, ExpenseGroup } from '../Types'
+import { CreateExpenseGroupForm, ExpenseGroup, GroupMember } from '../Types'
 import { get } from 'lodash'
-import { GET_EXPENSE_GROUPS_URL, GET_EXPENSES_URL } from '../config'
+import { GET_EXPENSE_GROUPS_URL, GET_EXPENSES_URL, GET_GROUP_MEMBERS_URL } from '../config'
 
 
-export const createExpenseGroup = async (createExpenseGroupForm: CreateExpenseGroupForm, navigate: NavigateFunction) => {
+export const createExpenseGroup = async (createExpenseGroupForm: CreateExpenseGroupForm, userID: string, navigate: NavigateFunction) => {
     const options = {
         method: 'POST',
         headers: {
@@ -14,16 +14,34 @@ export const createExpenseGroup = async (createExpenseGroupForm: CreateExpenseGr
     }
     try {
         fetch(GET_EXPENSE_GROUPS_URL, options).then(res => { 
-            console.log(res)
             if (res.status !== 201) {
                 throw new Error(res.statusText)
             }
             return res.json() 
 
         }).then(json => {
-            console.log(json)
-            const expenseGroupId = get(json, 'id')
-            navigate(`/group/${expenseGroupId}/view`)
+            const expenseGroupID = get(json, 'id')
+            const gm: GroupMember = {
+              memberID: userID,
+              expenseGroupID
+            }
+
+            const gmOptions = {
+              method: 'POST',
+              headers: {
+                'Content-type': 'application/json',
+              },
+              body: JSON.stringify(gm)
+            }
+
+            fetch(GET_GROUP_MEMBERS_URL, gmOptions).then(res => {
+              if (res.status !== 201 && res.status !== 200) {
+                throw new Error(res.statusText)
+              }
+              return res.json() 
+            }).then(json => {
+              navigate(`/group/${expenseGroupID}/view`)
+            })
         })
 
     } catch (e) {

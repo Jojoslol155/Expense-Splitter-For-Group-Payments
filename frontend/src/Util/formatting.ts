@@ -1,5 +1,5 @@
 export const formatDollarAmount = (amount: number): string => {
-    return `$${amount.toFixed(2)}`
+    return `$${Math.abs(amount).toFixed(2)}`
 }
 
 export const formatPercent = (percentage: number): string => {

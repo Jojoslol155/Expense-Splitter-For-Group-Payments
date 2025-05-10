@@ -18,7 +18,7 @@ const Login = () => {
   }
 
   const buttonStyle = {
-    backgroundColor: '#29A3A3'
+    backgroundColor: 'var(--secondary)'
   }
 
   return token && token !== '' ? <>

@@ -12,17 +12,24 @@ import { useNavigate } from 'react-router-dom'
 import { deleteExpenseGroup, addGroupMember, saveMemberPercentages, createExpense } from '../../Services'
 import './ViewExpenseGroup.css'
 import MUIButton from '../../Components/MUIButton/MUIButton'
-import { ExpenseForm, UserContextType, BalanceDictionary, GroupMember } from '../../Types'
+import { UserContextType, PaymentDictionary, GroupMember, Payment } from '../../Types'
 import { AuthContext } from '../../Context/Auth'
 import { defaultExpenseForm } from '../../Reducers/createExpenseGroupForm'
 import AddNew from '../../Components/AddNew/AddNew'
 
-interface AmountsOwed {[OwedFromID: string] : number}
+interface Balances {[UserID: string] : number}
+
+const compareBalances = (a: [string, number], b: [string, number]) => {
+  if (a[1] === b[1]) {
+    return 0
+  }
+  return (a[1] < b[1]) ? -1 : 1
+}
 
 function ViewExpenseGroup() {
   const { id } = useParams()
   const [expenseGroup, getExpenseGroup, dispatch] = useGetExpenseGroup(Number(id))
-  const [ showAlert, setShowAlert ] = useState(false)
+  const [ showWarningAlert, setShowWarningAlert ] = useState(false)
   const [ openDeleteModal, setOpenDeleteModal ] = useState(false)
   const [ openNewMemberModal, setOpenNewMemberModal ] = useState(false)
   const [ openNewExpenseModal, setOpenNewExpenseModal] = useState(false)
@@ -31,7 +38,8 @@ function ViewExpenseGroup() {
   const navigate = useNavigate()
   const [contacts, getContacts] = useGetAllContacts()
   const { firstName, userID } = useContext(AuthContext) as UserContextType
-  const [ balances, setBalances ] = useState<BalanceDictionary>({}) 
+  const [ amountsOwed, setAmountsOwed ] = useState<Balances>({})
+  const [ payments, setPayments ] = useState<PaymentDictionary>({}) 
   
   useEffect(() => {
     getExpenseGroup()
@@ -39,7 +47,7 @@ function ViewExpenseGroup() {
 
   useEffect(() => {
     getContacts()
-  }, [])
+  }, [payments])
 
   useEffect(() => {
     getAmountsOwed()
@@ -66,29 +74,100 @@ function ViewExpenseGroup() {
     boxShadow: 24,
     p: 4,
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    
+  }
+
+  const getNameForId = (id: string): string => {
+    let name = ""
+    contacts.forEach(c => {
+      if (c.ID == id) {
+        name = c.firstName + " " + c.lastName
+      }
+    })
+    return name
   }
 
   const getAmountsOwed = () => {
-    // simple map of ID to sum of amount OWED TO that ID, local only
-    var amountsOwed: AmountsOwed = {}
+    var amtsOwed: Balances = {}
 
     expenseGroup.expenses.forEach(exp => {
-      exp.userExpensePercentages.forEach(uep => {
+      contacts.forEach(c => {
+        if(c.ID == exp.paidByUserId) {
+          if (!amtsOwed[c.ID]) {
+            amtsOwed[c.ID] = 0
+          }
+          amtsOwed[c.ID] -= exp.amount
+        }
+      })
 
-        if (!amountsOwed[uep.userID]) {
-          amountsOwed[uep.userID] = 0
+      exp.userExpensePercentages.forEach(uep => {
+        if(!amtsOwed[uep.userID]) {
+          amtsOwed[uep.userID] = 0
         }
 
-        const amount = exp.amount * uep.percentage
-
-        amountsOwed[uep.userID] += amount
+        amtsOwed[uep.userID] += Math.round((exp.amount * uep.percentage) * 100) / 100
       })
     })
 
-    console.log(amountsOwed)
+    setAmountsOwed(amtsOwed)
+
+    var balancesArray: any = []
+
+    Object.entries(amtsOwed).map((kv) => {
+      balancesArray.push(kv)
+    })
+
+    balancesArray.sort(compareBalances)
+
+    const paymentsDict: PaymentDictionary = {}
+    
+    while (balancesArray.length > 1) { 
+      var min: number = balancesArray[0][1]
+      var minID: string = balancesArray[0][0]
+      var minName: string = getNameForId(balancesArray[0][0])
+
+      var max: number = balancesArray[balancesArray.length - 1][1]
+      var maxID: string = balancesArray[balancesArray.length - 1][0]
+      var maxName:string = getNameForId(balancesArray[balancesArray.length - 1][0])
+
+
+      if (!paymentsDict[maxID]) {
+        paymentsDict[maxID] = []
+      }
+
+
+      if (min + max > 0) {
+        balancesArray[balancesArray.length - 1][1] = max + min
+        balancesArray.shift()
+
+        const payment: Payment = {
+          owedToName: minName,
+          amount: min,
+          owedToId: minID
+        }
+        paymentsDict[maxID].push(payment)
+
+      } else if (min + max < 0) {
+        balancesArray[0][1] = balancesArray[0][1] + [balancesArray.length - 1][1]
+        balancesArray.pop()
+
+        const payment: Payment = {
+          owedToName: minName,
+          amount: max,
+          owedToId: minID
+        }
+        paymentsDict[maxID].push(payment)
+        
+      } else {
+        balancesArray.shift()
+        balancesArray.pop()
+      }
+
+    }
+    
+    setPayments(paymentsDict)
   }
-  
 
   return (
     <div className='expenseGroupsWrapper'>
@@ -97,11 +176,16 @@ function ViewExpenseGroup() {
         <SectionHeader text={"Expenses"}/>
         {expenseGroup.expenses && (
           <List sx={{ paddingLeft: '20px'}}>
-            {showAlert && <Alert severity='warning' onClose={() => {
-              setShowAlert(false)
-            }}>
-              Percentages must total to 100%
-            </Alert>}
+            {showWarningAlert && (
+              <div style={{paddingBottom: '6px', display: 'flex', justifyContent: 'flex-end', flexDirection: 'row'}}>
+                <Alert severity='warning' onClose={() => {
+                setShowWarningAlert(false)
+                }}>
+                  Percentages must total to 100%
+                </Alert>
+              </div>
+              )
+            }
             <Modal open={openDeleteModal}
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
@@ -112,10 +196,10 @@ function ViewExpenseGroup() {
                 <Typography variant="h6">
                   {"Are you sure you want to delete?"}
                 </Typography>
-                <MUIButton onClick={() => {
+                <MUIButton isDisabled={false} onClick={() => {
                   deleteExpenseGroup(expenseGroup, navigate)
                 }} text={"Delete"}/>
-                <MUIButton onClick={() => {
+                <MUIButton isDisabled={false} onClick={() => {
                   setOpenDeleteModal(false)
                 }} text={"Cancel"}/>
               </Box>
@@ -161,13 +245,14 @@ function ViewExpenseGroup() {
                     })}
                   </Select>
                   <ButtonGroup>
-                    <MUIButton onClick={() => {
-                      setOpenNewExpenseModal(false)
-                      handleSubmit()
-                    }}
+                    <MUIButton isDisabled={(expenseForm.amount <= 0 || expenseForm.name == "" || expenseForm.paidByUserId == "" )} 
+                      onClick={() => {
+                        setOpenNewExpenseModal(false)
+                        handleSubmit()
+                      }}
                       text={"Add"}
                     />
-                    <MUIButton onClick={() => {
+                    <MUIButton isDisabled={false} onClick={() => {
                       setOpenNewExpenseModal(false)
                     }}
                       text="Cancel"
@@ -210,7 +295,7 @@ function ViewExpenseGroup() {
                   })}
                 </Select>
                 </>
-                <MUIButton onClick={() => {
+                <MUIButton isDisabled={false} onClick={() => {
                   const gm: GroupMember = {
                     expenseGroupID: expenseGroup.ID,
                     memberID: memberToAdd
@@ -223,13 +308,15 @@ function ViewExpenseGroup() {
                     })
                     return ""
                   }
-                  addGroupMember(gm, firstNameToAdd())
+                  if(memberToAdd !== "") {
+                    addGroupMember(gm, firstNameToAdd())
+                  }
                   setOpenNewMemberModal(false)
                 }} text={"Done"}/>
               </Box>
             </Modal>
             {expenseGroup.expenses.map(ex => {
-              return <ExpenseCard expense={ex} dispatch={dispatch} key={get(ex, "id") + "c"} saveMemberPercentages={saveMemberPercentages} setShowAlert={setShowAlert} />
+              return <ExpenseCard expense={ex} dispatch={dispatch} key={get(ex, "id") + "c"} saveMemberPercentages={saveMemberPercentages} setShowAlert={setShowWarningAlert} />
             })}
           </List>
         )}
@@ -241,9 +328,11 @@ function ViewExpenseGroup() {
           <>
             <List sx={{ paddingLeft: '35px'}}>
               {expenseGroup.members.map(member => {
+                console.log(payments)
+                console.log(payments["" + get(member, 'id')])
                 return <div key={member.ID + member.firstName}>
                   <UserCard 
-                    //balances={balances[member.ID]}
+                    payments={payments["" + get(member, 'id')]}
                     user={member} 
                     addButton={false} 
                     key={member.ID} />
@@ -251,7 +340,7 @@ function ViewExpenseGroup() {
               })}
             </List>
             <div>
-              <MUIButton onClick={() => {
+              <MUIButton isDisabled={false} onClick={() => {
                 setOpenNewMemberModal(true)
                 }}
                 text="Add new member"
