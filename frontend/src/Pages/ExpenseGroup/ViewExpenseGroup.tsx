@@ -12,21 +12,14 @@ import { useNavigate } from 'react-router-dom'
 import { deleteExpenseGroup, addGroupMember, saveMemberPercentages, createExpense, deleteExpense, deleteGroupMember } from '../../Services'
 import './ViewExpenseGroup.css'
 import MUIButton from '../../Components/MUIButton/MUIButton'
-import { UserContextType, PaymentDictionary, GroupMember, Payment } from '../../Types'
+import { UserContextType, PaymentDictionary, GroupMember, Payment, Balances} from '../../Types'
 import { AuthContext } from '../../Context/Auth'
 import { defaultExpenseForm } from '../../Reducers/createExpenseGroupForm'
 import AddNew from '../../Components/AddNew/AddNew'
 import { Add, Delete } from '@mui/icons-material'
 import DeleteModal from '../../Components/Modals/DeleteModal'
+import {compareBalances, getNameForId} from '../../Util/Payments'
 
-interface Balances {[UserID: string] : number}
-
-const compareBalances = (a: [string, number], b: [string, number]) => {
-  if (a[1] === b[1]) {
-    return 0
-  }
-  return (a[1] < b[1]) ? -1 : 1
-}
 
 const theme = createTheme({
     palette: {
@@ -91,16 +84,6 @@ function ViewExpenseGroup() {
     alignItems: 'center'
   }
 
-  const getNameForId = (id: string): string => {
-    let name = ""
-    contacts.forEach(c => {
-      if (c.ID == id) {
-        name = c.firstName + " " + c.lastName
-      }
-    })
-    return name
-  }
-
   const getAmountsOwed = () => {
     var amtsOwed: Balances = {}
 
@@ -141,11 +124,11 @@ function ViewExpenseGroup() {
 
       var min: number = balancesArray[0][1]
       var minID: string = balancesArray[0][0]
-      var minName: string = getNameForId(balancesArray[0][0])
+      var minName: string = getNameForId(balancesArray[0][0], contacts)
 
       var max: number = balancesArray[balancesArray.length - 1][1]
       var maxID: string = balancesArray[balancesArray.length - 1][0]
-      var maxName:string = getNameForId(balancesArray[balancesArray.length - 1][0])
+      var maxName:string = getNameForId(balancesArray[balancesArray.length - 1][0], contacts)
 
       if (!paymentsDict[maxID]) {
         paymentsDict[maxID] = []
@@ -335,6 +318,10 @@ function ViewExpenseGroup() {
                   }
                   if(memberToAdd !== "") {
                     addGroupMember(gm, firstNameToAdd())
+                    setTimeout(() => {
+                      getExpenseGroup()
+                      getAmountsOwed()
+                    }, 400)
                   }
                   setOpenNewMemberModal(false)
                 }}>{"Done"}</Button>
