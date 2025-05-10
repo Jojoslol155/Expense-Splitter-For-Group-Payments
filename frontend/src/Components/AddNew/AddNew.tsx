@@ -1,5 +1,6 @@
 import { Box, Divider } from '@mui/material'
 import MUIButton from '../MUIButton/MUIButton'
+import { Add } from '@mui/icons-material'
 import './AddNew.css'
 
 type Props = {
@@ -12,7 +13,7 @@ export const  AddNew = ({ setOpen }: Props) => {
             <div className='alignRight'>
                 <MUIButton isDisabled={false} onClick={() => {
                     setOpen(true)
-                }} text={"Create New"}/>
+                }} text={"Create New"} startIcon={<Add />}/>
             </div>
             <Divider sx={{ background: 'var(--primary)', marginTop: '10px', marginBottom: '20px', padding: '3px' }} />
         </Box>

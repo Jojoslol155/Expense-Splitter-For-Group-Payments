@@ -98,7 +98,7 @@ function ViewExpenseGroup() {
             amtsOwed[c.ID] = 0
           }
           amtsOwed[c.ID] -= exp.amount
-        }
+        } 
       })
 
       exp.userExpensePercentages.forEach(uep => {
