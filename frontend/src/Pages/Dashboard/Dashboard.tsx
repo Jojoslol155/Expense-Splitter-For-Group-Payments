@@ -3,7 +3,7 @@ import './Dashboard.css'
 import { useGetAllExpenseGroups } from '../../Hooks/ExpenseGroups'
 import ExpenseGroups from '../../Components/ExpenseGroups/ExpenseGroups'
 import AddNew from '../../Components/AddNew/AddNew'
-import { Modal, Box, Typography, TextField, createTheme, ThemeProvider, Divider } from '@mui/material'
+import { Modal, Box, Typography, TextField, createTheme, ThemeProvider, Divider, Button } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import {createExpenseGroup} from '../../Services'
 import { CreateExpenseGroupForm, UserContextType } from '../../Types'
@@ -21,24 +21,26 @@ function Dashboard() {
     getExpenseGroups()
   }, [])
 
-    const style = {
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        width: 400,
-        bgcolor: "var(--primary)",
-        color: "var(--text)",
-        boxShadow: 24,
-        p: 4,
-        display: 'flex',
-        flexDirection:'column',
-        justifyContent: 'space-between',
-        minHeight: '180px'
-    }
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    color: 'var(--text)',
+    backgroundColor: '#1B2437',
+    boxShadow: 24,
+    p: 4,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  }
 
     const darkTheme = createTheme({
       palette: {
+        primary: {
+            main: "#206BC4"
+        },
         mode: 'dark'
       }
     })
@@ -66,26 +68,29 @@ function Dashboard() {
                       {"Create a new expense group:"}
                   </Typography>
                   <TextField
+                      sx={{marginBottom:'15px', marginTop:'15px'}}
                       value={name}
-                      label={"name"}
+                      label={"New Expense Group title"}
                       id="filled-required"
                       variant="filled"
                       onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                           event.preventDefault()
                           setName(event.target.value)
                       }} />
-                  <MUIButton
-                    isDisabled={name == ""} 
-                    onClick={() => {
-                      const newExpenseGroup: CreateExpenseGroupForm = {
+                  <div style={{display: 'flex', justifyContent: 'flex-end', width:'100%', marginTop:'15px'}}>
+                    <Button
+                      disabled={name == ""} 
+                      variant='contained'
+                      onClick={() => {
+                        const newExpenseGroup: CreateExpenseGroupForm = {
                           name
-                      }
-                    createExpenseGroup(newExpenseGroup,userID,navigate)
-                      setOpen(false);
-                      navigate("/") 
-                  }}
-                  text="Add"
-                  />
+                        }
+                        createExpenseGroup(newExpenseGroup,userID,navigate)
+                        setOpen(false);
+                        navigate("/") 
+                      }}> {"Create"}
+                        </Button>
+                    </div>
               </Box>
           </Modal>
         </ThemeProvider>
