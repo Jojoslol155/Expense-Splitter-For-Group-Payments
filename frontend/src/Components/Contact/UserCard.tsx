@@ -15,8 +15,6 @@ type Props = {
 }
 
 const UserCard = ({user, addButton, expenseGroupID, addGroupMember, closeModal, payments}: Props) => {
-  console.log("get payments?")
-  console.log(payments)
   return (
     <div className='userCardWrapper'>
       <div className='headerUser'>
@@ -26,7 +24,6 @@ const UserCard = ({user, addButton, expenseGroupID, addGroupMember, closeModal, 
       <div>
         <div className='payments'>
           {payments && payments.map(p => {
-            console.log(p)
             return (
               <Balance payment={p}/>
             )
