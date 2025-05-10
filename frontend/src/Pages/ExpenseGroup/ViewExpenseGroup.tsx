@@ -331,6 +331,9 @@ function ViewExpenseGroup() {
             </Modal>
             {expenseGroup.expenses.map(ex => {
               return <ExpenseCard 
+                refresh={() => {
+                  getExpenseGroup()
+                }}
                 expense={ex} 
                 dispatch={dispatch} 
                 key={get(ex, "id") + "c"} 
