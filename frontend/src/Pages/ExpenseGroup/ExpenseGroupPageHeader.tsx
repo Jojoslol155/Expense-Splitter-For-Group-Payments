@@ -63,7 +63,6 @@ const PageHeader = ({header, setOpenDeleteModal, groupID}: Props) => {
               onChange={(e) => {
                 setName(e.target.value)
               }}>
-
                 </TextField>
             ) : (
               <Typography variant='h3'>{name == "" ? header : name}</Typography>
