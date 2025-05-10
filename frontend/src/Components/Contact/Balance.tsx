@@ -12,12 +12,12 @@ const Balance = ({payment: {owedToName, amount} }: Props) => {
   return (
     <div className="balanceWrapper">
       <div className='owes'>
-        <PaymentsOutlined/>
+        <PaymentsOutlined style={{marginRight:'6px'}}/>
         {'Owes'} {formatDollarAmount(amount)} {"to: "} {owedToName}
       </div>
-      <div>
+      {/* <div>
         {"Mark paid"}
-      </div>
+      </div> */}
     </div>
   )
 }

@@ -59,7 +59,6 @@ export const createExpense = (expense: ExpenseForm, expenseGroupID: number, memb
 }
 
 export const deleteExpense = async (expenseID: number) => {
-    console.log("deleting expense!")
     const options = {
         method: 'DELETE',
         headers: { 
@@ -68,7 +67,6 @@ export const deleteExpense = async (expenseID: number) => {
     }
     try {
         fetch(`${GET_EXPENSES_URL}/${expenseID}`, options).then(res => {
-            console.log(res)
             if (res.status != 204) {
                 throw new Error(res.statusText)
             }

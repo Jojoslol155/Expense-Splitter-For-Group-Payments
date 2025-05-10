@@ -123,15 +123,11 @@ function ViewExpenseGroup() {
 
     
     const paymentsDict: PaymentDictionary = {}
-    let i = 0
+
     while (balancesArray.length > 1) { 
-      console.log(i)
-      i++
+
       balancesArray.sort(compareBalances)
-      console.log("balances array: ")
-      console.log(balancesArray)
-      console.log(balancesArray[0])
-      console.log(balancesArray[balancesArray.length - 1])
+
 
       var min: number = balancesArray[0][1]
       var minID: string = balancesArray[0][0]
@@ -180,7 +176,7 @@ function ViewExpenseGroup() {
   return (
     <div className='expenseGroupsWrapper'>
       <Stack spacing={2}>
-        <PageHeader header={expenseGroup.name} setOpenDeleteModal={setOpenDeleteGroupModal}/>
+        <PageHeader groupID={expenseGroup.ID} header={expenseGroup.name} setOpenDeleteModal={setOpenDeleteGroupModal}/>
         <SectionHeader text={"Expenses"}/>
         {expenseGroup.expenses && (
           <List sx={{ paddingLeft: '20px'}}>
