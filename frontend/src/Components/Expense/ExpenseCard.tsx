@@ -1,6 +1,6 @@
-import React, {Dispatch, useContext} from 'react'
-import { Accordion, AccordionDetails, AccordionSummary, ButtonGroup, Icon, ListItem } from '@mui/material'
-import { Delete, Check } from '@mui/icons-material'
+import React, {Dispatch, useContext, useState} from 'react'
+import { Accordion, AccordionDetails, AccordionSummary, ButtonGroup, Icon, IconButton, ListItem } from '@mui/material'
+import { Delete, Check, Edit } from '@mui/icons-material'
 import {formatDollarAmount } from '../../Util/formatting'
 import ExpandIcon from '../ExpandIcon/ExpandIcon'
 import UserExpensePercentage from '../MemberPercentage/MemberPercentage'
@@ -8,6 +8,8 @@ import { ExpenseGroupFormAction, Expense,  ContactsContextType } from '../../Typ
 import MUIButton from '../MUIButton/MUIButton'
 import { ContactsContext } from '../../Context/Contacts'
 import './ExpenseCard.css'
+import { get } from 'lodash'
+import EditExpenseModal from '../Modals/EditExpenseModal'
 
 type Props = {
     expense: Expense
@@ -19,6 +21,7 @@ type Props = {
   
   const ExpenseCard = ({expense, dispatch, saveMemberPercentages, setShowAlert, openDeleteExpenseModal}: Props) => {
     const { contacts } = useContext(ContactsContext) as ContactsContextType
+    const [ openEditExpenseModal, setOpenEditExpenseModal] = useState(false)
     const paidByName = () => {
       var name = ""
       contacts.forEach(c => {
@@ -30,16 +33,29 @@ type Props = {
     }
 
     return (
+      <>
       <ListItem>
+      <EditExpenseModal 
+        expenseID={get(expense, 'id', 0)} 
+        name={expense.name}
+        amount={expense.amount}
+        open={openEditExpenseModal} onClose={() => {
+        setOpenEditExpenseModal(false)
+      }}/>
         <Accordion sx={{minWidth:'320px', backgroundColor: 'var(--primary)', color: 'var(--text)'}}>
           <AccordionSummary expandIcon={<ExpandIcon />}>
             <div className='expenseHeader'>
               <div className='expenseHeaderElement'>{expense.name}</div>
               <div className='expenseHeaderElement'>{formatDollarAmount(expense.amount)} </div>
-              <div>{"Paid By:"} {paidByName()} </div>
+              <IconButton onClick={() => {
+                setOpenEditExpenseModal(true)
+              }}>
+                <Edit />
+              </IconButton>
             </div>
           </AccordionSummary>
           <AccordionDetails sx={{minWidth:'500px'}}>
+              <div className='paidBy'>{"Paid By:"} {paidByName()} </div>
               {expense.userExpensePercentages.map(p => {
                 return (
                   <UserExpensePercentage memberPercentage={p} amount={expense.amount} dispatch={dispatch} key={p.expenseID+p.userID}/>
@@ -58,6 +74,7 @@ type Props = {
           </div>
         </Accordion>
       </ListItem>
+      </>
     )
 }
 

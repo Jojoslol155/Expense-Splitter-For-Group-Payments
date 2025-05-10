@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useReducer, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useGetExpenseGroup } from '../../Hooks/ExpenseGroups'
 import ExpenseCard from '../../Components/Expense/ExpenseCard'
-import { Alert, List, Modal, Stack, Box, Typography, TextField, Select, MenuItem, InputLabel, Button, createTheme, ThemeProvider } from '@mui/material'
+import { Alert, List, Modal, Stack, Box, Typography, TextField, Select, IconButton, MenuItem, InputLabel, Button, createTheme, ThemeProvider } from '@mui/material'
 import UserCard from '../../Components/Contact/UserCard'
 import PageHeader from './ExpenseGroupPageHeader'
 import SectionHeader from '../../Components/SectionHeader'
@@ -19,6 +19,7 @@ import AddNew from '../../Components/AddNew/AddNew'
 import { Add, Delete } from '@mui/icons-material'
 import DeleteModal from '../../Components/Modals/DeleteModal'
 import {compareBalances, getNameForId} from '../../Util/Payments'
+import EditExpenseModal from '../../Components/Modals/EditExpenseModal'
 
 
 const theme = createTheme({
@@ -36,6 +37,7 @@ function ViewExpenseGroup() {
   const [ showWarningAlert, setShowWarningAlert ] = useState(false)
   const [ openDeleteGroupModal, setOpenDeleteGroupModal ] = useState(false)
   const [ openDeleteExpenseModal, setOpenDeleteExpenseModal ] = useState(false)
+  const [ openEditExpenseModal, setOpenEditExpenseModal ] = useState(false)
   const [ openNewMemberModal, setOpenNewMemberModal ] = useState(false)
   const [ openNewExpenseModal, setOpenNewExpenseModal] = useState(false)
   const [ expenseForm, setExpenseForm ] = useState(defaultExpenseForm)
@@ -209,7 +211,6 @@ function ViewExpenseGroup() {
                 }, 400)
               }}
             />
-
             <Modal open={openNewExpenseModal}
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
@@ -356,15 +357,15 @@ function ViewExpenseGroup() {
                     user={member} 
                     addButton={false} 
                     key={member.ID} />
-                  <Button startIcon={<Delete />} onClick={() => {
+                  <IconButton  onClick={() => {
                     deleteGroupMember("" + get(member, 'id'), expenseGroup.ID)
                     setTimeout(() => {
                       getExpenseGroup()
                       getAmountsOwed()
                     }, 400)
                     }}>
-                    {"Remove"}
-                  </Button>
+                    <Delete />
+                  </IconButton>
                 </div>
               })}
             </List>
