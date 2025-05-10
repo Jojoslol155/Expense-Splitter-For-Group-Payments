@@ -68,6 +68,19 @@ export const addGroupMember = async (groupMember: GroupMember, firstName: string
     }
 }
 
-export const deleteGroupMember = () => {
-    console.log("deleting!")
+export const deleteGroupMember = async (userID: string, expenseGroupID: number) => {
+  const options = {
+      method: 'DELETE',
+      headers: { 
+        'Content-type': 'application/json',
+      }
+  }
+  
+  try {
+    fetch(`${GET_GROUP_MEMBERS_URL}/group/${expenseGroupID}/user/${userID}`, options).then(res => {
+      console.log(res)
+    })
+  } catch (error) {
+    console.log(error)
+  }
 }

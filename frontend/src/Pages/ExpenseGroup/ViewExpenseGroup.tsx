@@ -2,21 +2,21 @@ import React, { useContext, useEffect, useReducer, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useGetExpenseGroup } from '../../Hooks/ExpenseGroups'
 import ExpenseCard from '../../Components/Expense/ExpenseCard'
-import { Alert, List, Modal, Stack, Box, Typography, TextField, Select, MenuItem, InputLabel, ButtonGroup } from '@mui/material'
+import { Alert, List, Modal, Stack, Box, Typography, TextField, Select, MenuItem, InputLabel, Button, createTheme, ThemeProvider } from '@mui/material'
 import UserCard from '../../Components/Contact/UserCard'
 import PageHeader from './ExpenseGroupPageHeader'
 import SectionHeader from '../../Components/SectionHeader'
 import { get } from 'lodash'
 import { useGetAllContacts } from '../../Hooks/Users'
 import { useNavigate } from 'react-router-dom'
-import { deleteExpenseGroup, addGroupMember, saveMemberPercentages, createExpense, deleteExpense } from '../../Services'
+import { deleteExpenseGroup, addGroupMember, saveMemberPercentages, createExpense, deleteExpense, deleteGroupMember } from '../../Services'
 import './ViewExpenseGroup.css'
 import MUIButton from '../../Components/MUIButton/MUIButton'
 import { UserContextType, PaymentDictionary, GroupMember, Payment } from '../../Types'
 import { AuthContext } from '../../Context/Auth'
 import { defaultExpenseForm } from '../../Reducers/createExpenseGroupForm'
 import AddNew from '../../Components/AddNew/AddNew'
-import { Add } from '@mui/icons-material'
+import { Add, Delete } from '@mui/icons-material'
 import DeleteModal from '../../Components/Modals/DeleteModal'
 
 interface Balances {[UserID: string] : number}
@@ -27,6 +27,15 @@ const compareBalances = (a: [string, number], b: [string, number]) => {
   }
   return (a[1] < b[1]) ? -1 : 1
 }
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: "#206BC4"
+        },
+        mode: 'dark'
+    }
+})
 
 function ViewExpenseGroup() {
   const { id } = useParams()
@@ -79,6 +88,7 @@ function ViewExpenseGroup() {
     p: 4,
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'center'
   }
 
   const getNameForId = (id: string): string => {
@@ -175,21 +185,22 @@ function ViewExpenseGroup() {
 
   return (
     <div className='expenseGroupsWrapper'>
+      {showWarningAlert && (
+        <div className='alertWrapper'>
+          <Alert severity='warning' onClose={() => {
+          setShowWarningAlert(false)
+          }}>
+            Percentages must total to 100%
+          </Alert>
+        </div>
+        )
+      }
+      <ThemeProvider theme={theme}>
       <Stack spacing={2}>
         <PageHeader groupID={expenseGroup.ID} header={expenseGroup.name} setOpenDeleteModal={setOpenDeleteGroupModal}/>
         <SectionHeader text={"Expenses"}/>
         {expenseGroup.expenses && (
           <List sx={{ paddingLeft: '20px'}}>
-            {showWarningAlert && (
-              <div className='alertWrapper'>
-                <Alert severity='warning' onClose={() => {
-                setShowWarningAlert(false)
-                }}>
-                  Percentages must total to 100%
-                </Alert>
-              </div>
-              )
-            }
             <DeleteModal style={style} open={openDeleteGroupModal}
               onClose={() => {
                 setOpenDeleteGroupModal(false)
@@ -238,13 +249,14 @@ function ViewExpenseGroup() {
                     type="number"
                     id="filled-required"
                     variant="filled"
+                    sx={{marginTop:'15px'}}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       event.preventDefault()
                       setExpenseForm({...expenseForm, amount: event.target.valueAsNumber})
                     }}
                   />
-                  <InputLabel>Paid By</InputLabel>
-                  <Select value={expenseForm.paidByUserId}
+                  <InputLabel sx={{width:'220px', marginTop:'15px', paddingLeft: '5px'}}>Paid By</InputLabel>
+                  <Select value={expenseForm.paidByUserId} sx={{width:'220px'}}
                       onChange={(e) => {
                         setExpenseForm({...expenseForm, paidByUserId: e.target.value})
                       }}>
@@ -256,20 +268,19 @@ function ViewExpenseGroup() {
                         </MenuItem>)
                     })}
                   </Select>
-                  <ButtonGroup>
-                    <MUIButton isDisabled={(expenseForm.amount <= 0 || expenseForm.name == "" || expenseForm.paidByUserId == "" )} 
-                      onClick={() => {
-                        setOpenNewExpenseModal(false)
-                        handleSubmit()
-                      }}
-                      text={"Add"}
-                    />
+                  <div style={{display: 'flex', justifyContent: 'flex-end', width:'100%', marginTop:'15px'}}>
                     <MUIButton isDisabled={false} onClick={() => {
                       setOpenNewExpenseModal(false)
                     }}
                       text="Cancel"
                     />
-                  </ButtonGroup>
+                    <Button variant='contained' disabled={(expenseForm.amount <= 0 || expenseForm.name == "" || expenseForm.paidByUserId == "" )} 
+                      sx={{marginLeft:'10px'}}
+                      onClick={() => {
+                        setOpenNewExpenseModal(false)
+                        handleSubmit()
+                      }}>{"Add"}</Button>
+                  </div>
               </Box>
             </Modal>
             <Modal open={openNewMemberModal}
@@ -279,11 +290,11 @@ function ViewExpenseGroup() {
                 setOpenNewMemberModal(false)
               }}>
               <Box sx={style}>
-                <Typography variant="h6">
-                  {"Add a new member"}
+                <Typography variant="h6" style={{marginBottom:'15px', width: '220px'}}>
+                  {"Add a new member:"}
                 </Typography>
                 <>
-                <Select value={memberToAdd} label={"Contact name"}
+                <Select style={{width: '220px', marginBottom: '15px'}} value={memberToAdd} 
                   onChange={(e) => {
                     setMemberToAdd(e.target.value)
                   }}>
@@ -307,7 +318,9 @@ function ViewExpenseGroup() {
                   })}
                 </Select>
                 </>
-                <MUIButton isDisabled={false} onClick={() => {
+                <div style={{display: 'flex', justifyContent: 'flex-end', width:'100%', marginTop:'15px'}}>
+
+                <Button variant="contained" disabled={false} onClick={() => {
                   const gm: GroupMember = {
                     expenseGroupID: expenseGroup.ID,
                     memberID: memberToAdd
@@ -324,7 +337,8 @@ function ViewExpenseGroup() {
                     addGroupMember(gm, firstNameToAdd())
                   }
                   setOpenNewMemberModal(false)
-                }} text={"Done"}/>
+                }}>{"Done"}</Button>
+                </div>
               </Box>
             </Modal>
             {expenseGroup.expenses.map(ex => {
@@ -349,12 +363,21 @@ function ViewExpenseGroup() {
           <>
             <List sx={{ paddingLeft: '35px'}}>
               {expenseGroup.members.map(member => {
-                return <div key={member.ID + member.firstName}>
+                return <div key={member.ID + member.firstName} style={{display: 'flex', alignItems: 'start'}}>
                   <UserCard 
                     payments={payments["" + get(member, 'id')]}
                     user={member} 
                     addButton={false} 
                     key={member.ID} />
+                  <Button startIcon={<Delete />} onClick={() => {
+                    deleteGroupMember("" + get(member, 'id'), expenseGroup.ID)
+                    setTimeout(() => {
+                      getExpenseGroup()
+                      getAmountsOwed()
+                    }, 400)
+                    }}>
+                    {"Remove"}
+                  </Button>
                 </div>
               })}
             </List>
@@ -368,6 +391,7 @@ function ViewExpenseGroup() {
             </>
         )}
       </Stack>
+      </ThemeProvider>
     </div>
   )
 }

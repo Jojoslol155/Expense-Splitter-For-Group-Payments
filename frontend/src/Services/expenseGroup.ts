@@ -106,4 +106,4 @@ export const deleteExpenseGroup = async (expenseGroup: ExpenseGroup, navigate: N
 
     navigate('/')
   }
-
+  

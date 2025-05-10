@@ -21,7 +21,7 @@ type Props = {
 const MUIButton = ({onClick, text, children, isDisabled, startIcon}: Props) => {
   return (
     <ThemeProvider theme={theme}>
-        <Button onClick={onClick} startIcon={startIcon} variant='outlined' disabled={isDisabled}>{text} {children}</Button>
+        <Button  onClick={onClick} startIcon={startIcon} variant='outlined' disabled={isDisabled}>{text} {children}</Button>
     </ThemeProvider>
   )
 }
