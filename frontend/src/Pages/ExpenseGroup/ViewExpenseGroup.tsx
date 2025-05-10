@@ -37,7 +37,7 @@ function ViewExpenseGroup() {
   const [ openNewMemberModal, setOpenNewMemberModal ] = useState(false)
   const [ openNewExpenseModal, setOpenNewExpenseModal] = useState(false)
   const [ expenseForm, setExpenseForm ] = useState(defaultExpenseForm)
-  const [ expenseIDToODelete, setExpenseIDToDelete] = useState(0)
+  const [ expenseIDToDelete, setExpenseIDToDelete] = useState(0)
   const [ memberToAdd, setMemberToAdd ] = useState('')
   const navigate = useNavigate()
   const [contacts, getContacts] = useGetAllContacts()
@@ -201,6 +201,9 @@ function ViewExpenseGroup() {
               handleDelete={() => {
                 setOpenDeleteGroupModal(false)
                 deleteExpenseGroup(expenseGroup, navigate)
+                setTimeout(() => {
+                  getExpenseGroup()
+                }, 400)
               }}
             />
 
@@ -210,7 +213,10 @@ function ViewExpenseGroup() {
               }}
               handleDelete={() => {
                 setOpenDeleteExpenseModal(false)
-                deleteExpense(expenseIDToODelete)
+                deleteExpense(expenseIDToDelete)
+                setTimeout(() => {
+                  getExpenseGroup()
+                }, 400)
               }}
             />
 
