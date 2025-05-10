@@ -9,14 +9,14 @@ import SectionHeader from '../../Components/SectionHeader'
 import { get } from 'lodash'
 import { useGetAllContacts } from '../../Hooks/Users'
 import { useNavigate } from 'react-router-dom'
-import { deleteExpenseGroup, addGroupMember, saveMemberPercentages, createExpense, deleteExpense } from '../../Services'
+import { deleteExpenseGroup, addGroupMember, saveMemberPercentages, createExpense, deleteExpense, deleteGroupMember } from '../../Services'
 import './ViewExpenseGroup.css'
 import MUIButton from '../../Components/MUIButton/MUIButton'
 import { UserContextType, PaymentDictionary, GroupMember, Payment } from '../../Types'
 import { AuthContext } from '../../Context/Auth'
 import { defaultExpenseForm } from '../../Reducers/createExpenseGroupForm'
 import AddNew from '../../Components/AddNew/AddNew'
-import { Add } from '@mui/icons-material'
+import { Add, Delete } from '@mui/icons-material'
 import DeleteModal from '../../Components/Modals/DeleteModal'
 
 interface Balances {[UserID: string] : number}
@@ -363,12 +363,21 @@ function ViewExpenseGroup() {
           <>
             <List sx={{ paddingLeft: '35px'}}>
               {expenseGroup.members.map(member => {
-                return <div key={member.ID + member.firstName}>
+                return <div key={member.ID + member.firstName} style={{display: 'flex', alignItems: 'start'}}>
                   <UserCard 
                     payments={payments["" + get(member, 'id')]}
                     user={member} 
                     addButton={false} 
                     key={member.ID} />
+                  <Button startIcon={<Delete />} onClick={() => {
+                    deleteGroupMember("" + get(member, 'id'), expenseGroup.ID)
+                    setTimeout(() => {
+                      getExpenseGroup()
+                      getAmountsOwed()
+                    }, 400)
+                    }}>
+                    {"Remove"}
+                  </Button>
                 </div>
               })}
             </List>
