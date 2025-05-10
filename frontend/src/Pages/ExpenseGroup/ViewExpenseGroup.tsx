@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom'
 import { deleteExpenseGroup, addGroupMember, saveMemberPercentages, createExpense } from '../../Services'
 import './ViewExpenseGroup.css'
 import MUIButton from '../../Components/MUIButton/MUIButton'
-import { UserContextType, PaymentDictionary, GroupMember } from '../../Types'
+import { UserContextType, PaymentDictionary, GroupMember, Payment } from '../../Types'
 import { AuthContext } from '../../Context/Auth'
 import { defaultExpenseForm } from '../../Reducers/createExpenseGroupForm'
 import AddNew from '../../Components/AddNew/AddNew'
@@ -47,7 +47,7 @@ function ViewExpenseGroup() {
 
   useEffect(() => {
     getContacts()
-  }, [])
+  }, [payments])
 
   useEffect(() => {
     getAmountsOwed()
@@ -89,12 +89,6 @@ function ViewExpenseGroup() {
   }
 
   const getAmountsOwed = () => {
-    // simple map of ID to sum of amount OWED TO/FROM that ID, local only
-    // go through expenses and get amounts from the expenses wehre they are the paid for ID
-    // that SUBTRACTS from the amount
-    // then go through the user expense percentages and get the amount from that value
-    // ADD that to the amount for this user
-    // at the end, some will have negative (money owed TO them) or positive (THEY owe money to the pool)
     var amtsOwed: Balances = {}
 
     expenseGroup.expenses.forEach(exp => {
@@ -112,55 +106,67 @@ function ViewExpenseGroup() {
           amtsOwed[uep.userID] = 0
         }
 
-        amtsOwed[uep.userID] += (exp.amount * uep.percentage)
+        amtsOwed[uep.userID] += Math.round((exp.amount * uep.percentage) * 100) / 100
       })
     })
 
     setAmountsOwed(amtsOwed)
 
-    // turn dictionary into an array of key value tuples
-    // then we can sort by the balance amount
     var balancesArray: any = []
 
     Object.entries(amtsOwed).map((kv) => {
       balancesArray.push(kv)
     })
 
-    console.log(balancesArray.sort(compareBalances))
+    balancesArray.sort(compareBalances)
 
-    // now we can turn this balances array into payment pairs
-    // as long as the length is greater than 2, take the max and the min and pair them up in the form 
-    // of a payment
-    // if someone's amount totals to 0, remove them and increment the index
-    let i = 0
-    while (balancesArray.length > 0) { //balancesArray.length > 0
-      console.log(i)
-      console.log(balancesArray)
+    const paymentsDict: PaymentDictionary = {}
+    
+    while (balancesArray.length > 1) { 
       var min: number = balancesArray[0][1]
-      var minName = getNameForId(balancesArray[0][0])
+      var minID: string = balancesArray[0][0]
+      var minName: string = getNameForId(balancesArray[0][0])
+
       var max: number = balancesArray[balancesArray.length - 1][1]
-      var maxName = getNameForId(balancesArray[balancesArray.length - 1][0])
+      var maxID: string = balancesArray[balancesArray.length - 1][0]
+      var maxName:string = getNameForId(balancesArray[balancesArray.length - 1][0])
+
+
+      if (!paymentsDict[maxID]) {
+        paymentsDict[maxID] = []
+      }
 
 
       if (min + max > 0) {
         balancesArray[balancesArray.length - 1][1] = max + min
         balancesArray.shift()
-        console.log(maxName + " pays " + minName + min)
+
+        const payment: Payment = {
+          owedToName: minName,
+          amount: min,
+          owedToId: minID
+        }
+        paymentsDict[maxID].push(payment)
 
       } else if (min + max < 0) {
         balancesArray[0][1] = balancesArray[0][1] + [balancesArray.length - 1][1]
         balancesArray.pop()
-        console.log(maxName + " pays " + minName + max)
+
+        const payment: Payment = {
+          owedToName: minName,
+          amount: max,
+          owedToId: minID
+        }
+        paymentsDict[maxID].push(payment)
+        
       } else {
         balancesArray.shift()
         balancesArray.pop()
-        console.log(maxName + " pays " + minName + min)
       }
-      i++
-      console.log(balancesArray)
-    }
 
+    }
     
+    setPayments(paymentsDict)
   }
 
   return (
@@ -322,9 +328,11 @@ function ViewExpenseGroup() {
           <>
             <List sx={{ paddingLeft: '35px'}}>
               {expenseGroup.members.map(member => {
+                console.log(payments)
+                console.log(payments["" + get(member, 'id')])
                 return <div key={member.ID + member.firstName}>
                   <UserCard 
-                    //balances={balances[member.ID]}
+                    payments={payments["" + get(member, 'id')]}
                     user={member} 
                     addButton={false} 
                     key={member.ID} />

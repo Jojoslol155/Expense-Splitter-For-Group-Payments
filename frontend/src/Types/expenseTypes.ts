@@ -18,6 +18,7 @@ export interface MemberPercentage {
 
 export interface Payment {
     owedToName: string
+    owedToId: string
     amount: number
 }
 

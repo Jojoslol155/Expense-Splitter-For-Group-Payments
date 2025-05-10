@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react'
+import React, { useEffect, useState, useContext} from 'react'
 import './Dashboard.css'
 import { useGetAllExpenseGroups } from '../../Hooks/ExpenseGroups'
 import ExpenseGroups from '../../Components/ExpenseGroups/ExpenseGroups'
@@ -6,13 +6,15 @@ import AddNew from '../../Components/AddNew/AddNew'
 import { Modal, Box, Typography, TextField, createTheme, ThemeProvider } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import {createExpenseGroup} from '../../Services'
-import { CreateExpenseGroupForm } from '../../Types'
+import { CreateExpenseGroupForm, UserContextType } from '../../Types'
 import MUIButton from '../../Components/MUIButton/MUIButton'
+import { AuthContext } from '../../Context/Auth'
 
 function Dashboard() {
   const [expenseGroups, getExpenseGroups] = useGetAllExpenseGroups()
   const [open, setOpen] = useState(false)
   const [name, setName] = useState("")
+  const { userID } = useContext(AuthContext) as UserContextType
   const navigate = useNavigate()
     
   useEffect(() => {
@@ -76,7 +78,7 @@ function Dashboard() {
                         const newExpenseGroup: CreateExpenseGroupForm = {
                             name
                         }
-                      createExpenseGroup(newExpenseGroup,navigate)
+                      createExpenseGroup(newExpenseGroup,userID,navigate)
                         setOpen(false);
                         navigate("/") 
                     }}
