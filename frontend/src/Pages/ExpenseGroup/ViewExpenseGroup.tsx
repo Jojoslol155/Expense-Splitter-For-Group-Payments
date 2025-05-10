@@ -74,7 +74,8 @@ function ViewExpenseGroup() {
     boxShadow: 24,
     p: 4,
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    
   }
 
   const getNameForId = (id: string): string => {
