@@ -79,6 +79,7 @@ function ViewExpenseGroup() {
     p: 4,
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'center'
   }
 
   const getNameForId = (id: string): string => {
@@ -279,11 +280,11 @@ function ViewExpenseGroup() {
                 setOpenNewMemberModal(false)
               }}>
               <Box sx={style}>
-                <Typography variant="h6">
+                <Typography variant="h6" style={{marginBottom:'15px', textAlign: 'center'}}>
                   {"Add a new member"}
                 </Typography>
                 <>
-                <Select value={memberToAdd} label={"Contact name"}
+                <Select style={{width: '200px', height: '70px', marginBottom: '15px'}} value={memberToAdd} label={"Contact name"}
                   onChange={(e) => {
                     setMemberToAdd(e.target.value)
                   }}>

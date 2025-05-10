@@ -3,7 +3,7 @@ import { Box, ButtonGroup, createTheme, Divider, TextField, ThemeProvider, Typog
 import './ViewExpenseGroup.css'
 import MUIButton from '../../Components/MUIButton/MUIButton'
 import { Delete, Edit } from '@mui/icons-material'
-import './Header.css'
+import './ViewExpenseGroup'
 import { updateExpenseGroup } from '../../Services'
 
 type Props = {
@@ -36,7 +36,11 @@ const PageHeader = ({header, setOpenDeleteModal, groupID}: Props) => {
       <Box>
           <div className='pageHeaderWrapper'>
             {editingName ? (
-              <TextField value={name} variant="standard" onBlur={() => {
+              <TextField sx={{
+                '.MuiInputBase-input': {
+                  fontSize: '3rem !important'
+                }
+              }}value={name} variant="standard" onBlur={() => {
                 setEditingName(false)
                 if (name == "") {
                   setShowAlert(true)
