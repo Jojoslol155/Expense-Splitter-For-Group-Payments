@@ -16,7 +16,8 @@ const Register = () => {
   const [registerUser] = useRegister({username, password, firstName, lastName, email})
 
   const buttonStyle = {
-    backgroundColor: '#29A3A3'
+    backgroundColor: 'var(--secondary)',
+    color: 'var(--text)'
   }
 
   const style = {

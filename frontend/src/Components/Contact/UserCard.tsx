@@ -1,5 +1,5 @@
 import React from 'react'
-import { GroupMember, User, Balance } from '../../Types'
+import { GroupMember, User, Payment } from '../../Types'
 import ContactIcon from '../../Images/Contact.png'
 import './UserCard.css'
 import MUIButton from '../MUIButton/MUIButton'
@@ -10,10 +10,10 @@ type Props = {
   addGroupMember?: (groupMember: GroupMember, firstName: string) => void
   expenseGroupID?: number
   closeModal?: () => void
-  balances?: Balance[]
+  payments?: Payment[]
 }
 
-const UserCard = ({user, addButton, expenseGroupID, addGroupMember, closeModal, balances}: Props) => {
+const UserCard = ({user, addButton, expenseGroupID, addGroupMember, closeModal, payments}: Props) => {
   return (
     <div className='userCardWrapper'>
       <img src={ContactIcon} width={32} height={32} className='contactIcon'/>

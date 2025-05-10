@@ -23,7 +23,6 @@ export const addGroupMember = async (groupMember: GroupMember, firstName: string
 
     try{
         fetch(GET_GROUP_MEMBERS_URL, postGroupMemberOptions).then(res => {
-            console.log(res.status)
             if (res.status !== 200) {
                 throw new Error(res.statusText)
             }
@@ -34,17 +33,15 @@ export const addGroupMember = async (groupMember: GroupMember, firstName: string
                 }
                 return res.json()
             }).then(json => {
-                console.log(json)
                 json.expenses.forEach((e: any) => {
                     try {
-                        console.log(e)
                         const newUEP: MemberPercentage = {
                             expenseID: e.id,
                             userID: groupMember.memberID,
                             percentage: 0,
                             firstName,
                         }
-                        console.log(newUEP)
+
                         const postPercentageOptions = {
                             method: 'POST',
                             headers: { 
@@ -57,8 +54,6 @@ export const addGroupMember = async (groupMember: GroupMember, firstName: string
                                 throw new Error(r.statusText)
                             }
                             return r.json()
-                        }).then(json => {
-                            console.log(json)
                         })
                     } catch (err) {
                         // setStatus(StatusType.ERROR)

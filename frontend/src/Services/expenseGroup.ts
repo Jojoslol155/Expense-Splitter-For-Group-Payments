@@ -14,14 +14,12 @@ export const createExpenseGroup = async (createExpenseGroupForm: CreateExpenseGr
     }
     try {
         fetch(GET_EXPENSE_GROUPS_URL, options).then(res => { 
-            console.log(res)
             if (res.status !== 201) {
                 throw new Error(res.statusText)
             }
             return res.json() 
 
         }).then(json => {
-            console.log(json)
             const expenseGroupId = get(json, 'id')
             navigate(`/group/${expenseGroupId}/view`)
         })

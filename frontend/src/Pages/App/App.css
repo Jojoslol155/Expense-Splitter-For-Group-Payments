@@ -1,9 +1,9 @@
 html {
-  --background: #041010;
-  --primary: #9BE8E6;
-  --secondary: #29A3A3;
-  --text: #DEF7F7; 
-  --selected: #259393;
+  --background: #1A2234;
+  --primary: #1D273B;
+  --secondary: #206BC4;
+  --text: #EDF7F6; 
+  --selected: #252F43; 
   height: 100%;
 }
 

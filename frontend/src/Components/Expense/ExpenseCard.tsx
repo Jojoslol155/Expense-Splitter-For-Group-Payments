@@ -22,7 +22,6 @@ type Props = {
       var name = ""
       contacts.forEach(c => {
         if (c.ID == expense.paidByUserId) {
-          console.log(c.firstName + " " + c.lastName)
           name = c.firstName + " " + c.lastName
         }
       })

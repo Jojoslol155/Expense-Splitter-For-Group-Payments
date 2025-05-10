@@ -16,7 +16,6 @@ export const createExpense = (expense: ExpenseForm, expenseGroupID: number, memb
 
     try {
         fetch(`${GET_EXPENSES_URL}/${expenseGroupID}`, options).then(res => { 
-            console.log(res)
             if (res.status !== 201 && res.status !== 200) {
                 throw new Error(res.statusText)
             }

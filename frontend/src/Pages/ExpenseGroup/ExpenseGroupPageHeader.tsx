@@ -42,7 +42,7 @@ const PageHeader = ({header, setOpenDeleteModal}: Props) => {
               </ButtonGroup>
             </div>
           </div> 
-          <Divider sx={{ background: 'var(--secondary)' }} />
+          <Divider sx={{ background: '#1D273B', padding: '3px'}} />
       </Box>
     </ThemeProvider>
   )
