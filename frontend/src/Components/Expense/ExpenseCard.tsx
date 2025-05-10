@@ -29,7 +29,7 @@ type Props = {
 
     return (
       <ListItem>
-        <Accordion sx={{minWidth:'320px'}}>
+        <Accordion sx={{minWidth:'320px', backgroundColor: 'var(--primary)', color: 'var(--text)'}}>
           <AccordionSummary expandIcon={<ExpandIcon />}>
             <div className='expenseHeader'>
               <div className='expenseHeaderElement'>{expense.name}</div>
@@ -46,7 +46,7 @@ type Props = {
           </AccordionDetails>
           <div className='buttonWrapper'>
             <div style={{paddingRight: '15px', paddingBottom: '10px'}}>
-              <MUIButton onClick={() => {
+              <MUIButton isDisabled={false} onClick={() => {
                 saveMemberPercentages(expense, setShowAlert)
               }} text="Save Changes"/>
             </div>

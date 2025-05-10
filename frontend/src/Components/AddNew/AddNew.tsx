@@ -10,7 +10,7 @@ export const  AddNew = ({ setOpen }: Props) => {
     return (
         <Box>
             <div className='alignRight'>
-                <MUIButton onClick={() => {
+                <MUIButton isDisabled={false} onClick={() => {
                     setOpen(true)
                 }} text={"Create New"}/>
             </div>

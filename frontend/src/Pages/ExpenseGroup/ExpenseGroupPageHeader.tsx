@@ -30,10 +30,10 @@ const PageHeader = ({header, setOpenDeleteModal}: Props) => {
             )}
             <div>
               <ButtonGroup>
-                <MUIButton onClick={() => {
+                <MUIButton isDisabled={false} onClick={() => {
                   setEditingName(true)
                 }} text='Edit'/>
-                <MUIButton 
+                <MUIButton isDisabled={false} 
                   onClick={() => {
                     setOpenDeleteModal(true)
                   }}

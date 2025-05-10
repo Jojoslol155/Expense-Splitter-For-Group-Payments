@@ -22,6 +22,7 @@ const UserCard = ({user, addButton, expenseGroupID, addGroupMember, closeModal, 
         <> 
           <MUIButton 
             text={"+"}
+            isDisabled={false}
             onClick={() => {
               if (expenseGroupID && addGroupMember) {
   

@@ -29,7 +29,7 @@ const compareBalances = (a: [string, number], b: [string, number]) => {
 function ViewExpenseGroup() {
   const { id } = useParams()
   const [expenseGroup, getExpenseGroup, dispatch] = useGetExpenseGroup(Number(id))
-  const [ showAlert, setShowAlert ] = useState(false)
+  const [ showWarningAlert, setShowWarningAlert ] = useState(false)
   const [ openDeleteModal, setOpenDeleteModal ] = useState(false)
   const [ openNewMemberModal, setOpenNewMemberModal ] = useState(false)
   const [ openNewExpenseModal, setOpenNewExpenseModal] = useState(false)
@@ -170,11 +170,16 @@ function ViewExpenseGroup() {
         <SectionHeader text={"Expenses"}/>
         {expenseGroup.expenses && (
           <List sx={{ paddingLeft: '20px'}}>
-            {showAlert && <Alert severity='warning' onClose={() => {
-              setShowAlert(false)
-            }}>
-              Percentages must total to 100%
-            </Alert>}
+            {showWarningAlert && (
+              <div style={{paddingBottom: '6px', display: 'flex', justifyContent: 'flex-end', flexDirection: 'row'}}>
+                <Alert severity='warning' onClose={() => {
+                setShowWarningAlert(false)
+                }}>
+                  Percentages must total to 100%
+                </Alert>
+              </div>
+              )
+            }
             <Modal open={openDeleteModal}
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
@@ -185,10 +190,10 @@ function ViewExpenseGroup() {
                 <Typography variant="h6">
                   {"Are you sure you want to delete?"}
                 </Typography>
-                <MUIButton onClick={() => {
+                <MUIButton isDisabled={false} onClick={() => {
                   deleteExpenseGroup(expenseGroup, navigate)
                 }} text={"Delete"}/>
-                <MUIButton onClick={() => {
+                <MUIButton isDisabled={false} onClick={() => {
                   setOpenDeleteModal(false)
                 }} text={"Cancel"}/>
               </Box>
@@ -234,13 +239,14 @@ function ViewExpenseGroup() {
                     })}
                   </Select>
                   <ButtonGroup>
-                    <MUIButton onClick={() => {
-                      setOpenNewExpenseModal(false)
-                      handleSubmit()
-                    }}
+                    <MUIButton isDisabled={(expenseForm.amount <= 0 || expenseForm.name == "" || expenseForm.paidByUserId == "" )} 
+                      onClick={() => {
+                        setOpenNewExpenseModal(false)
+                        handleSubmit()
+                      }}
                       text={"Add"}
                     />
-                    <MUIButton onClick={() => {
+                    <MUIButton isDisabled={false} onClick={() => {
                       setOpenNewExpenseModal(false)
                     }}
                       text="Cancel"
@@ -283,7 +289,7 @@ function ViewExpenseGroup() {
                   })}
                 </Select>
                 </>
-                <MUIButton onClick={() => {
+                <MUIButton isDisabled={false} onClick={() => {
                   const gm: GroupMember = {
                     expenseGroupID: expenseGroup.ID,
                     memberID: memberToAdd
@@ -304,7 +310,7 @@ function ViewExpenseGroup() {
               </Box>
             </Modal>
             {expenseGroup.expenses.map(ex => {
-              return <ExpenseCard expense={ex} dispatch={dispatch} key={get(ex, "id") + "c"} saveMemberPercentages={saveMemberPercentages} setShowAlert={setShowAlert} />
+              return <ExpenseCard expense={ex} dispatch={dispatch} key={get(ex, "id") + "c"} saveMemberPercentages={saveMemberPercentages} setShowAlert={setShowWarningAlert} />
             })}
           </List>
         )}
@@ -326,7 +332,7 @@ function ViewExpenseGroup() {
               })}
             </List>
             <div>
-              <MUIButton onClick={() => {
+              <MUIButton isDisabled={false} onClick={() => {
                 setOpenNewMemberModal(true)
                 }}
                 text="Add new member"

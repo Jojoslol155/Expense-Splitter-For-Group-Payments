@@ -21,7 +21,6 @@ function ExpenseGroupCard({name, groupID}: Props) {
             color: 'var(--text)', 
             borderColor: 'rgba(58, 78, 120, .2)',
             borderWidth: '1px'
-             
             }}>
           <CardActionArea component={RouterLink} to={`/group/${groupID}/view`}>
             <CardHeader title={truncateTitle()}/>
