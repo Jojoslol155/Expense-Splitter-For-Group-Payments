@@ -17,9 +17,10 @@ type Props = {
     setShowAlert: (alert: boolean) => void
     dispatch: Dispatch<ExpenseGroupFormAction>
     openDeleteExpenseModal: () => void
+    refresh: () => void
   }
   
-  const ExpenseCard = ({expense, dispatch, saveMemberPercentages, setShowAlert, openDeleteExpenseModal}: Props) => {
+  const ExpenseCard = ({expense, dispatch, saveMemberPercentages, setShowAlert, openDeleteExpenseModal, refresh}: Props) => {
     const { contacts } = useContext(ContactsContext) as ContactsContextType
     const [ openEditExpenseModal, setOpenEditExpenseModal] = useState(false)
     const paidByName = () => {
@@ -37,6 +38,7 @@ type Props = {
       <ListItem>
       <EditExpenseModal 
         expenseID={get(expense, 'id', 0)} 
+        refresh={refresh}
         name={expense.name}
         amount={expense.amount}
         open={openEditExpenseModal} onClose={() => {

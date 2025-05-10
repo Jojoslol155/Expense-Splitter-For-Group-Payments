@@ -11,6 +11,7 @@ type Props = {
     expenseID: number
     name: string
     amount: number
+    refresh: () => void
 }
 
 
@@ -39,7 +40,7 @@ const theme = createTheme({
   }
 
 
-const EditExpenseModal = ({open, onClose, expenseID, name, amount}: Props) => {
+const EditExpenseModal = ({open, onClose, expenseID, name, amount, refresh}: Props) => {
     const defaultExpense: EditExpenseForm = {
         name, amount
     }
@@ -84,6 +85,9 @@ const EditExpenseModal = ({open, onClose, expenseID, name, amount}: Props) => {
                 onClick={() => {
                     onClose()
                     updateExpense(expenseForm, expenseID)
+                    setTimeout(() => {
+                        refresh()
+                    }, 400);
                 }}>{"Submit"}</Button>
             </div>
         </Box>
